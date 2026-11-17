@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fetchFestivals, selectFestivals } from '../festival.js';
-import { shortestPath } from '../public/station-route-math.js';
+import { searchPlaces, shortestPath } from '../public/station-route-math.js';
 import { buildRouteSteps } from '../public/route-steps.js';
 
 const event = (id, start, end) => ({
@@ -40,6 +40,15 @@ test('3층 지도 데이터에서 연결된 시설 사이 경로를 계산한다
   assert.ok(route?.ids.length >= 2);
   assert.equal(route.ids[0], connected[0].nodeId);
   assert.equal(route.ids.at(-1), connected[1].nodeId);
+});
+
+test('시설 검색은 부분 일치, 단어 순서 변경, 한 글자 오차를 허용한다', async () => {
+  const graph = JSON.parse(await readFile(new URL('../public/daejeon-station-3f-graph.json', import.meta.url)));
+  for (const query of ['서문 엘리베이터', '엘리 서문', '서문 엘레베이터']) {
+    assert.equal(searchPlaces(graph.places, query)[0]?.nodeId, 'P43');
+  }
+  assert.equal(searchPlaces(graph.places, '매표')[0]?.nodeId, 'P32');
+  assert.deepEqual(searchPlaces(graph.places, '없는 시설'), []);
 });
 
 test('서광장 엘리베이터와 매표소 양방향 단계가 경로 순서와 정확히 일치한다', async () => {

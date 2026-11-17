@@ -1,5 +1,52 @@
-export const normalize = value => String(value ?? '').toLocaleLowerCase('ko-KR').replace(/\s+/g, '');
-export function searchPlaces(places, query) { const q=normalize(query); return q ? places.filter(p=>[p.name,...(p.aliases||[])].some(s=>normalize(s).includes(q))) : []; }
+export const normalize = value => String(value ?? '').toLocaleLowerCase('ko-KR').replace(/[\s()[\]·,./_-]+/g, '');
+
+function words(value) {
+  return String(value ?? '').toLocaleLowerCase('ko-KR').split(/[\s()[\]·,./_-]+/).filter(Boolean);
+}
+
+function oneEditApart(a, b) {
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let left = 0, right = 0, edits = 0;
+  while (left < a.length && right < b.length) {
+    if (a[left] === b[right]) { left++; right++; continue; }
+    if (++edits > 1) return false;
+    if (a.length > b.length) left++;
+    else if (b.length > a.length) right++;
+    else { left++; right++; }
+  }
+  return edits + (a.length - left || b.length - right ? 1 : 0) <= 1;
+}
+
+function tokenScore(query, candidate) {
+  if (candidate === query) return 0;
+  if (candidate.startsWith(query)) return 1;
+  if (candidate.includes(query)) return 2;
+  if (query.length >= 3 && oneEditApart(query, candidate)) return 3;
+  return Infinity;
+}
+
+export function searchPlaces(places, query) {
+  const cleanQuery = normalize(query);
+  if (!cleanQuery) return [];
+  const queryWords = words(query);
+  return places.flatMap(place => {
+    const labels = [place.name, ...(place.aliases || [])];
+    let score = Infinity;
+    for (const [index, label] of labels.entries()) {
+      const cleanLabel = normalize(label);
+      if (cleanLabel === cleanQuery) score = Math.min(score, index === 0 ? 0 : 1);
+      else if (cleanLabel.startsWith(cleanQuery)) score = Math.min(score, index === 0 ? 2 : 3);
+      else if (cleanLabel.includes(cleanQuery)) score = Math.min(score, index === 0 ? 4 : 5);
+    }
+    if (score === Infinity && queryWords.length) {
+      const candidates = labels.flatMap(words);
+      const scores = queryWords.map(word => Math.min(...candidates.map(candidate => tokenScore(word, candidate))));
+      if (scores.every(Number.isFinite)) score = 10 + scores.reduce((sum, value) => sum + value, 0);
+    }
+    return Number.isFinite(score) ? [{ place, score }] : [];
+  }).sort((a, b) => a.score - b.score || Number(Boolean(b.place.nodeId)) - Number(Boolean(a.place.nodeId)) || a.place.name.localeCompare(b.place.name, 'ko'))
+    .map(({ place }) => place);
+}
 export function shortestPath(graph, start, end) {
   const nodes=new Map(graph.nodes.map(n=>[n.id,n]));
   if(!nodes.has(start)||!nodes.has(end))return null;

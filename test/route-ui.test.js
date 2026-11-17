@@ -40,8 +40,8 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
       assert.ok(option, `검색 결과: ${expected}`);
       option.click();
     };
-    choose('from', '서광장', '서광장 A');
-    choose('to', '매표소', '매표소');
+    choose('from', '엘리 서문', '서광장 A');
+    choose('to', '매표', '매표소');
     document.getElementById('route').click();
 
     assert.equal(document.getElementById('stepCount').textContent, '총 4단계');
