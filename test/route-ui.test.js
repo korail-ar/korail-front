@@ -32,6 +32,14 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
     Object.defineProperty(document.getElementById('viewport'), 'clientWidth', { value: 600 });
     Object.defineProperty(document.getElementById('viewport'), 'clientHeight', { value: 400 });
 
+    assert.equal(document.querySelectorAll('.category-chip').length, 8);
+    assert.equal(document.querySelector('.demo-location circle:nth-child(2)').getAttribute('cx'), '855');
+    assert.ok(document.querySelector('.demo-location').getAttribute('aria-label').includes('시연 위치'));
+    const chip = label => [...document.querySelectorAll('.category-chip')].find(button => button.textContent.includes(label));
+    chip('화장실').click();
+    assert.ok([...document.querySelectorAll('.place-marker')].every(marker => marker.dataset.category === 'restroom'));
+    chip('전체').click();
+
     const choose = (field, query, expected) => {
       const input = document.getElementById(field);
       input.value = query;
@@ -41,8 +49,12 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
       option.click();
     };
     choose('from', '엘리 서문', '서광장 A');
+    document.querySelector('.place-marker[data-place-id="40"]').dispatchEvent(new dom.window.Event('click'));
+    assert.equal(document.getElementById('to').value, '디자인스킨');
     choose('to', '매표', '매표소');
     document.getElementById('route').click();
+
+    assert.equal(document.querySelector('[data-role="wayfinding-route"]').getAttribute('stroke'), '#ffdf3d');
 
     assert.equal(document.getElementById('stepCount').textContent, '총 4단계');
     assert.equal(document.querySelectorAll('.step-card').length, 4);

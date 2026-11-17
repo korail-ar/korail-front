@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { fetchFestivals, selectFestivals } from '../festival.js';
 import { searchPlaces, shortestPath } from '../public/station-route-math.js';
 import { buildRouteSteps } from '../public/route-steps.js';
+import { categoryForPlace } from '../public/place-categories.js';
 
 const event = (id, start, end) => ({
   contentid: String(id), title: `축제 ${id}`, eventstartdate: start,
@@ -49,6 +50,17 @@ test('시설 검색은 부분 일치, 단어 순서 변경, 한 글자 오차를
   }
   assert.equal(searchPlaces(graph.places, '매표')[0]?.nodeId, 'P32');
   assert.deepEqual(searchPlaces(graph.places, '없는 시설'), []);
+});
+
+test('실제 시설 데이터가 화장실·식음료·안내 카테고리로 구분된다', async () => {
+  const graph = JSON.parse(await readFile(new URL('../public/daejeon-station-3f-graph.json', import.meta.url)));
+  const category = name => categoryForPlace(graph.places.find(place => place.name.includes(name)));
+  assert.equal(category('화장실(디자인스킨'), 'restroom');
+  assert.equal(category('신청도할매김밥'), 'food');
+  assert.equal(category('편의시설(지도 상단 안내'), 'information');
+  assert.equal(category('매표소'), 'ticketing');
+  assert.equal(categoryForPlace(graph.places.find(place => place.name === '디자인스킨')), 'shop');
+  assert.deepEqual([graph.nodes.find(node => node.id === 'P40').x, graph.nodes.find(node => node.id === 'P40').y], [855, 1063]);
 });
 
 test('서광장 엘리베이터와 매표소 양방향 단계가 경로 순서와 정확히 일치한다', async () => {
