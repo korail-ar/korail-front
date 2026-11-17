@@ -61,11 +61,12 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
     const mainChildren = [...document.querySelector('main').children];
     assert.ok(mainChildren.indexOf(document.getElementById('routeSummary')) < mainChildren.indexOf(document.querySelector('.map-section')));
     assert.ok(mainChildren.indexOf(document.querySelector('.map-section')) < mainChildren.indexOf(document.getElementById('routeDetails')));
-    assert.equal(mainChildren.at(-1).id, 'guideControls');
+    assert.equal(mainChildren.at(-1).id, 'routeDetails');
+    assert.equal(document.getElementById('guideControls'), null);
 
-    document.getElementById('guideStart').click();
+    document.querySelectorAll('.step-card')[0].click();
     assert.equal(document.querySelector('.step-card[aria-current="step"] .step-number').textContent, '1');
-    document.getElementById('guideNext').click();
+    document.querySelectorAll('.step-card')[1].click();
     const active = document.querySelector('.step-card[aria-current="step"]');
     assert.equal(active.querySelector('.step-number').textContent, '2');
     const ids = active.dataset.nodeIds.split(',');
@@ -75,7 +76,7 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
     const selectedNodes = ids.map(id => nodes.get(id));
     const centerX = (Math.min(...selectedNodes.map(node => node.x)) + Math.max(...selectedNodes.map(node => node.x))) / 2;
     assert.equal(document.getElementById('viewport').scrollLeft, centerX - 300);
-    document.getElementById('guidePrev').click();
+    document.querySelectorAll('.step-card')[0].click();
     assert.equal(document.querySelector('.step-card[aria-current="step"] .step-number').textContent, '1');
 
     const input = document.getElementById('to');
@@ -83,7 +84,6 @@ test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에�
     input.dispatchEvent(new dom.window.Event('input'));
     assert.equal(document.getElementById('routeDetails').hidden, true);
     assert.equal(document.getElementById('routeSummary').hidden, true);
-    assert.equal(document.getElementById('guideControls').hidden, true);
     assert.equal(document.querySelector('.step-card[aria-current="step"]'), null);
     assert.equal(document.querySelector('[data-role="selected-step"]'), null);
 

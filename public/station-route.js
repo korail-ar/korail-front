@@ -142,9 +142,6 @@ function selectStep(index) {
     if (cardIndex === index) card.setAttribute('aria-current', 'step');
     else card.removeAttribute('aria-current');
   }
-  $('guidePrev').disabled = index === 0;
-  $('guideNext').disabled = index === steps.length - 1;
-  $('guideProgress').textContent = `${index + 1} / ${steps.length}단계`;
   focusStep(steps[index]);
 }
 
@@ -156,10 +153,6 @@ function clearRoute() {
   $('stepCards').replaceChildren();
   $('routeSummary').hidden = true;
   $('routeDetails').hidden = true;
-  $('guideControls').hidden = true;
-  $('guideProgress').textContent = '단계를 선택하세요';
-  $('guidePrev').disabled = true;
-  $('guideNext').disabled = true;
   $('routeStatus').textContent = '출발지와 목적지를 검색해 선택하세요.';
 }
 
@@ -193,7 +186,6 @@ function renderRoute() {
   });
   $('stepCards').replaceChildren(...cards);
   $('routeDetails').hidden = false;
-  $('guideControls').hidden = false;
   $('routeStatus').textContent = '경로가 표시되었습니다. 아래에서 단계를 확인하세요.';
   drawRoute();
 }
@@ -248,10 +240,6 @@ async function init() {
     $('routeStatus').textContent = `초기화 실패: ${error.message}`;
   }
 }
-
-$('guideStart').addEventListener('click', () => selectStep(0));
-$('guidePrev').addEventListener('click', () => selectStep(selectedStep - 1));
-$('guideNext').addEventListener('click', () => selectStep(selectedStep + 1));
 
 function setZoom(next) {
   zoom = Math.max(1, Math.min(4, next));
