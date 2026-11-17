@@ -5,6 +5,11 @@ import { JSDOM } from 'jsdom';
 
 test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에서 동작한다', async () => {
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  const gpsHtml = await readFile(new URL('../public/gps-test.html', import.meta.url), 'utf8');
+  assert.ok(html.includes('/gps-test.html'));
+  assert.ok(gpsHtml.includes('id="gpsOn"'));
+  assert.ok(gpsHtml.includes('/gps-diagnostics.js'));
+  assert.ok(!html.includes('id="gpsOn"'));
   const graph = JSON.parse(await readFile(new URL('../public/daejeon-station-3f-graph.json', import.meta.url)));
   const dom = new JSDOM(html, { url: 'http://localhost:5173/' });
   const oldGlobals = Object.fromEntries(['window', 'document', 'navigator', 'fetch', 'requestAnimationFrame'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));

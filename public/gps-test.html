@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPS 기능 테스트 · 대전역 안내</title>
+  <link rel="stylesheet" href="/station-route.css">
+  <link rel="stylesheet" href="/gps-test.css">
+  <script type="module" src="/gps-diagnostics.js"></script>
+</head>
+<body>
+  <main>
+    <nav class="site-nav" aria-label="서비스 메뉴"><a class="brand" href="/">대전역 안내</a><div class="nav-links"><a href="/">3층 길찾기</a><a href="/festivals.html">축제 정보</a></div></nav>
+    <header class="hero"><span class="eyebrow">DEVELOPMENT TEST</span><h1>GPS 기능 테스트</h1><p>브라우저의 위치 수신과 지도 좌표 보정을 별도로 확인하는 화면입니다.</p></header>
+    <section class="gps-panel"><div class="gps-heading"><div><h2>위치 수신 상태</h2><p>실내 층과 정확한 통로 위치는 GPS만으로 판단하지 않습니다.</p></div><div class="gps-actions"><button id="gpsOn" class="primary">내 위치 켜기</button><button id="gpsOff" disabled>끄기</button></div></div><dl><div><dt>상태</dt><dd id="gpsStatus">꺼짐</dd></div><div><dt>위도</dt><dd id="lat">—</dd></div><div><dt>경도</dt><dd id="lng">—</dd></div><div><dt>정확도</dt><dd id="accuracy">—</dd></div><div><dt>마지막 갱신</dt><dd id="updated">—</dd></div><div><dt>지도 보정</dt><dd id="calibration">불러오는 중</dd></div><div><dt>독립 검증 오차</dt><dd id="validation">—</dd></div></dl></section>
+    <section class="map-section"><div class="map-head"><div><span class="section-index">TEST</span><div><h2>3층 지도 좌표 확인</h2><p>현장 기준점이 입력된 경우에만 위치 점이 표시됩니다.</p></div></div></div><div class="viewport"><div class="scene"><svg viewBox="0 0 2048 1386" role="img" aria-label="GPS 위치 테스트용 3층 지도"><image href="/assets/daejeon_3d_F3(5).png" x="0" y="0" width="2048" height="1386"/><g id="gpsLayer"></g></svg></div></div></section>
+    <p class="gps-note">위치 권한은 HTTPS 또는 localhost에서만 요청할 수 있습니다. 기준점이 없으면 위도·경도만 확인할 수 있습니다.</p>
+  </main>
+</body>
+</html>
