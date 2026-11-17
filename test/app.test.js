@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fetchFestivals, selectFestivals } from '../festival.js';
 import { shortestPath } from '../public/station-route-math.js';
+import { buildRouteSteps } from '../public/route-steps.js';
 
 const event = (id, start, end) => ({
   contentid: String(id), title: `축제 ${id}`, eventstartdate: start,
@@ -39,4 +40,24 @@ test('3층 지도 데이터에서 연결된 시설 사이 경로를 계산한다
   assert.ok(route?.ids.length >= 2);
   assert.equal(route.ids[0], connected[0].nodeId);
   assert.equal(route.ids.at(-1), connected[1].nodeId);
+});
+
+test('서광장 엘리베이터와 매표소 양방향 단계가 경로 순서와 정확히 일치한다', async () => {
+  const graph = JSON.parse(await readFile(new URL('../public/daejeon-station-3f-graph.json', import.meta.url)));
+  const elevator = graph.places.find(place => place.nodeId === 'P43');
+  const ticket = graph.places.find(place => place.nodeId === 'P32');
+  for (const [from, to] of [[elevator, ticket], [ticket, elevator]]) {
+    const path = shortestPath(graph, from.nodeId, to.nodeId);
+    const steps = buildRouteSteps(graph, path, from, to);
+    assert.ok(steps.length >= 3);
+    assert.deepEqual(steps.map(step => step.number), steps.map((_, index) => index + 1));
+    assert.equal(steps[0].nodeIds[0], from.nodeId);
+    assert.equal(steps.at(-1).nodeIds.at(-1), to.nodeId);
+    assert.ok(steps[0].text.includes(from.name));
+    assert.ok(steps.at(-1).text.includes(to.name));
+    assert.ok(steps.every(step => !/약 \d+\s*(m|분)|좌회전|우회전/.test(step.text)));
+    const routeEdges = path.ids.slice(1).map((id, index) => `${path.ids[index]}→${id}`);
+    const stepEdges = steps.flatMap(step => step.nodeIds.slice(1).map((id, index) => `${step.nodeIds[index]}→${id}`));
+    assert.deepEqual(stepEdges, routeEdges);
+  }
 });
