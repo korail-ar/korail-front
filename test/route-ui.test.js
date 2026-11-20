@@ -1,105 +1,56 @@
-import test from 'node:test';
+﻿import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 
-test('상세 경로 선택, 지도 강조, 입력 변경 초기화가 화면에서 동작한다', async () => {
+test('원본 대전역 입체 지도와 시설 검색이 연결된다', async () => {
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
-  const gpsHtml = await readFile(new URL('../public/gps-test.html', import.meta.url), 'utf8');
-  assert.ok(html.includes('/gps-test.html'));
-  assert.ok(gpsHtml.includes('id="gpsOn"'));
-  assert.ok(gpsHtml.includes('/gps-diagnostics.js'));
-  assert.ok(!html.includes('id="gpsOn"'));
-  const graph = JSON.parse(await readFile(new URL('../public/daejeon-station-3f-graph.json', import.meta.url)));
-  const dom = new JSDOM(html, { url: 'http://localhost:5173/' });
-  const oldGlobals = Object.fromEntries(['window', 'document', 'navigator', 'fetch', 'requestAnimationFrame'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  assert.ok(html.includes('/assets/daejeon-map-source/styles.css'));
+  assert.ok(html.includes('/assets/daejeon-map-source/app.js'));
+  assert.ok(html.includes('data-floor="all"'));
+  assert.ok(html.includes('id="fromSearch"'));
+  assert.ok(html.includes('id="toSearch"'));
+  const dom = new JSDOM(html, { url:'http://localhost:5174/' });
+  const oldWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  const oldDocument = Object.getOwnPropertyDescriptor(globalThis, 'document');
+  const oldFetch = Object.getOwnPropertyDescriptor(globalThis, 'fetch');
   try {
-    globalThis.window = dom.window;
-    globalThis.document = dom.window.document;
-    Object.defineProperty(globalThis, 'navigator', { value: dom.window.navigator, configurable: true });
-    globalThis.requestAnimationFrame = callback => callback();
-    dom.window.HTMLElement.prototype.scrollTo = function (options) {
-      this.scrollLeft = options.left;
-      this.scrollTop = options.top;
-    };
-    globalThis.fetch = async url => ({
-      ok: true,
-      json: async () => url.includes('graph') ? graph : []
-    });
-    await import(`../public/station-route.js?ui-test=${Date.now()}`);
+    globalThis.window = dom.window; globalThis.document = dom.window.document;
+    let focused, drawn;
+    const graph = { weightUnit:'s', nodes:[{id:'A',x:10,y:10},{id:'B',x:50,y:50}], edges:[{id:'E',source:'A',target:'B',weight:60,bidirectional:true,estimatedDistanceM:72}], places:[{id:'3F-P01',x:10,y:10,candidateApproachNodeId:'A'},{id:'3F-P03',x:50,y:50,candidateApproachNodeId:'B'}] };
+    globalThis.fetch = async () => ({ok:true,json:async()=>graph});
+    window.daejeonPlaces = () => [{id:'3F-P01',name:'매표소',floor:3},{id:'2F-P02',name:'화장실',floor:2},{id:'3F-P03',name:'승강장',floor:3}];
+    window.daejeonFocusPlace = id => { focused=id; };
+    window.daejeonDrawRoute = (...args) => { drawn=args; };
+    await import(`../public/map-search.js?test=${Date.now()}`);
+    const input = document.getElementById('fromSearch');
+    input.value = '매표'; input.dispatchEvent(new dom.window.Event('input'));
+    const option = document.querySelector('#searchResults button');
+    assert.ok(option); assert.match(option.textContent,/매표소/);
+    assert.equal(document.getElementById('searchResults').classList.contains('open'), true);
+    option.click();
+    assert.equal(focused,'3F-P01');
+    assert.equal(input.value,'매표소');
+    assert.equal(input.getAttribute('aria-expanded'),'false');
+    const to = document.getElementById('toSearch');
+    to.value = '화장'; to.dispatchEvent(new dom.window.Event('input'));
+    assert.equal(document.getElementById('searchResults').classList.contains('open'), true);
+    document.querySelector('#searchResults button').click();
+    assert.equal(focused,'2F-P02');
+    document.getElementById('findRoute').click();
     await new Promise(resolve => setImmediate(resolve));
-    Object.defineProperty(document.getElementById('scene'), 'clientWidth', { value: 2048 });
-    Object.defineProperty(document.getElementById('viewport'), 'clientWidth', { value: 600 });
-    Object.defineProperty(document.getElementById('viewport'), 'clientHeight', { value: 400 });
-
-    assert.equal(document.querySelectorAll('.category-chip').length, 8);
-    assert.equal(document.querySelector('.demo-location circle:nth-child(2)').getAttribute('cx'), '855');
-    assert.ok(document.querySelector('.demo-location').getAttribute('aria-label').includes('시연 위치'));
-    const chip = label => [...document.querySelectorAll('.category-chip')].find(button => button.textContent.includes(label));
-    chip('화장실').click();
-    assert.ok([...document.querySelectorAll('.place-marker')].every(marker => marker.dataset.category === 'restroom'));
-    chip('전체').click();
-
-    const choose = (field, query, expected) => {
-      const input = document.getElementById(field);
-      input.value = query;
-      input.dispatchEvent(new dom.window.Event('input'));
-      const option = [...document.querySelectorAll(`#${field}Results button`)].find(button => button.textContent.includes(expected));
-      assert.ok(option, `검색 결과: ${expected}`);
-      option.click();
-    };
-    choose('from', '엘리 서문', '서광장 A');
-    document.querySelector('.place-marker[data-place-id="40"]').dispatchEvent(new dom.window.Event('click'));
-    assert.equal(document.getElementById('to').value, '디자인스킨');
-    choose('to', '매표', '매표소');
-    document.getElementById('route').click();
-
-    assert.equal(document.querySelector('[data-role="wayfinding-route"]').getAttribute('stroke'), '#ffdf3d');
-
-    assert.equal(document.getElementById('stepCount').textContent, '총 4단계');
-    assert.equal(document.querySelectorAll('.step-card').length, 4);
-    const mainChildren = [...document.querySelector('main').children];
-    assert.ok(mainChildren.indexOf(document.getElementById('routeSummary')) < mainChildren.indexOf(document.querySelector('.map-section')));
-    assert.ok(mainChildren.indexOf(document.querySelector('.map-section')) < mainChildren.indexOf(document.getElementById('routeDetails')));
-    assert.equal(mainChildren.at(-1).id, 'routeDetails');
-    assert.equal(document.getElementById('guideControls'), null);
-
-    document.querySelectorAll('.step-card')[0].click();
-    assert.equal(document.querySelector('.step-card[aria-current="step"] .step-number').textContent, '1');
-    document.querySelectorAll('.step-card')[1].click();
-    const active = document.querySelector('.step-card[aria-current="step"]');
-    assert.equal(active.querySelector('.step-number').textContent, '2');
-    const ids = active.dataset.nodeIds.split(',');
-    const nodes = new Map(graph.nodes.map(node => [node.id, node]));
-    const expectedPoints = ids.map(id => `${nodes.get(id).x},${nodes.get(id).y}`).join(' ');
-    assert.equal(document.querySelector('[data-role="selected-step"]').getAttribute('points'), expectedPoints);
-    const selectedNodes = ids.map(id => nodes.get(id));
-    const centerX = (Math.min(...selectedNodes.map(node => node.x)) + Math.max(...selectedNodes.map(node => node.x))) / 2;
-    assert.equal(document.getElementById('viewport').scrollLeft, centerX - 300);
-    document.querySelectorAll('.step-card')[0].click();
-    assert.equal(document.querySelector('.step-card[aria-current="step"] .step-number').textContent, '1');
-
-    const input = document.getElementById('to');
-    input.value = '엘리베이터';
-    input.dispatchEvent(new dom.window.Event('input'));
-    assert.equal(document.getElementById('routeDetails').hidden, true);
-    assert.equal(document.getElementById('routeSummary').hidden, true);
-    assert.equal(document.querySelector('.step-card[aria-current="step"]'), null);
-    assert.equal(document.querySelector('[data-role="selected-step"]'), null);
-
-    choose('to', '매표소', '매표소');
-    document.getElementById('route').click();
-    document.querySelectorAll('.step-card')[2].click();
-    const fromInput = document.getElementById('from');
-    fromInput.value = '서문';
-    fromInput.dispatchEvent(new dom.window.Event('input'));
-    assert.equal(document.getElementById('routeDetails').hidden, true);
-    assert.equal(document.querySelector('[data-role="selected-step"]'), null);
+    assert.match(document.getElementById('routeStatus').textContent,/연결 경로/);
+    to.value = '승강'; to.dispatchEvent(new dom.window.Event('input'));
+    document.querySelector('#searchResults button').click();
+    document.getElementById('findRoute').click();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(drawn[0],3);
+    assert.deepEqual(drawn[2].nodeIds,['A','B']);
+    assert.match(document.getElementById('routeStatus').textContent,/약 1분/);
   } finally {
-    for (const [key, descriptor] of Object.entries(oldGlobals)) {
-      if (descriptor === undefined) delete globalThis[key];
-      else Object.defineProperty(globalThis, key, descriptor);
-    }
+    oldWindow ? Object.defineProperty(globalThis,'window',oldWindow) : delete globalThis.window;
+    oldDocument ? Object.defineProperty(globalThis,'document',oldDocument) : delete globalThis.document;
+    oldFetch ? Object.defineProperty(globalThis,'fetch',oldFetch) : delete globalThis.fetch;
     dom.window.close();
   }
 });
