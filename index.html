@@ -1,47 +1,12 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10294a">
-  <title>대전역 3층 길찾기</title>
-  <link rel="stylesheet" href="/station-route.css">
-  <script type="module" src="/station-route.js"></script>
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>대전역 길안내 · 층별 지도</title><link rel="stylesheet" href="/assets/daejeon-map-source/styles.css"></head>
 <body>
-  <main>
-    <nav class="site-nav" aria-label="서비스 메뉴">
-      <a class="brand" href="/" aria-label="대전역 안내 홈">대전역 안내</a>
-      <div class="nav-links"><a href="/" aria-current="page">3층 길찾기</a><a href="/festivals.html">축제 정보</a></div>
-    </nav>
-
-    <header class="hero">
-      <span class="eyebrow">DAEJEON STATION · FLOOR 3</span>
-      <h1>대전역 3층 길찾기</h1>
-      <p>출발지와 목적지를 선택하면 지도와 단계별 경로를 보여드립니다.</p>
-    </header>
-
-    <section class="controls" aria-labelledby="searchTitle">
-      <div class="section-heading"><span class="section-index">01</span><div><h2 id="searchTitle">어디로 가시나요?</h2><p>시설 이름을 입력하고 검색 결과에서 선택해 주세요.</p></div></div>
-      <div class="fields">
-        <label><span class="field-label"><span class="field-dot start-dot"></span>출발지</span><input id="from" autocomplete="off" placeholder="예: 서광장 엘리베이터" aria-controls="fromResults"><span id="fromResults" class="results"></span></label>
-        <label><span class="field-label"><span class="field-dot end-dot"></span>목적지</span><input id="to" autocomplete="off" placeholder="예: 매표소" aria-controls="toResults"><span id="toResults" class="results"></span></label>
-      </div>
-      <div class="search-actions"><p id="routeStatus" role="status">시설을 검색해 선택하세요.</p><button id="route" class="primary">경로 보기 <span aria-hidden="true">→</span></button></div>
-      <div class="category-filter"><div class="category-heading"><strong>시설 종류</strong><span id="categoryStatus">지도 아이콘을 선택하면 목적지에 입력됩니다.</span></div><div id="categoryChips" class="category-chips" role="group" aria-label="시설 종류 필터"></div></div>
-    </section>
-
-    <section id="routeSummary" class="route-summary" hidden aria-label="선택한 경로"><span>선택한 경로</span><strong id="routeSummaryText"></strong></section>
-
-    <section class="map-section" aria-labelledby="mapTitle">
-      <div class="map-head"><div><span class="section-index">02</span><div><h2 id="mapTitle">3층 지도</h2><p>경로를 선택하면 지도 위에 표시됩니다.</p></div></div><div class="map-tools"><button id="zoomOut" aria-label="지도 축소">−</button><button id="zoomIn" aria-label="지도 확대">＋</button><button id="zoomReset">원래 크기</button></div></div>
-      <div id="viewport" class="viewport"><div id="scene" class="scene"><svg id="map" viewBox="0 0 2048 1386" role="img" aria-label="대전역 3층 실내 경로"><image href="/assets/daejeon_3d_F3(5).png" x="0" y="0" width="2048" height="1386"/><g id="placeLayer"></g><g id="routeLayer"></g><g id="demoLayer"></g></svg></div></div>
-      <p class="map-note"><span class="legend-dot start-dot"></span> 출발 <span class="legend-dot end-dot"></span> 도착 <span class="legend-line"></span> 안내 경로 <span class="legend-dot demo-dot"></span> 시연 위치</p>
-    </section>
-
-    <section id="routeDetails" class="route-details" hidden aria-labelledby="detailTitle"><div class="detail-heading"><div class="section-heading"><span class="section-index">03</span><div><h2 id="detailTitle">상세 경로</h2><p>단계를 누르면 지도에서 해당 구간을 볼 수 있습니다.</p></div></div><span id="stepCount"></span></div><div id="stepCards" class="step-cards"></div></section>
-
-  </main>
-  <footer class="site-footer"><a href="/gps-test.html">GPS 기능 테스트</a></footer>
-</body>
-</html>
+<a class="skip" href="#mapArea">지도와 길안내로 바로가기</a>
+<header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">▣</span><div><h1>대전역 <span>길안내</span></h1><small>DAEJEON STATION</small></div></div><nav aria-label="주요 메뉴"><a class="current" href="/">길찾기</a></nav><div class="access-tools"><button id="largeText" type="button" aria-pressed="false">큰 글씨</button><button id="contrast" type="button" aria-pressed="false">고대비</button></div></header>
+<div class="route-toolbar"><div class="search-box" aria-label="대전역 경로 검색"><label for="fromSearch">출발</label><input id="fromSearch" type="search" autocomplete="off" placeholder="출발 시설 검색" aria-controls="searchResults" aria-expanded="false"><span class="route-arrow" aria-hidden="true">→</span><label for="toSearch">도착</label><input id="toSearch" type="search" autocomplete="off" placeholder="도착 시설 검색" aria-controls="searchResults" aria-expanded="false"><div id="searchResults" class="search-results" role="listbox"></div><label class="accessible-choice"><input id="accessibleRoute" type="checkbox"> 승강기 우선</label><button id="findRoute" class="find-route" type="button">경로 찾기</button></div></div>
+<main class="workspace" id="mapArea">
+<aside class="floor-panel" aria-labelledby="floorTitle"><h2 id="floorTitle">경로 층</h2><p class="panel-note">층을 선택하면 현재 보기에서 해당 층을 보여줍니다.</p><nav class="controls" aria-label="층 선택"><button class="active" data-floor="all" aria-pressed="true">전체 층</button><button data-floor="1">1F</button><button data-floor="2">2F</button><button data-floor="3">3F</button><button data-floor="4">4F</button></nav><section class="connections" aria-labelledby="connectionTitle"><h3 id="connectionTitle">층을 잇는 지점</h3><p class="connection-caveat">연결 후보 · 실제 이용 가능 여부는 현장 확인이 필요합니다.</p><div id="connectionList"></div></section></aside>
+<section class="map-panel" aria-labelledby="mapTitle"><div class="map-heading"><div><small id="mapOverline">건물 전체 · 입체 컷어웨이</small><h2 id="mapTitle">대전역 층별 지도</h2></div><div class="map-mode" role="group" aria-label="지도 보기"><button id="flatMode" type="button" aria-pressed="false">평면지도</button><button id="stackMode" type="button" aria-pressed="true">전체보기</button></div></div><div class="map-canvas"><div id="scene" tabindex="0" aria-label="지도. 방향키로 회전하거나 이동하고 더하기와 빼기로 확대·축소할 수 있습니다." role="group"><div id="pivot"><div id="building"></div></div></div><div id="labels" aria-hidden="true"></div><div class="map-controls"><button id="out" aria-label="축소">−</button><span id="zoom">100%</span><button id="in" aria-label="확대">＋</button><button id="left" aria-label="왼쪽 회전">↶</button><button id="right" aria-label="오른쪽 회전">↷</button><button id="reset" type="button">전체로 복귀</button></div></div><div class="map-footer"><span>드래그: 회전·이동 · 휠/핀치: 확대 · 방향키/+/−: 키보드 조작</span><span>컷어웨이는 개념도 · 실제 좌표 확인 대기</span></div></section>
+<aside class="journey" aria-labelledby="journeyTitle"><h2 id="journeyTitle">이동 안내</h2><p id="routeStatus" class="route-status" role="status">출발지와 목적지를 선택해 주세요.</p><div id="routeStages" class="route-stages" aria-label="층별 이동 단계"></div><p class="route-caveat">층간 연결은 도면 기반 후보입니다. 실제 이동 전 현장 표지와 시설 운영 여부를 확인하세요.</p></aside>
+</main><script src="/assets/daejeon-map-source/app.js"></script><script type="module" src="/map-search.js"></script></body></html>
