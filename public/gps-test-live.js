@@ -6,7 +6,7 @@ import { nearestReachablePlace, routeToPlace, sessionSummary, sessionCsv } from 
 
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
-let settings, points, graph, stopWatch, lastSample, smoothed, pendingJump, lastRaw, lastPoint, correction, manualAnchor, match, route, destination, walking = false, streak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0;
+let settings, points, graph, stopWatch, lastSample, smoothed, pendingJump, lastRaw, lastPoint, correction, manualAnchor, match, route, destination, walking = false, streak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0, phase = 'unmarked';
 let rows = [], counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }, lastAccepted;
 const floorConfig = () => settings.floors.find(item => item.floor === Number($('floor').value));
 const note = value => { $('status').textContent = value; };
@@ -53,9 +53,9 @@ function routeForCurrent() {
   previousProgress = null; streak = 0;
   return Boolean(route);
 }
-function accept(sample) {
+function accept(sample, record = true) {
   const wrapped = { coords: sample, timestamp: sample.timestamp }, invalid = validPosition(wrapped);
-  if (invalid) { note(invalid); counters.uncertain++; rows.push({ ...sample, floor: Number($('floor').value), state: invalid, source: 'browser-geolocation' }); return; }
+  if (invalid) { note(invalid); if (record) { counters.uncertain++; rows.push({ ...sample, eventType: 'sample', phase, floor: Number($('floor').value), state: invalid, source: 'browser-geolocation' }); } return; }
   if (smoothed && sample.timestamp - smoothed.timestamp > 15000) smoothed = null;
   const nextSmoothed = smoothPosition(smoothed, wrapped);
   if (smoothed && nextSmoothed === smoothed) {
@@ -76,23 +76,27 @@ function accept(sample) {
   const [a, b, , d, e] = fit.p, trace = a * a + b * b + d * d + e * e, determinant = a * e - b * d;
   const errorPx = sample.accuracy * Math.sqrt((trace + Math.sqrt(Math.max(0, trace * trace - 4 * determinant * determinant))) / 2);
   const possible = !point.limited && sample.accuracy <= 30;
-  const candidate = possible ? matchEdge(graph, point, Math.max(12, errorPx), match, true) || (match && edgeCandidates(graph, point, Math.max(12, errorPx), true).find(item => item.edge.id === match.edge.id)) : null;
+  const nearby = possible ? edgeCandidates(graph, point, Math.max(12, errorPx), true) : [];
+  const nearestEdge = edgeCandidates(graph, point, Infinity, true)[0];
+  const candidate = possible ? matchEdge(graph, point, Math.max(12, errorPx), match, true) || (match && nearby.find(item => item.edge.id === match.edge.id)) : null;
   const priorMatch = match;
   if (candidate) match = candidate;
-  const activeMatch = candidate || (correction ? match : null);
+  const activeMatch = candidate;
   const uncertain = !possible || !activeMatch || (!verified && !correction);
-  if (uncertain) counters.uncertain++;
+  if (uncertain && record) counters.uncertain++;
   const accepted = activeMatch && !uncertain ? { x: activeMatch.x, y: activeMatch.y } : null;
-  if (accepted && lastAccepted) {
+  if (record && accepted && lastAccepted) {
     const movement = Math.hypot(...localMeters(sample.latitude, sample.longitude, lastAccepted));
     if (movement > Math.max(3, sample.accuracy, lastAccepted.accuracy) && movement < Math.max(30, sample.accuracy + lastAccepted.accuracy + 10)) counters.distance += movement;
   }
-  if (accepted) lastAccepted = { lat: sample.latitude, lng: sample.longitude, accuracy: sample.accuracy };
+  if (record && accepted) lastAccepted = { lat: sample.latitude, lng: sample.longitude, accuracy: sample.accuracy };
   lastPoint = point;
   drawPosition(point, lastRaw, sample.accuracy, fit, uncertain);
   let state = uncertain ? '위치 확인 필요' : '양호';
-  if (walking && route && !uncertain) {
+  let routeDistanceSvg = route ? routeProjection(route.points, point).distance : null;
+  if (walking && route && !uncertain && record) {
     const projected = routeProjection(route.points, accepted);
+    routeDistanceSvg = projected.distance;
     const current = { ...projected, ...accepted, timestamp: sample.timestamp };
     const decision = navigationDecision(previousProgress, current, errorPx, streak, true);
     streak = decision.offRoute; previousProgress = current;
@@ -102,11 +106,12 @@ function accept(sample) {
     if (decision.reroute && priorMatch && activeMatch.edge.id === priorMatch.edge.id) state = '위치 확인 필요';
     else if (decision.reroute && Date.now() - lastReroute > 15000 && activeMatch && routeForCurrent()) { counters.reroutes++; lastReroute = Date.now(); state = '경로 재탐색'; }
   }
-  note(state);
+  const uncertaintyReason = point.limited ? '도면 밖 추정' : sample.accuracy > 30 ? '측정 오차 30m 초과' : !nearby.length ? '근처 통로 없음' : !candidate ? '통로 후보가 모호함' : !verified && !correction ? '지도 보정 미완료' : '';
+  note(uncertain ? `위치 확인 필요 · ${uncertaintyReason}` : state);
   const rawChange = previousSample ? Math.hypot(...localMeters(sample.latitude, sample.longitude, { lat: previousSample.latitude, lng: previousSample.longitude })) : null;
   $('details').textContent = `정확도 ±${Math.round(sample.accuracy)}m · ${config.floor}층 · 새 수신 ${new Date(sample.timestamp).toLocaleTimeString('ko-KR')} · 좌표 변화 ${rawChange == null ? '첫 측정' : `${rawChange.toFixed(1)}m (측정값)`}`;
   $('advanced').textContent = `mapId: ${config.mapId} · 보정: ${verified ? '검증 설정' : '미검증 추정'} · 통로: ${activeMatch?.edge.id || '불명확'} · 위도: ${sample.latitude.toFixed(7)} · 경도: ${sample.longitude.toFixed(7)}`;
-  rows.push({ ...sample, floor: config.floor, mapId: config.mapId, x: point.x, y: point.y, matchedX: activeMatch?.x, matchedY: activeMatch?.y, edgeId: activeMatch?.edge.id, state, source: 'browser-geolocation' });
+  if (record) rows.push({ ...sample, eventType: 'sample', phase, floor: config.floor, mapId: config.mapId, rawX, rawY, x: point.x, y: point.y, correctionDx: correction?.dx, correctionDy: correction?.dy, positionBasis: correction ? 'manual-offset' : verified ? 'validated-affine' : 'candidate-preview', boundaryLimited: point.limited, matchedX: activeMatch?.x, matchedY: activeMatch?.y, edgeId: activeMatch?.edge.id, nearestEdgeId: nearestEdge?.edge.id, nearestEdgeDistanceSvg: nearestEdge?.distance, nearbyEdgeCount: nearby.length, matchReason: point.limited ? 'outside-viewBox' : sample.accuracy > 30 ? 'accuracy-over-30m' : !nearby.length ? 'no-nearby-edge' : !candidate ? 'ambiguous-edges' : !verified && !correction ? 'uncalibrated-map' : 'matched', routeActive: walking && Boolean(route), destinationId: destination?.id, routeEdgeIds: route?.route.edgeIds.join('|'), routeDistanceSvg, offRouteStreak: streak, state, source: 'browser-geolocation' });
   if (!destination && activeMatch) recommend();
 }
 async function loadFloor() {
@@ -143,7 +148,7 @@ try {
 } catch (error) { note(`초기화 실패: ${error.message}`); }
 $('measure').onclick = () => {
   if (stopWatch) return;
-  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = pendingJump = null;
+  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = pendingJump = null; phase = 'unmarked'; $('phase').value = phase;
   $('summary').textContent = '측정 중'; $('csv').disabled = true;
   try {
     stopWatch = browserLocationProvider().subscribe(accept, error => { counters.uncertain++; note(error.code === 1 ? '위치 권한이 거부되었습니다' : error.code === 3 ? '위치 수신 시간 초과' : '위치 수신 실패'); });
@@ -161,16 +166,18 @@ $('map').onclick = event => {
   if (!matrix) { note('지도 위치를 읽을 수 없습니다'); return; }
   const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
   const fixed = constrainToFloor(p, floorConfig().viewBox);
-  manualAnchor = fixed;
   match = edgeCandidates(graph, fixed, 24, true)[0] || null;
   if (!match) { note('근처 통로를 찾을 수 없습니다. 지도에서 통로를 눌러 주세요'); return; }
-  if (lastRaw && lastSample) { correction = { dx: fixed.x - lastRaw.x, dy: fixed.y - lastRaw.y }; accept(lastSample); }
+  manualAnchor = fixed;
+  rows.push({ eventType: 'manual-anchor', timestamp: Date.now(), phase, floor: floorConfig().floor, mapId: floorConfig().mapId, x: fixed.x, y: fixed.y, edgeId: match.edge.id, state: '출발점 수동 지정', source: 'user' });
+  if (lastRaw && lastSample) { correction = { dx: fixed.x - lastRaw.x, dy: fixed.y - lastRaw.y }; accept(lastSample, false); }
   else {
     $('positionLayer').replaceChildren(svg('circle', { cx: match.x, cy: match.y, r: 11, fill: '#7545ae', stroke: '#fff', 'stroke-width': 3 }));
   }
   recommend();
   note('출발 위치 지정됨 · 목적지를 선택하고 이동 테스트를 시작하세요');
 };
+$('phase').onchange = () => { phase = $('phase').value; rows.push({ eventType: 'phase-change', timestamp: Date.now(), phase, floor: floorConfig()?.floor, mapId: floorConfig()?.mapId, state: '현장 구간 표시', source: 'user' }); };
 for (const [id, factor] of [['zoomIn', 1.3], ['zoomOut', 1 / 1.3]]) $(id).onclick = () => { zoom = Math.max(1, Math.min(4, zoom * factor)); $('scene').style.width = `${zoom * 100}%`; };
 $('rotate').onclick = () => { rotation = (rotation + 90) % 360; $('map').style.transform = `rotate(${rotation}deg)`; };
 $('csv').onclick = () => { const url = URL.createObjectURL(new Blob([sessionCsv(rows)], { type: 'text/csv;charset=utf-8' })); const link = document.createElement('a'); link.href = url; link.download = 'daejeon-gps-test.csv'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };

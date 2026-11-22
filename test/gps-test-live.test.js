@@ -43,6 +43,8 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
     const second = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
     assert.notEqual(second, first);
     assert.match($('details').textContent, /좌표 변화 .*m \(측정값\)/);
+    $('stop').click();
+    assert.match($('summary').textContent, /수신 2건/);
   } finally {
     globalThis.setInterval = interval;
     for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key];

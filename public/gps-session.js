@@ -28,9 +28,10 @@ export function routeToPlace(graph, match, place) {
   return route.reachable ? { route, points: route.nodeIds.map(id => augmented.nodes.find(n => n.id === id)) } : null;
 }
 export function sessionSummary(rows, counters) {
-  const good = rows.filter(r => Number.isFinite(r.accuracy));
+  const samples = rows.filter(r => r.eventType === 'sample' || !r.eventType);
+  const good = samples.filter(r => Number.isFinite(r.accuracy));
   return {
-    samples: rows.length,
+    samples: samples.length,
     meanAccuracy: good.length ? good.reduce((n, r) => n + r.accuracy, 0) / good.length : null,
     estimatedDistance: counters.distance || 0,
     offRoute: counters.offRoute || 0,
@@ -39,7 +40,7 @@ export function sessionSummary(rows, counters) {
   };
 }
 export function sessionCsv(rows) {
-  const keys = ['timestamp', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'x', 'y', 'matchedX', 'matchedY', 'edgeId', 'state', 'source'];
+  const keys = ['eventType', 'timestamp', 'phase', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'rawX', 'rawY', 'x', 'y', 'correctionDx', 'correctionDy', 'positionBasis', 'boundaryLimited', 'matchedX', 'matchedY', 'edgeId', 'nearestEdgeId', 'nearestEdgeDistanceSvg', 'nearbyEdgeCount', 'matchReason', 'routeActive', 'destinationId', 'routeEdgeIds', 'routeDistanceSvg', 'offRouteStreak', 'state', 'source'];
   const cell = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
   return [keys.join(','), ...rows.map(row => keys.map(key => cell(row[key])).join(','))].join('\r\n');
 }
