@@ -1,6 +1,6 @@
 import { browserLocationProvider } from './location-provider.js';
 import { calibration, candidatePreview, smoothPosition, validPosition, matchEdge, edgeCandidates } from './gps-location.js';
-import { constrainToFloor, routeProjection, navigationDecision } from './gps-navigation.js';
+import { constrainToFloor, routeProjection, navigationDecision, routeEdgeRelation } from './gps-navigation.js';
 import { project, localMeters } from './station-route-math.js';
 import { nearestReachablePlace, routeToPlace, sessionSummary, sessionCsv } from './gps-session.js';
 import { createStepDetector, routePointAtMeters } from './step-assist.js';
@@ -9,7 +9,7 @@ const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
 let settings, points, graph, stopWatch, lastSample, smoothed, pendingJump, lastRaw, lastPoint, correction, manualAnchor, match, route, destination, walking = false, streak = 0, arrivalStreak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0, phase = 'unmarked';
 let rows = [], counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }, lastAccepted, sessionEnded = false;
-let stopSteps, stepCount = 0, stepMeters = 0, stepRequest = 0, motionTimeout;
+let stopSteps, stepCount = 0, stepMeters = 0, stepRequest = 0, motionTimeout, stepBlocked = false;
 const floorConfig = () => settings.floors.find(item => item.floor === Number($('floor').value));
 const note = value => { $('status').textContent = value; };
 function chooseDestination(place) {
@@ -54,7 +54,7 @@ function routeForCurrent(reason = 'start') {
   route = routeToPlace(graph, match, destination);
   drawRoute();
   previousProgress = null; streak = arrivalStreak = 0;
-  stepMeters = 0; $('stepLayer').replaceChildren();
+  stepMeters = 0; stepBlocked = false; $('stepLayer').replaceChildren();
   if (stopSteps) $('stepStatus').textContent = `걸음 추정 ${stepCount}걸음 · 새 출발점부터 0m`;
   rows.push({ eventType: 'route-change', timestamp: Date.now(), phase, floor: floorConfig().floor, mapId: floorConfig().mapId, routeChangeReason: reason, previousRouteEdgeIds: previousEdges, routeEdgeIds: route?.route.edgeIds.join('|'), destinationId: destination.id, state: route ? '시험 경로 계산' : '경로 없음', source: 'routing' });
   return Boolean(route);
@@ -103,7 +103,8 @@ function accept(sample, record = true) {
   if (manualAnchor && !correction) correction = { dx: manualAnchor.x - rawX, dy: manualAnchor.y - rawY };
   const point = constrainToFloor({ x: rawX + (correction?.dx || 0), y: rawY + (correction?.dy || 0) }, config.viewBox);
   const [a, b, , d, e] = fit.p, trace = a * a + b * b + d * d + e * e, determinant = a * e - b * d;
-  const errorPx = sample.accuracy * Math.sqrt((trace + Math.sqrt(Math.max(0, trace * trace - 4 * determinant * determinant))) / 2);
+  const maxScale = Math.sqrt((trace + Math.sqrt(Math.max(0, trace * trace - 4 * determinant * determinant))) / 2);
+  const errorPx = sample.accuracy * maxScale;
   const possible = !point.limited && sample.accuracy <= 30;
   const nearby = possible ? edgeCandidates(graph, point, Math.max(12, errorPx), true) : [];
   const nearestEdge = edgeCandidates(graph, point, Infinity, true)[0];
@@ -124,16 +125,17 @@ function accept(sample, record = true) {
   let state = uncertain ? '위치 확인 필요' : '양호';
   const activeRouteEdgeIds = route?.route.edgeIds.join('|');
   let routeDistanceSvg = route ? routeProjection(route.points, point).distance : null;
-  let onRouteEdge = null, decisionReason = walking && route ? 'position-uncertain' : 'route-inactive', direction = '방향 판단 보류';
+  let onRouteEdge = null, routeRelation = null, decisionReason = walking && route ? 'position-uncertain' : 'route-inactive', direction = '방향 판단 보류';
   if (walking && route && !uncertain && record) {
     const projected = routeProjection(route.points, accepted);
     routeDistanceSvg = projected.distance;
     const current = { ...projected, ...accepted, timestamp: sample.timestamp };
-    const decision = navigationDecision(previousProgress, current, errorPx, streak, true);
-    onRouteEdge = route.route.edgeIds.includes(activeMatch.edge.id);
+    routeRelation = routeEdgeRelation(graph, route, activeMatch);
+    const decision = navigationDecision(previousProgress, current, errorPx, streak, routeRelation === 'separate-geometry');
+    onRouteEdge = routeRelation === 'exact-edge';
     direction = decision.direction;
     streak = decision.offRoute; previousProgress = current;
-    decisionReason = onRouteEdge ? 'matched-route-edge' : 'matched-other-edge';
+    decisionReason = routeRelation;
     state = streak ? '경로 이탈 의심' : !onRouteEdge ? '위치 확인 필요' : direction === '경로 방향 이동 추정' ? '경로 방향 이동 추정' : '경로 위 추정 · 이동 판단 보류';
     if (streak === 1) counters.offRoute++;
     const verifiedArrival = verified && graph.routableForPublicUse === true && destination.entranceVerified === true;
@@ -147,11 +149,11 @@ function accept(sample, record = true) {
     decisionReason = 'position-uncertain-reset';
   }
   const uncertaintyReason = point.limited ? '도면 밖 추정' : sample.accuracy > 30 ? '측정 오차 30m 초과' : !nearby.length ? '근처 통로 없음' : !candidate ? '통로 후보가 모호함' : !verified && !correction ? '지도 보정 미완료' : '';
-  note(uncertain ? `위치 확인 필요 · ${uncertaintyReason}` : state);
+  note(uncertain ? `위치 확인 필요 · ${uncertaintyReason}` : routeRelation === 'overlapping-geometry' ? '위치 확인 필요 · 경로와 도면 선이 겹칩니다' : routeRelation === 'crossing-geometry' ? '위치 확인 필요 · 경로 선이 교차합니다' : state);
   const rawChange = previousSample ? Math.hypot(...localMeters(sample.latitude, sample.longitude, { lat: previousSample.latitude, lng: previousSample.longitude })) : null;
   $('details').textContent = `정확도 ±${Math.round(sample.accuracy)}m · ${config.floor}층 · 새 수신 ${new Date(sample.timestamp).toLocaleTimeString('ko-KR')} · 좌표 변화 ${rawChange == null ? '첫 측정' : `${rawChange.toFixed(1)}m (측정값)`}`;
   $('advanced').textContent = `mapId: ${config.mapId} · 보정: ${verified ? '검증 설정' : '미검증 추정'} · 통로: ${activeMatch?.edge.id || '불명확'} · 위도: ${sample.latitude.toFixed(7)} · 경도: ${sample.longitude.toFixed(7)}`;
-  if (record) rows.push({ ...sample, eventType: 'sample', phase, floor: config.floor, mapId: config.mapId, rawX, rawY, x: point.x, y: point.y, correctionDx: correction?.dx, correctionDy: correction?.dy, positionBasis: correction ? 'manual-offset' : verified ? 'validated-affine' : 'candidate-preview', boundaryLimited: point.limited, matchedX: activeMatch?.x, matchedY: activeMatch?.y, edgeId: activeMatch?.edge.id, nearestEdgeId: nearestEdge?.edge.id, nearestEdgeDistanceSvg: nearestEdge?.distance, nearbyEdgeCount: nearby.length, matchReason: point.limited ? 'outside-viewBox' : sample.accuracy > 30 ? 'accuracy-over-30m' : !nearby.length ? 'no-nearby-edge' : !candidate ? 'ambiguous-edges' : !verified && !correction ? 'uncalibrated-map' : 'matched', routeActive: walking && Boolean(route), destinationId: destination?.id, routeEdgeIds: activeRouteEdgeIds, routeDistanceSvg, onRouteEdge, direction, decisionReason, offRouteThresholdSvg: Math.max(30, errorPx * 2), offRouteStreak: streak, arrivalStreak, sampleDisposition: 'processed', state, source: 'browser-geolocation' });
+  if (record) rows.push({ ...sample, eventType: 'sample', phase, floor: config.floor, mapId: config.mapId, rawX, rawY, x: point.x, y: point.y, correctionDx: correction?.dx, correctionDy: correction?.dy, positionBasis: correction ? 'manual-offset' : verified ? 'validated-affine' : 'candidate-preview', boundaryLimited: point.limited, matchedX: activeMatch?.x, matchedY: activeMatch?.y, edgeId: activeMatch?.edge.id, nearestEdgeId: nearestEdge?.edge.id, nearestEdgeDistanceSvg: nearestEdge?.distance, nearbyEdgeCount: nearby.length, matchReason: point.limited ? 'outside-viewBox' : sample.accuracy > 30 ? 'accuracy-over-30m' : !nearby.length ? 'no-nearby-edge' : !candidate ? 'ambiguous-edges' : !verified && !correction ? 'uncalibrated-map' : 'matched', routeActive: walking && Boolean(route), destinationId: destination?.id, routeEdgeIds: activeRouteEdgeIds, routeDistanceSvg, routeDistanceMApprox: routeDistanceSvg == null ? null : routeDistanceSvg / Math.max(1e-9, maxScale), onRouteEdge, routeRelation, direction, decisionReason, offRouteThresholdSvg: Math.max(30, errorPx * 2), offRouteStreak: streak, arrivalStreak, sampleDisposition: 'processed', state, source: 'browser-geolocation' });
   if (!destination && activeMatch) recommend();
 }
 async function loadFloor() {
@@ -219,13 +221,18 @@ $('map').onclick = event => {
     $('positionLayer').replaceChildren(svg('circle', { cx: match.x, cy: match.y, r: 11, fill: '#7545ae', stroke: '#fff', 'stroke-width': 3 }));
   }
   recommend();
-  if (walking && destination) routeForCurrent('manual-anchor');
+  if (walking && route) {
+    previousProgress = null; streak = arrivalStreak = 0;
+    stopStepAssist(); stepMeters = 0; stepBlocked = true; $('stepLayer').replaceChildren();
+    $('stepStatus').textContent = '수동 위치 지정됨 · 기준 경로 유지 · 걸음 보조는 이 구간에서 보류';
+  }
   note('출발 위치 지정됨 · 목적지를 선택하고 이동 테스트를 시작하세요');
 };
 $('phase').onchange = () => { phase = $('phase').value; rows.push({ eventType: 'phase-change', timestamp: Date.now(), phase, floor: floorConfig()?.floor, mapId: floorConfig()?.mapId, state: '현장 구간 표시', source: 'user' }); };
 $('stepsOn').onclick = async () => {
   if (stopSteps) { stopStepAssist(); $('stepStatus').textContent = '걸음 보조 꺼짐'; return; }
   if (!walking || !route) { $('stepStatus').textContent = '먼저 이동 테스트를 시작하세요'; return; }
+  if (stepBlocked) { $('stepStatus').textContent = '이동 중 수동 지정 후 걸음 보조는 보류합니다. 새 이동 테스트를 시작하세요'; return; }
   const stride = Number($('stride').value);
   if (!Number.isFinite(stride) || stride < 0.3 || stride > 1.2) { $('stepStatus').textContent = '보폭은 0.3~1.2m로 입력하세요'; return; }
   if (!globalThis.isSecureContext || !('DeviceMotionEvent' in globalThis)) { $('stepStatus').textContent = '이 브라우저에서는 모션 센서를 사용할 수 없습니다'; return; }

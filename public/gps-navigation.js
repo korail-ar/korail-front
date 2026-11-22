@@ -31,3 +31,24 @@ export function navigationDecision(previous, current, uncertaintyPx, streak, can
   }
   return { direction, offRoute, reroute: offRoute >= 3 };
 }
+
+export function routeEdgeRelation(graph, route, match) {
+  if (!route || !match) return 'unknown';
+  if (route.route.edgeIds.includes(match.edge.id)) return 'exact-edge';
+  const nodes = new Map(graph.nodes.map(node => [node.id, node]));
+  const a = nodes.get(match.edge.source), b = nodes.get(match.edge.target);
+  if (!a || !b) return 'unknown';
+  const ux = b.x - a.x, uy = b.y - a.y, ul = Math.hypot(ux, uy);
+  if (!ul) return 'unknown';
+  let crossing = false;
+  for (let i = 1; i < route.points.length; i++) {
+    const from = route.points[i - 1], to = route.points[i], vx = to.x - from.x, vy = to.y - from.y, vl = Math.hypot(vx, vy);
+    if (!vl) continue;
+    const t = Math.max(0, Math.min(1, ((match.x - from.x) * vx + (match.y - from.y) * vy) / (vl * vl)));
+    const distance = Math.hypot(match.x - from.x - t * vx, match.y - from.y - t * vy);
+    if (distance > 2) continue;
+    if (Math.abs(ux * vy - uy * vx) / (ul * vl) < 0.09) return 'overlapping-geometry';
+    crossing = true;
+  }
+  return crossing ? 'crossing-geometry' : 'separate-geometry';
+}

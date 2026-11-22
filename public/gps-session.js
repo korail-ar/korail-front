@@ -45,7 +45,7 @@ export function sessionSummary(rows, counters) {
   };
 }
 export function sessionCsv(rows) {
-  const keys = ['eventType', 'timestamp', 'phase', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'rawX', 'rawY', 'x', 'y', 'correctionDx', 'correctionDy', 'positionBasis', 'boundaryLimited', 'matchedX', 'matchedY', 'edgeId', 'nearestEdgeId', 'nearestEdgeDistanceSvg', 'nearbyEdgeCount', 'matchReason', 'routeActive', 'destinationId', 'previousRouteEdgeIds', 'routeEdgeIds', 'routeChangeReason', 'routeDistanceSvg', 'onRouteEdge', 'direction', 'decisionReason', 'offRouteThresholdSvg', 'offRouteStreak', 'arrivalStreak', 'sampleDisposition', 'stepCount', 'strideM', 'stepDistanceM', 'stepX', 'stepY', 'state', 'source'];
+  const keys = ['eventType', 'timestamp', 'phase', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'rawX', 'rawY', 'x', 'y', 'correctionDx', 'correctionDy', 'positionBasis', 'boundaryLimited', 'matchedX', 'matchedY', 'edgeId', 'nearestEdgeId', 'nearestEdgeDistanceSvg', 'nearbyEdgeCount', 'matchReason', 'routeActive', 'destinationId', 'previousRouteEdgeIds', 'routeEdgeIds', 'routeChangeReason', 'routeDistanceSvg', 'routeDistanceMApprox', 'onRouteEdge', 'routeRelation', 'direction', 'decisionReason', 'offRouteThresholdSvg', 'offRouteStreak', 'arrivalStreak', 'sampleDisposition', 'stepCount', 'strideM', 'stepDistanceM', 'stepX', 'stepY', 'state', 'source'];
   const cell = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
   return [keys.join(','), ...rows.map(row => keys.map(key => cell(row[key])).join(','))].join('\r\n');
 }
