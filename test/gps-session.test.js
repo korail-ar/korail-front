@@ -28,7 +28,7 @@ test('일방통행 엣지 중간에서 비용 단위를 유지하고 도달 가�
 test('CSV는 필드 구분 문자를 이스케이프한다', () => {
   assert.match(sessionCsv([{ state: '위치, "확인"' }]), /"위치, ""확인"""/);
   assert.match(sessionCsv([]).split('\r\n')[0], /rawX,rawY,x,y,correctionDx,correctionDy,positionBasis/);
-  assert.match(sessionCsv([]).split('\r\n')[0], /matchReason,routeActive,destinationId,routeEdgeIds,routeDistanceSvg/);
+  assert.match(sessionCsv([]).split('\r\n')[0], /matchReason,routeActive,destinationId,previousRouteEdgeIds,routeEdgeIds,routeChangeReason,routeDistanceSvg/);
   assert.match(sessionCsv([]).split('\r\n')[0], /stepCount,strideM,stepDistanceM,stepX,stepY/);
   assert.equal(sessionSummary([{ eventType: 'manual-anchor' }, { eventType: 'sample', accuracy: 20 }], {}).samples, 1);
 });
