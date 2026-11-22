@@ -7,6 +7,10 @@ export default defineConfig(({ mode }) => {
     plugins: [{
       name: 'local-festival-api',
       configureServer(server) {
+        server.middlewares.use('/gps-test', (request, response, next) => {
+          if (request.url === '/' || request.url === '') { response.writeHead(302, { Location: '/gps-test/index.html' }).end(); return; }
+          next();
+        });
         server.middlewares.use('/api/festivals', async (request, response) => {
           if (request.method !== 'GET') {
             response.writeHead(405).end();
