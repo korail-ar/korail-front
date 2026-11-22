@@ -9,9 +9,10 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
   const points = JSON.parse(await readFile(new URL('../public/gps-points.json', import.meta.url)));
   const graph = { floor: 3, mapId: 'daejeon-station-3F-map.svg', weightUnit: 's', nodes: [{ id: 'A', x: 100, y: 100 }, { id: 'B', x: 200, y: 100 }], edges: [{ id: 'AB', source: 'A', target: 'B', weight: 10, selectedDistanceM: 12, bidirectional: true, verified: false }], places: [{ id: 'P1', name: '화장실', nodeId: 'A', x: 100, y: 100 }, { id: 'P2', name: '탐앤탐스', nodeId: 'B', x: 200, y: 100 }] };
   const dom = new JSDOM(html, { url: 'https://example.test/gps-test' });
-  const keys = ['window', 'document', 'navigator', 'fetch', 'isSecureContext', 'DOMPoint', 'Option'];
+  const keys = ['window', 'document', 'navigator', 'fetch', 'isSecureContext', 'DOMPoint', 'Option', 'DeviceMotionEvent'];
   const originals = Object.fromEntries(keys.map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   const interval = globalThis.setInterval;
+  const originalNow = Date.now;
   let positionCallback;
   try {
     Object.defineProperty(globalThis, 'window', { configurable: true, value: dom.window });
@@ -20,6 +21,7 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
     Object.defineProperty(globalThis, 'isSecureContext', { configurable: true, value: true });
     Object.defineProperty(globalThis, 'DOMPoint', { configurable: true, value: class { constructor(x, y) { this.x = x; this.y = y; } matrixTransform() { return this; } } });
     Object.defineProperty(globalThis, 'Option', { configurable: true, value: dom.window.Option });
+    Object.defineProperty(globalThis, 'DeviceMotionEvent', { configurable: true, value: class {} });
     globalThis.setInterval = () => 1;
     globalThis.fetch = async path => ({ ok: true, json: async () => path.includes('calibration') ? settings : path.includes('points') ? points : graph });
     await import(`../public/gps-test-live.js?test=${Date.now()}`);
@@ -43,10 +45,21 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
     const second = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
     assert.notEqual(second, first);
     assert.match($('details').textContent, /좌표 변화 .*m \(측정값\)/);
+    let now = 100000;
+    Date.now = () => now;
+    $('stepsOn').click();
+    const motion = magnitude => { const event = new dom.window.Event('devicemotion'); Object.defineProperty(event, 'accelerationIncludingGravity', { value: { x: magnitude, y: 0, z: 0 } }); dom.window.dispatchEvent(event); };
+    motion(9.8); now += 350; motion(12);
+    assert.match($('stepStatus').textContent, /1걸음/);
+    assert.ok($('stepLayer').querySelector('[data-role="step-estimate"]'));
     $('stop').click();
     assert.match($('summary').textContent, /수신 2건/);
+    assert.match($('summary').textContent, /걸음 추정 1걸음/);
+    now += 400; motion(9.5); now += 400; motion(12);
+    assert.match($('stepStatus').textContent, /1걸음/);
   } finally {
     globalThis.setInterval = interval;
+    Date.now = originalNow;
     for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key];
     dom.window.close();
   }
