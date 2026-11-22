@@ -1,10 +1,10 @@
-import { calibration, candidatePreview, validPosition, smoothPosition, matchEdge } from './gps-location.js';
+import { calibration, candidatePreview, validPosition, smoothPosition } from './gps-location.js';
 import { project } from './station-route-math.js';
 const $ = id => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
 const base = '/assets/daejeon_marked_plans_and_coordinates/';
 let lastMapPoint = null;
-let settings, points, graph, watch = null, latest = null, smoothed = null, source = null, timer = null, zoom = 1, rotation = 0, previousMatch = null, rejected = 0;
+let settings, points, watch = null, latest = null, smoothed = null, source = null, timer = null, zoom = 1, rotation = 0, rejected = 0;
 const element = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v)); return node; };
 const current = () => settings.floors.find(f => f.floor === Number($('floor').value));
 const status = message => { $('gpsStatus').textContent = message; };
@@ -20,7 +20,6 @@ function refreshMap() {
   $('pointCount').textContent = `도면 지점 ${points.filter(p => p.floor === f.floor).length}개 · 경로 노드와 별도`;
   $('gpsLayer').replaceChildren();
   lastMapPoint = null;
-  previousMatch = null;
   if (latest) display(latest);
 }
 function display(position) {
@@ -33,6 +32,7 @@ function display(position) {
   $('source').textContent = source === 'mock' ? '모의 위치' : '실제 GPS';
   $('gpsLayer').replaceChildren();
   if (error) { lastMapPoint = null; status(error); return; }
+  if (!settings || !points) { status('GPS 수신됨 · 지도 자료 불러오는 중'); return; }
   const f = current(), result = calibration(f);
   const validated = f.status === 'validated' && result.fit && result.errors.length;
   const preview = !validated && $('experimental').checked;
@@ -52,15 +52,10 @@ function display(position) {
   if (preview) { const label = element('text', { x: x + 12, y: y - 12, fill: '#a52714', 'font-size': 20, 'font-weight': 800 }); label.textContent = '추정 위치 · 미검증'; layer.append(label); }
   status(`${source === 'mock' ? '모의 위치 · ' : '실시간 GPS · '}${preview ? '추정 위치 (미검증)' : '검증 지도 위치'} · ±${Math.round(accuracy)} m · ${new Date(position.timestamp).toLocaleTimeString('ko-KR')}`);
   if (firstPoint && source === 'gps') $('gpsCenter').click();
-  // 후보 그래프는 현장 검증 전이므로 통로 위치를 안내 경로로 확정하지 않는다.
-  if (!preview && graph?.routableForPublicUse === true && graph.mapImage.fileName === f.mapId) {
-    const match = matchEdge(graph, { x, y }, Math.max(10, accuracy * Math.max(Math.hypot(a, d), Math.hypot(b, e))), previousMatch);
-    if (match) { previousMatch = match; layer.append(element('circle', { cx: match.x, cy: match.y, r: 6, fill: '#f48726' })); $('matching').textContent = `${match.edge.id} · 진행률 ${(match.t * 100).toFixed(0)}%`; }
-    else $('matching').textContent = '통로 후보가 불분명함';
-  } else $('matching').textContent = '미검증 그래프 · 안내 연결 보류';
+  $('matching').textContent = '미검증 그래프 · 안내 연결 보류';
 }
 function receive(position, kind) {
-  if (source !== kind) { smoothed = null; previousMatch = null; }
+  if (source !== kind) smoothed = null;
   source = kind;
   latest = position;
   if (!validPosition(position)) {
@@ -125,8 +120,8 @@ $('zoomReset').addEventListener('click', () => { zoom = 1; rotation = 0; $('scen
 window.addEventListener('pagehide', stop);
 setInterval(() => { if (latest && source === 'gps' && Date.now() - latest.timestamp > 15000) { $('gpsLayer').replaceChildren(); lastMapPoint = null; status('위치 갱신 중단 · 오래된 위치'); } }, 1000);
 try {
-  const responses = await Promise.all(['/gps-calibration.json', '/gps-points.json', '/assets/json/floor-3-graph.json'].map(path => fetch(path)));
+  const responses = await Promise.all(['/gps-calibration.json', '/gps-points.json'].map(path => fetch(path)));
   if (responses.some(r => !r.ok)) throw Error('지도 데이터를 읽을 수 없습니다');
-  [settings, { points }, graph] = await Promise.all(responses.map(r => r.json()));
+  [settings, { points }] = await Promise.all(responses.map(r => r.json()));
   refreshMap();
 } catch (error) { status(`초기화 실패: ${error.message}`); }

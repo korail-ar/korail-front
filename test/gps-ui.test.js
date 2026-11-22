@@ -11,14 +11,16 @@ test('내 위치 구독은 실시간 갱신되고 종료 시 정리된다', asyn
   const originals = Object.fromEntries(['window', 'document', 'navigator', 'fetch'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   const interval = globalThis.setInterval;
   let success, clearCount = 0, watchCount = 0;
+  const requested = [];
   try {
     Object.defineProperty(globalThis, 'window', { configurable: true, value: dom.window });
     Object.defineProperty(globalThis, 'document', { configurable: true, value: dom.window.document });
     Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { geolocation: { watchPosition(callback) { success = callback; watchCount++; return watchCount; }, clearWatch() { clearCount++; } } } });
     Object.defineProperty(dom.window, 'isSecureContext', { configurable: true, value: true });
     globalThis.setInterval = () => 1;
-    globalThis.fetch = async path => ({ ok: true, json: async () => path.includes('calibration') ? settings : path.includes('points') ? points : { routableForPublicUse: false } });
+    globalThis.fetch = async path => { requested.push(path); return { ok: true, json: async () => path.includes('calibration') ? settings : points }; };
     await import(`../public/gps-diagnostics.js?test=${Date.now()}`);
+    assert.deepEqual(requested, ['/gps-calibration.json', '/gps-points.json']);
     document.getElementById('experimental').checked = true;
     document.getElementById('gpsOn').click();
     assert.equal(watchCount, 1);
