@@ -5,19 +5,19 @@
 Next.js(App Router) · Tailwind CSS · Storybook 환경에 맞게 일부를 조정했습니다.
 아래에 없는 내용은 Airbnb 가이드 원문을 따릅니다.
 
-> 아직 프로젝트 셋업 전이라 lint·포맷터 설정은 없습니다. 셋업할 때 "6. 도구"대로 설정해서 규칙을 자동으로 검사합니다.
+> 규칙 대부분은 ESLint(`eslint.config.mjs`)와 Prettier(`.prettierrc.json`)가 자동으로 검사합니다. "6. 도구"를 참고하세요.
 
 ## 1. 포맷
 
-| 항목 | 규칙 |
-|---|---|
-| 들여쓰기 | 공백 2칸 |
-| 따옴표 | JS/TS는 작은따옴표 `'`, JSX 속성은 큰따옴표 `"` |
-| 세미콜론 | 항상 붙임 |
-| 줄 길이 | 최대 100자 |
-| 쉼표 | 여러 줄 객체·배열·인자·import 끝에 trailing comma |
-| 중괄호 | `if`, `for` 등은 한 줄이어도 중괄호 사용 |
-| 파일 끝 | 빈 줄 하나 |
+| 항목     | 규칙                                              |
+| -------- | ------------------------------------------------- |
+| 들여쓰기 | 공백 2칸                                          |
+| 따옴표   | JS/TS는 작은따옴표 `'`, JSX 속성은 큰따옴표 `"`   |
+| 세미콜론 | 항상 붙임                                         |
+| 줄 길이  | 최대 100자                                        |
+| 쉼표     | 여러 줄 객체·배열·인자·import 끝에 trailing comma |
+| 중괄호   | `if`, `for` 등은 한 줄이어도 중괄호 사용          |
+| 파일 끝  | 빈 줄 하나                                        |
 
 ## 2. JavaScript / TypeScript
 
@@ -40,16 +40,16 @@ Next.js(App Router) · Tailwind CSS · Storybook 환경에 맞게 일부를 조�
 
 ## 3. 이름 규칙
 
-| 대상 | 규칙 | 예 |
-|---|---|---|
-| 변수·함수 | camelCase | `selectedPlace`, `findRoute()` |
-| 컴포넌트·클래스·타입 | PascalCase | `RouteMap`, `PlaceCard`, `FloorGraph` |
-| 상수(모듈 수준 불변값) | UPPER_SNAKE_CASE | `WALKING_SPEED_MPS` |
-| boolean | `is`/`has`/`can` 접두어 | `isAccessible`, `hasElevator` |
-| 이벤트 핸들러 prop / 함수 | `onX` / `handleX` | `onSelect`, `handleSelect` |
-| 컴포넌트 파일 | 컴포넌트 이름과 같게 PascalCase | `RouteMap.tsx` |
-| 그 밖의 파일 | camelCase | `routeMath.ts` |
-| Next.js 라우트 폴더 | kebab-case (Next.js 규칙 우선) | `app/station-route/page.tsx` |
+| 대상                      | 규칙                            | 예                                    |
+| ------------------------- | ------------------------------- | ------------------------------------- |
+| 변수·함수                 | camelCase                       | `selectedPlace`, `findRoute()`        |
+| 컴포넌트·클래스·타입      | PascalCase                      | `RouteMap`, `PlaceCard`, `FloorGraph` |
+| 상수(모듈 수준 불변값)    | UPPER_SNAKE_CASE                | `WALKING_SPEED_MPS`                   |
+| boolean                   | `is`/`has`/`can` 접두어         | `isAccessible`, `hasElevator`         |
+| 이벤트 핸들러 prop / 함수 | `onX` / `handleX`               | `onSelect`, `handleSelect`            |
+| 컴포넌트 파일             | 컴포넌트 이름과 같게 PascalCase | `RouteMap.tsx`                        |
+| 그 밖의 파일              | camelCase                       | `routeMath.ts`                        |
+| Next.js 라우트 폴더       | kebab-case (Next.js 규칙 우선)  | `app/station-route/page.tsx`          |
 
 ## 4. React / JSX
 
@@ -82,14 +82,25 @@ Next.js(App Router) · Tailwind CSS · Storybook 환경에 맞게 일부를 조�
   - 재사용 컴포넌트에는 `ComponentName.stories.tsx`를 같은 폴더에 둡니다.
   - 기본 상태와 주요 변형(비활성, 로딩, 오류, 긴 텍스트 등)을 스토리로 만듭니다.
 
-## 6. 도구 (셋업 때 적용)
+## 6. 도구
 
-- **ESLint:** Airbnb 공식 패키지(`eslint-config-airbnb` 19.0.4, `-base` 15.0.0)는 2021년 이후 업데이트가 없고 ESLint 7·8만 지원합니다.
-  Next.js 최신 설정(`eslint-config-next`)은 ESLint 9 이상이 필요해서 공식 패키지를 그대로 쓸 수 없습니다.
-  셋업 때는 Airbnb 규칙을 ESLint 9 flat config로 옮긴 `eslint-config-airbnb-extended`(TypeScript 지원)와 `eslint-config-next`를 함께 쓰는 방향으로 검토합니다.
-  패키지 이름과 버전은 2026-11 기준이므로 셋업 시점에 다시 확인합니다.
-- **Prettier:** 포맷은 Prettier에 맡기고, `eslint-config-prettier`로 ESLint의 포맷 규칙을 끕니다.
-  설정은 위 1절에 맞춥니다: `singleQuote: true`, `jsxSingleQuote: false`, `semi: true`, `trailingComma: 'all'`, `printWidth: 100`.
-  Tailwind 클래스 정렬은 `prettier-plugin-tailwindcss`로 합니다.
+- **ESLint 9 (flat config, `eslint.config.mjs`):** Airbnb 공식 패키지(`eslint-config-airbnb`)는 2021년 이후 업데이트가 없고
+  ESLint 7·8만 지원합니다. 그래서 Airbnb 규칙을 ESLint 9로 옮긴 `eslint-config-airbnb-extended`(TypeScript 지원)를 씁니다.
+  - 이 패키지의 `configs.next`에 `@next/eslint-plugin-next`(recommended + core-web-vitals)가 들어 있으므로 `eslint-config-next`는 쓰지 않습니다.
+    둘을 같이 쓰면 react·jsx-a11y·import 플러그인이 중복 등록됩니다.
+  - Storybook 파일은 `eslint-plugin-storybook`으로 검사합니다.
+  - 프로젝트에서 조정한 규칙(`project/*` 블록):
+    - 컴포넌트는 function 선언과 화살표 함수 모두 허용합니다.
+    - `react/require-default-props`는 끕니다(TS 선택적 props + 구조 분해 기본값을 씁니다).
+    - `console`은 `warn`/`error`만 허용합니다.
+    - Next.js 라우트 파일, 설정 파일, 스토리는 default export를 허용합니다.
+    - 설정·테스트·스토리 파일은 devDependencies import를 허용합니다.
+- **Prettier (`.prettierrc.json`):** 포맷은 Prettier에 맡기고, `eslint-config-prettier`로 ESLint의 포맷 규칙을 끕니다(설정 맨 끝에 둡니다).
+  설정은 1절과 같습니다: `singleQuote: true`, `jsxSingleQuote: false`, `semi: true`, `trailingComma: 'all'`, `printWidth: 100`, `endOfLine: 'lf'`.
+  Tailwind 클래스는 `prettier-plugin-tailwindcss`로 정렬하며, `cn()`·`clsx()` 인자 안의 클래스도 정렬합니다.
+- **TypeScript:** `strict: true`. 경로 별칭은 `@/*` → `src/*`입니다.
+- **테스트:** Vitest + Testing Library(jsdom). globals를 쓰지 않으므로 `describe`, `it`, `expect`, `vi`는 `vitest`에서 import합니다.
+  `jest-dom` matcher(`toHaveAttribute` 등)는 `vitest.setup.ts`에서 등록합니다.
 - **검사 범위:** 모든 도구의 검사 대상은 `ui/` 안으로만 한정합니다(`AGENTS.md` 1절).
-- **검사 시점:** 커밋 전에 lint와 format 검사를 통과해야 합니다. pre-commit 훅이나 CI 적용 여부는 셋업 때 정합니다.
+- **검사 시점:** 커밋 전에 `npm run lint && npm run format:check && npm run typecheck && npm test`를 통과해야 합니다.
+  pre-commit 훅이나 CI는 아직 적용하지 않았습니다.

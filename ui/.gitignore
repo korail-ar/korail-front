@@ -24,3 +24,8 @@ Thumbs.db
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+*storybook.log
+
+# testing
+coverage/

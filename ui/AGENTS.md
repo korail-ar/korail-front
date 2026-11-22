@@ -16,19 +16,38 @@
   쓸 때는 `ui/` 안으로 **복사**한 뒤 출처(원본 경로와 커밋 해시)를 적습니다. `ui/` 코드에서 `../` 로 바깥 파일을 직접 import 하지 않습니다.
 - lint, 포맷터, 코드 생성기, 일괄 검색·치환은 `ui/` 안에만 적용합니다.
 
-## 2. 기술 스택 (계획)
+## 2. 기술 스택
 
-**아직 프로젝트 셋업 전입니다.** 셋업 지시가 있기 전에는 `package.json`, `next.config.*`, Tailwind 설정, `.storybook/` 등을
-만들거나 패키지를 설치하지 않습니다.
+2026-11-22에 셋업했습니다. 버전은 `package.json`을 기준으로 합니다.
 
-예정 스택:
+- **Next.js 16 (App Router, Turbopack)** + **React 19** + **TypeScript**
+- **Tailwind CSS v4**: 설정 파일 없이 `src/app/globals.css`의 `@theme`에 토큰을 정의합니다.
+  Next.js에서는 `@tailwindcss/turbopack` 로더, Storybook에서는 `@tailwindcss/vite` 플러그인으로 처리합니다.
+- **Storybook 10** (`@storybook/nextjs-vite`, addon: docs, a11y)
+- **테스트:** Vitest + Testing Library(jsdom). 테스트 파일은 `*.test.ts(x)`로 소스 옆에 둡니다.
+- **lint/format:** ESLint 9(`eslint-config-airbnb-extended`) + Prettier. 자세한 내용은 `docs/CONVENTIONS.md` 6절에 있습니다.
+- **패키지 매니저:** npm (`ui/package-lock.json`)
 
-- **Next.js (React)**: App Router 사용 예정
-- **Tailwind CSS**
-- **Storybook**: 컴포넌트 단위 개발·문서화
-- TypeScript 사용 여부, 패키지 매니저, 테스트 도구는 셋업 때 결정
+폴더 구조:
 
-셋업할 때 지킬 것:
+- `src/app/`: 라우트(App Router)
+- `src/components/<Name>/`: 재사용 컴포넌트. `Name.tsx`, `Name.stories.tsx`, `Name.test.tsx`를 같은 폴더에 둡니다.
+- `src/lib/`: 유틸(`cn` 등)
+- `public/`: 정적 파일(Storybook `staticDirs`도 이 폴더를 씁니다)
+
+자주 쓰는 명령(항상 `ui/` 안에서 실행):
+
+| 명령                                      | 내용                                               |
+| ----------------------------------------- | -------------------------------------------------- |
+| `npm run dev`                             | 개발 서버                                          |
+| `npm run build`                           | 프로덕션 빌드                                      |
+| `npm run storybook`                       | Storybook (http://localhost:6006)                  |
+| `npm run lint` / `npm run lint:fix`       | ESLint                                             |
+| `npm run format` / `npm run format:check` | Prettier                                           |
+| `npm run typecheck`                       | 라우트 타입 생성(`next typegen`) 후 `tsc --noEmit` |
+| `npm test` / `npm run test:watch`         | Vitest                                             |
+
+설정할 때 지킬 것(셋업에 반영됨, 설정을 바꿀 때도 지킵니다):
 
 - 모든 설정 파일과 소스는 `ui/` 안에 만듭니다(예: `ui/package.json`, `ui/src/app`, `ui/src/components`, `ui/.storybook`).
   명령은 항상 `ui/` 안에서 실행합니다(`cd ui`).
@@ -78,3 +97,13 @@
 - 기존 웹앱(백엔드 작업자): Vite + 순수 JS. 실행은 저장소 루트의 `README.md`를 참고합니다.
 - 대전역 층별 그래프: `../public/assets/json/floor-{1..4}-graph.json`. 현재 모든 시설·노드의 `lat`/`lng`는 비어 있고(null),
   현장 검증 전 초안입니다(`verified: false`).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
