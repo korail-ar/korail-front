@@ -38,12 +38,16 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
     $('walk').click();
     assert.equal($('routeLayer').querySelectorAll('polyline').length, 2);
     assert.match($('status').textContent, /이동 테스트 중/);
-    const emit = latitude => positionCallback({ coords: { latitude, longitude: 127.4347, accuracy: 5, heading: null, speed: null }, timestamp: Date.now() });
+    let stamp = Date.now() - 7000;
+    const emit = (latitude, delay = 1000) => { stamp += delay; positionCallback({ coords: { latitude, longitude: 127.4347, accuracy: 5, heading: null, speed: null }, timestamp: stamp }); };
     emit(36.33238);
     const first = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
     emit(36.3324);
     const second = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
     assert.notEqual(second, first);
+    emit(36.33240001, 16);
+    assert.equal($('positionLayer').querySelector('circle:last-child').getAttribute('cx'), second);
+    assert.doesNotMatch($('status').textContent, /정상 이동|목적지 도착/);
     assert.match($('details').textContent, /좌표 변화 .*m \(측정값\)/);
     let now = 100000;
     Date.now = () => now;
