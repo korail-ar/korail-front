@@ -1,0 +1,51 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { JSDOM } from 'jsdom';
+
+test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이동 테스트를 시작한다', async () => {
+  const html = await readFile(new URL('../public/gps-test/index.html', import.meta.url), 'utf8');
+  const settings = JSON.parse(await readFile(new URL('../public/gps-calibration.json', import.meta.url)));
+  const points = JSON.parse(await readFile(new URL('../public/gps-points.json', import.meta.url)));
+  const graph = { floor: 3, mapId: 'daejeon-station-3F-map.svg', weightUnit: 's', nodes: [{ id: 'A', x: 100, y: 100 }, { id: 'B', x: 200, y: 100 }], edges: [{ id: 'AB', source: 'A', target: 'B', weight: 10, selectedDistanceM: 12, bidirectional: true, verified: false }], places: [{ id: 'P1', name: '화장실', nodeId: 'A', x: 100, y: 100 }, { id: 'P2', name: '탐앤탐스', nodeId: 'B', x: 200, y: 100 }] };
+  const dom = new JSDOM(html, { url: 'https://example.test/gps-test' });
+  const keys = ['window', 'document', 'navigator', 'fetch', 'isSecureContext', 'DOMPoint', 'Option'];
+  const originals = Object.fromEntries(keys.map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  const interval = globalThis.setInterval;
+  let positionCallback;
+  try {
+    Object.defineProperty(globalThis, 'window', { configurable: true, value: dom.window });
+    Object.defineProperty(globalThis, 'document', { configurable: true, value: dom.window.document });
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { geolocation: { watchPosition(callback) { positionCallback = callback; return 1; }, clearWatch() {} } } });
+    Object.defineProperty(globalThis, 'isSecureContext', { configurable: true, value: true });
+    Object.defineProperty(globalThis, 'DOMPoint', { configurable: true, value: class { constructor(x, y) { this.x = x; this.y = y; } matrixTransform() { return this; } } });
+    Object.defineProperty(globalThis, 'Option', { configurable: true, value: dom.window.Option });
+    globalThis.setInterval = () => 1;
+    globalThis.fetch = async path => ({ ok: true, json: async () => path.includes('calibration') ? settings : path.includes('points') ? points : graph });
+    await import(`../public/gps-test-live.js?test=${Date.now()}`);
+    const $ = id => document.getElementById(id);
+    assert.equal($('walk').disabled, false);
+    $('walk').click();
+    assert.match($('status').textContent, /출발점/);
+    $('destinationSearch').value = '탐';
+    $('destinationSearch').dispatchEvent(new dom.window.Event('input'));
+    assert.equal($('destination').value, 'P2');
+    const map = $('map');
+    map.getScreenCTM = () => ({ inverse: () => ({}) });
+    map.dispatchEvent(new dom.window.MouseEvent('click', { clientX: 150, clientY: 100 }));
+    $('walk').click();
+    assert.equal($('routeLayer').querySelectorAll('polyline').length, 2);
+    assert.match($('status').textContent, /이동 테스트 중/);
+    const emit = latitude => positionCallback({ coords: { latitude, longitude: 127.4347, accuracy: 5, heading: null, speed: null }, timestamp: Date.now() });
+    emit(36.33238);
+    const first = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
+    emit(36.3324);
+    const second = $('positionLayer').querySelector('circle:last-child').getAttribute('cx');
+    assert.notEqual(second, first);
+    assert.match($('details').textContent, /좌표 변화 .*m \(측정값\)/);
+  } finally {
+    globalThis.setInterval = interval;
+    for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key];
+    dom.window.close();
+  }
+});

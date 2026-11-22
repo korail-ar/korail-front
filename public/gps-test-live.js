@@ -6,10 +6,31 @@ import { nearestReachablePlace, routeToPlace, sessionSummary, sessionCsv } from 
 
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
-let settings, points, graph, stopWatch, lastSample, smoothed, lastRaw, lastPoint, correction, match, route, destination, walking = false, streak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0;
+let settings, points, graph, stopWatch, lastSample, smoothed, pendingJump, lastRaw, lastPoint, correction, manualAnchor, match, route, destination, walking = false, streak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0;
 let rows = [], counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }, lastAccepted;
 const floorConfig = () => settings.floors.find(item => item.floor === Number($('floor').value));
 const note = value => { $('status').textContent = value; };
+function chooseDestination(place) {
+  destination = place;
+  $('destination').value = place?.id || '';
+  if (walking && match && destination) routeForCurrent();
+}
+function showDestinations() {
+  if (!graph) return;
+  const query = $('destinationSearch').value.trim().toLocaleLowerCase('ko-KR');
+  const filtered = graph.places.filter(place => place.name.toLocaleLowerCase('ko-KR').includes(query));
+  const select = $('destination');
+  select.replaceChildren(new Option(filtered.length ? '목적지를 선택하세요' : '검색 결과 없음', ''));
+  for (const place of filtered) select.add(new Option(place.name, place.id));
+  if (destination && filtered.some(place => place.id === destination.id)) select.value = destination.id;
+  else if (query && filtered.length === 1) chooseDestination(filtered[0]);
+  else if (destination && query) destination = null;
+}
+function recommend() {
+  if (!graph || !match || destination) return;
+  const nearest = nearestReachablePlace(graph, match);
+  if (nearest) { chooseDestination(nearest.place); note(`추천 목적지: ${nearest.place.name} · 미검증 시험 경로`); }
+}
 function drawRoute() {
   const layer = $('routeLayer'); layer.replaceChildren();
   if (!route) return;
@@ -36,7 +57,13 @@ function accept(sample) {
   const wrapped = { coords: sample, timestamp: sample.timestamp }, invalid = validPosition(wrapped);
   if (invalid) { note(invalid); counters.uncertain++; rows.push({ ...sample, floor: Number($('floor').value), state: invalid, source: 'browser-geolocation' }); return; }
   if (smoothed && sample.timestamp - smoothed.timestamp > 15000) smoothed = null;
-  smoothed = smoothPosition(smoothed, wrapped);
+  const nextSmoothed = smoothPosition(smoothed, wrapped);
+  if (smoothed && nextSmoothed === smoothed) {
+    const repeated = pendingJump && Math.hypot(...localMeters(sample.latitude, sample.longitude, { lat: pendingJump.coords.latitude, lng: pendingJump.coords.longitude })) <= Math.max(8, sample.accuracy + pendingJump.coords.accuracy);
+    pendingJump = wrapped;
+    if (repeated) { smoothed = wrapped; pendingJump = null; }
+  } else { smoothed = nextSmoothed; pendingJump = null; }
+  const previousSample = lastSample;
   lastSample = sample;
   if (!settings || !graph) { note('지도 자료를 불러오는 중'); return; }
   const config = floorConfig(), calibrated = calibration(config), verified = config.status === 'validated' && calibrated.fit && calibrated.errors.length;
@@ -44,11 +71,12 @@ function accept(sample) {
   if (!fit) { note('위치 확인 필요 · 이 층의 GPS 대응 좌표가 없습니다'); counters.uncertain++; return; }
   const [rawX, rawY] = project(fit, smoothed.coords.latitude, smoothed.coords.longitude);
   lastRaw = { x: rawX, y: rawY };
+  if (manualAnchor && !correction) correction = { dx: manualAnchor.x - rawX, dy: manualAnchor.y - rawY };
   const point = constrainToFloor({ x: rawX + (correction?.dx || 0), y: rawY + (correction?.dy || 0) }, config.viewBox);
   const [a, b, , d, e] = fit.p, trace = a * a + b * b + d * d + e * e, determinant = a * e - b * d;
   const errorPx = sample.accuracy * Math.sqrt((trace + Math.sqrt(Math.max(0, trace * trace - 4 * determinant * determinant))) / 2);
   const possible = !point.limited && sample.accuracy <= 30;
-  const candidate = possible ? matchEdge(graph, point, Math.max(12, errorPx), match, true) : null;
+  const candidate = possible ? matchEdge(graph, point, Math.max(12, errorPx), match, true) || (match && edgeCandidates(graph, point, Math.max(12, errorPx), true).find(item => item.edge.id === match.edge.id)) : null;
   const priorMatch = match;
   if (candidate) match = candidate;
   const activeMatch = candidate || (correction ? match : null);
@@ -75,18 +103,16 @@ function accept(sample) {
     else if (decision.reroute && Date.now() - lastReroute > 15000 && activeMatch && routeForCurrent()) { counters.reroutes++; lastReroute = Date.now(); state = '경로 재탐색'; }
   }
   note(state);
-  $('details').textContent = `정확도 ±${Math.round(sample.accuracy)}m · ${config.floor}층 · ${uncertain ? '확인 필요' : '양호'} · ${new Date(sample.timestamp).toLocaleTimeString('ko-KR')}`;
+  const rawChange = previousSample ? Math.hypot(...localMeters(sample.latitude, sample.longitude, { lat: previousSample.latitude, lng: previousSample.longitude })) : null;
+  $('details').textContent = `정확도 ±${Math.round(sample.accuracy)}m · ${config.floor}층 · 새 수신 ${new Date(sample.timestamp).toLocaleTimeString('ko-KR')} · 좌표 변화 ${rawChange == null ? '첫 측정' : `${rawChange.toFixed(1)}m (측정값)`}`;
   $('advanced').textContent = `mapId: ${config.mapId} · 보정: ${verified ? '검증 설정' : '미검증 추정'} · 통로: ${activeMatch?.edge.id || '불명확'} · 위도: ${sample.latitude.toFixed(7)} · 경도: ${sample.longitude.toFixed(7)}`;
   rows.push({ ...sample, floor: config.floor, mapId: config.mapId, x: point.x, y: point.y, matchedX: activeMatch?.x, matchedY: activeMatch?.y, edgeId: activeMatch?.edge.id, state, source: 'browser-geolocation' });
-  if (!destination && activeMatch) {
-    const nearest = nearestReachablePlace(graph, activeMatch);
-    if (nearest) { destination = nearest.place; $('destination').value = destination.id; $('walk').disabled = false; }
-  }
+  if (!destination && activeMatch) recommend();
 }
 async function loadFloor() {
   const token = ++request, config = floorConfig();
-  graph = null; match = route = destination = correction = smoothed = lastAccepted = previousProgress = null; streak = 0; walking = false;
-  $('positionLayer').replaceChildren(); drawRoute(); $('walk').disabled = true; $('destination').disabled = true;
+  graph = null; match = route = destination = correction = manualAnchor = pendingJump = smoothed = lastAccepted = previousProgress = lastRaw = lastSample = null; streak = 0; walking = false;
+  $('positionLayer').replaceChildren(); drawRoute(); $('destination').disabled = true; $('destinationSearch').value = '';
   $('floorImage').setAttribute('href', `/assets/daejeon_marked_plans_and_coordinates/floor_${config.floor}_marked.svg`);
   $('map').setAttribute('viewBox', config.viewBox.join(' '));
   for (const [key, value] of Object.entries({ x: config.viewBox[0], y: config.viewBox[1], width: config.viewBox[2], height: config.viewBox[3] })) $('floorImage').setAttribute(key, value);
@@ -98,8 +124,7 @@ async function loadFloor() {
     if (token !== request) return;
     if (loaded.mapId !== config.mapId || loaded.weightUnit !== 's') throw Error('지도와 그래프가 맞지 않습니다');
     graph = loaded;
-    $('destination').replaceChildren(new Option('위치 측정 후 자동 추천', ''));
-    for (const place of graph.places) $('destination').add(new Option(place.name, place.id));
+    showDestinations();
     $('destination').disabled = false;
   } catch (error) { note(error.message); }
 }
@@ -118,26 +143,33 @@ try {
 } catch (error) { note(`초기화 실패: ${error.message}`); }
 $('measure').onclick = () => {
   if (stopWatch) return;
-  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = null;
+  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = pendingJump = null;
   $('summary').textContent = '측정 중'; $('csv').disabled = true;
   try {
     stopWatch = browserLocationProvider().subscribe(accept, error => { counters.uncertain++; note(error.code === 1 ? '위치 권한이 거부되었습니다' : error.code === 3 ? '위치 수신 시간 초과' : '위치 수신 실패'); });
     $('stop').disabled = false; $('measure').disabled = true; note('현재 위치 측정 중');
   } catch (error) { note(error.message); }
 };
-$('walk').onclick = () => { if (!routeForCurrent()) { note('위치 또는 목적지를 확인해 주세요'); return; } walking = true; note('정상 이동 · 시험 경로'); };
+$('walk').onclick = () => { if (!graph) { note('시설 자료를 불러오는 중입니다'); return; } if (!match) { note('지도에서 실제 출발점을 한 번 눌러 주세요'); $('viewport').scrollIntoView?.({ behavior: 'smooth', block: 'center' }); return; } if (!destination) { note('목적지를 검색하거나 목록에서 선택해 주세요'); $('destinationSearch').focus(); return; } if (!routeForCurrent()) { note('선택한 목적지까지 연결된 시험 경로가 없습니다'); return; } walking = true; if (!stopWatch) $('measure').click(); note(stopWatch ? '이동 테스트 중 · 위치 수신 대기' : '위치 권한을 확인해 주세요'); };
 $('stop').onclick = finish;
 $('floor').onchange = () => { $('details').textContent = `정확도 — · ${$('floor').value}층 · 위치 확인 필요`; loadFloor(); note('층 변경 · 새 위치 대기'); };
-$('destination').onchange = () => { destination = graph?.places.find(place => place.id === $('destination').value) || null; $('walk').disabled = !destination || !match; if (walking && destination) routeForCurrent(); };
+$('destination').onchange = () => chooseDestination(graph?.places.find(place => place.id === $('destination').value) || null);
+$('destinationSearch').oninput = showDestinations;
 $('map').onclick = event => {
-  if (!lastRaw || !lastSample) { note('먼저 위치를 측정해 주세요'); return; }
+  if (!graph) { note('지도 자료를 불러오는 중입니다'); return; }
   const map = $('map'), matrix = map.getScreenCTM?.();
-  if (!matrix) return;
+  if (!matrix) { note('지도 위치를 읽을 수 없습니다'); return; }
   const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
   const fixed = constrainToFloor(p, floorConfig().viewBox);
-  correction = { dx: fixed.x - lastRaw.x, dy: fixed.y - lastRaw.y };
+  manualAnchor = fixed;
   match = edgeCandidates(graph, fixed, 24, true)[0] || null;
-  accept(lastSample); note(match ? '사용자 지정 위치 · 새 측정으로 계속 추적' : '근처 통로를 찾을 수 없습니다');
+  if (!match) { note('근처 통로를 찾을 수 없습니다. 지도에서 통로를 눌러 주세요'); return; }
+  if (lastRaw && lastSample) { correction = { dx: fixed.x - lastRaw.x, dy: fixed.y - lastRaw.y }; accept(lastSample); }
+  else {
+    $('positionLayer').replaceChildren(svg('circle', { cx: match.x, cy: match.y, r: 11, fill: '#7545ae', stroke: '#fff', 'stroke-width': 3 }));
+  }
+  recommend();
+  note('출발 위치 지정됨 · 목적지를 선택하고 이동 테스트를 시작하세요');
 };
 for (const [id, factor] of [['zoomIn', 1.3], ['zoomOut', 1 / 1.3]]) $(id).onclick = () => { zoom = Math.max(1, Math.min(4, zoom * factor)); $('scene').style.width = `${zoom * 100}%`; };
 $('rotate').onclick = () => { rotation = (rotation + 90) % 360; $('map').style.transform = `rotate(${rotation}deg)`; };
