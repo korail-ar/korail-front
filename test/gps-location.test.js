@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { fitAffine, project, unproject } from '../public/station-route-math.js';
-import { calibration, validPosition, smoothPosition, edgeCandidates, matchEdge, routeFromEdge } from '../public/gps-location.js';
+import { calibration, validPosition, smoothPosition, edgeCandidates, matchEdge, routeFromEdge, distanceToPolyline } from '../public/gps-location.js';
 const origin = { lat: 36.33, lng: 127.43 };
 const anchors = [
   { ...origin, x: 0, y: 0, role: 'training', verified: true },
@@ -34,4 +34,17 @@ test('엣지 중간 투영과 일방통행 임시 출발점', () => {
   assert.equal(routeFromEdge(graph, match, 'B').weight, 6);
   assert.equal(routeFromEdge(graph, match, 'A'), null);
   assert.equal(graph.nodes.length, 2);
+  assert.equal(distanceToPolyline([{ x: 0, y: 0 }, { x: 100, y: 0 }], { x: 40, y: 5 }), 5);
+});
+
+test('층별 시험 경로 자료는 같은 SVG 좌표계와 초 단위 비용을 쓴다', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const { fastestRoute } = await import('../public/assets/json/fastest-route.mjs');
+  for (let floor = 1; floor <= 4; floor++) {
+    const graph = JSON.parse(await readFile(new URL(`../public/assets/json/gps-test-floor-${floor}.json`, import.meta.url)));
+    assert.equal(graph.mapId, `daejeon-station-${floor}F-map.svg`);
+    assert.equal(graph.weightUnit, 's');
+    assert.equal(graph.routableForPublicUse, false);
+    assert.equal(fastestRoute(graph, graph.places[0].nodeId, graph.places.at(-1).nodeId).reachable, true);
+  }
 });

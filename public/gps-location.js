@@ -57,3 +57,13 @@ export function routeFromEdge(graph, match, destination) {
   const augmented = { ...graph, nodes: [...graph.nodes, { id, x: match.x, y: match.y }], edges: [...graph.edges, { source: id, target: edge.target, weight: weight * (1 - match.t), bidirectional: false }, ...(edge.bidirectional ? [{ source: id, target: edge.source, weight: weight * match.t, bidirectional: false }] : [])] };
   return shortestPath(augmented, id, destination);
 }
+export function distanceToPolyline(points, point) {
+  if (points.length === 1) return Math.hypot(point.x - points[0].x, point.y - points[0].y);
+  let nearest = Infinity;
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1], b = points[i], dx = b.x - a.x, dy = b.y - a.y;
+    const t = dx || dy ? Math.max(0, Math.min(1, ((point.x - a.x) * dx + (point.y - a.y) * dy) / (dx * dx + dy * dy))) : 0;
+    nearest = Math.min(nearest, Math.hypot(point.x - a.x - t * dx, point.y - a.y - t * dy));
+  }
+  return nearest;
+}
