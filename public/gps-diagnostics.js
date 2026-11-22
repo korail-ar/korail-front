@@ -1,4 +1,5 @@
-import { calibration, candidatePreview, validPosition, smoothPosition, distanceToPolyline } from './gps-location.js';
+import { calibration, candidatePreview, validPosition, smoothPosition, matchEdge, routeFromEdge } from './gps-location.js';
+import { constrainToFloor, routeProjection, navigationDecision } from './gps-navigation.js';
 import { fastestRoute } from './assets/json/fastest-route.mjs';
 import { project } from './station-route-math.js';
 const $ = id => document.getElementById(id);
@@ -7,6 +8,7 @@ const base = '/assets/daejeon_marked_plans_and_coordinates/';
 let lastMapPoint = null;
 let settings, points, watch = null, latest = null, smoothed = null, source = null, timer = null, zoom = 1, rotation = 0, rejected = 0;
 let routeGraph = null, routePoints = null, routeRequest = 0;
+let routeDestination = null, correction = null, rawPoint = null, editing = false, previousNavigation = null, offRouteStreak = 0, previousMatch = null;
 const element = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v)); return node; };
 const option = (label, value) => { const node = document.createElement('option'); node.textContent = label; node.value = value; return node; };
 const current = () => settings.floors.find(f => f.floor === Number($('floor').value));
@@ -14,7 +16,7 @@ const status = message => { $('gpsStatus').textContent = message; $('mapFixStatu
 async function loadRouteGraph(floor, mapId) {
   const request = ++routeRequest;
   routeGraph = null;
-  for (const id of ['testFrom', 'testTo', 'testRoute']) $(id).disabled = true;
+  for (const id of ['testFrom', 'testTo', 'testRoute', 'checkpointPlace', 'useCheckpoint']) $(id).disabled = true;
   $('testRouteStatus').textContent = '시험 경로 후보를 불러오는 중입니다.';
   try {
     const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
@@ -29,16 +31,37 @@ async function loadRouteGraph(floor, mapId) {
       for (const place of graph.places) select.add(option(place.name, place.id));
       select.disabled = false;
     }
+    $('checkpointPlace').replaceChildren(option('실제로 있는 시설을 선택하세요', ''));
+    for (const place of graph.places) $('checkpointPlace').add(option(place.name, place.id));
+    $('checkpointPlace').disabled = false;
+    $('useCheckpoint').disabled = false;
     $('testRoute').disabled = false;
     $('testRouteStatus').textContent = `선택 가능 시설 ${graph.places.length}개 · 후보 통로 미검증`;
   } catch (error) {
     if (request === routeRequest) $('testRouteStatus').textContent = `시험 경로 불러오기 실패: ${error.message}`;
   }
 }
+function showRoute(points, from, to, edgeCount, message) {
+  routePoints = points;
+  previousNavigation = null;
+  offRouteStreak = 0;
+  previousMatch = null;
+  const layer = $('testRouteLayer');
+  layer.replaceChildren();
+  const path = points.map(p => `${p.x},${p.y}`).join(' ');
+  layer.append(element('polyline', { points: path, fill: 'none', stroke: '#17324c', 'stroke-width': 18, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+  layer.append(element('polyline', { points: path, fill: 'none', stroke: '#ffdf3d', 'stroke-width': 10, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'data-role': 'gps-test-route' }));
+  for (const [place, color] of [[from, '#1a73e8'], [to, '#f48726']]) layer.append(element('circle', { cx: place.x, cy: place.y, r: 12, fill: color, stroke: '#fff', 'stroke-width': 3 }));
+  $('testRouteStatus').textContent = `${message} · 미검증 시험 경로 (후보 통로 ${edgeCount}개)`;
+}
 function drawTestRoute() {
   $('testRouteLayer').replaceChildren();
   routePoints = null;
+  routeDestination = null;
+  previousNavigation = null;
+  offRouteStreak = 0;
   $('routeDistance').textContent = '위치와 경로를 선택하세요';
+  $('navigationState').textContent = '경로와 위치를 선택하세요';
   if (!routeGraph) return;
   const from = routeGraph.places.find(place => place.id === $('testFrom').value);
   const to = routeGraph.places.find(place => place.id === $('testTo').value);
@@ -48,13 +71,8 @@ function drawTestRoute() {
     if (!route.reachable) { $('testRouteStatus').textContent = '두 시설 사이의 후보 경로가 없습니다'; return; }
     if (route.nodeIds.length < 2) { $('testRouteStatus').textContent = '두 시설이 같은 후보 접근점에 연결되어 경로선을 표시할 수 없습니다'; return; }
     const nodes = new Map(routeGraph.nodes.map(node => [node.id, node]));
-    routePoints = route.nodeIds.map(id => nodes.get(id));
-    const layer = $('testRouteLayer');
-    const path = routePoints.map(p => `${p.x},${p.y}`).join(' ');
-    layer.append(element('polyline', { points: path, fill: 'none', stroke: '#17324c', 'stroke-width': 18, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
-    layer.append(element('polyline', { points: path, fill: 'none', stroke: '#ffdf3d', 'stroke-width': 10, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'data-role': 'gps-test-route' }));
-    for (const [place, color] of [[from, '#1a73e8'], [to, '#f48726']]) layer.append(element('circle', { cx: place.x, cy: place.y, r: 12, fill: color, stroke: '#fff', 'stroke-width': 3 }));
-    $('testRouteStatus').textContent = `${from.name} → ${to.name} · 미검증 시험 경로 (후보 통로 ${route.edgeIds.length}개)`;
+    routeDestination = to;
+    showRoute(route.nodeIds.map(id => nodes.get(id)), from, to, route.edgeIds.length, `${from.name} → ${to.name}`);
     if (latest) display(smoothed || latest);
   } catch (error) { $('testRouteStatus').textContent = `경로 계산 실패: ${error.message}`; }
 }
@@ -71,7 +89,18 @@ function refreshMap() {
   $('gpsLayer').replaceChildren();
   $('testRouteLayer').replaceChildren();
   routePoints = null;
+  routeDestination = null;
+  correction = null;
+  rawPoint = null;
+  editing = false;
+  $('map').classList.remove('position-editing');
+  previousNavigation = null;
+  offRouteStreak = 0;
+  $('editPosition').setAttribute('aria-pressed', 'false');
+  $('clearCorrection').disabled = true;
+  $('correctionStatus').textContent = '수동 맞춤 없음 · 원 GPS 추정 위치';
   $('routeDistance').textContent = '위치와 경로를 선택하세요';
+  $('navigationState').textContent = '경로와 위치를 선택하세요';
   lastMapPoint = null;
   loadRouteGraph(f.floor, f.mapId);
   if (latest) display(latest);
@@ -92,25 +121,67 @@ function display(position) {
   const preview = !validated && $('experimental').checked;
   const fit = validated ? result.fit : preview ? candidatePreview(points, f.floor) : null;
   if (!fit) { lastMapPoint = null; status(`${source === 'mock' ? '모의 위치 · ' : ''}GPS 정합 미완료 · 미검증 미리보기를 켜면 추정 위치를 볼 수 있습니다`); return; }
-  const [x, y] = project(fit, latitude, longitude);
+  const [rawX, rawY] = project(fit, latitude, longitude);
+  rawPoint = { x: rawX, y: rawY };
+  const point = constrainToFloor({ x: rawX + (correction?.dx || 0), y: rawY + (correction?.dy || 0) }, f.viewBox);
+  const { x, y } = point;
   const [, , w, h] = f.viewBox;
-  if (x < 0 || x > w || y < 0 || y > h) { lastMapPoint = null; status('지도 범위 밖'); return; }
-  $('routeDistance').textContent = routePoints ? `${distanceToPolyline(routePoints, { x, y }).toFixed(0)} SVG 좌표 단위 · 정합 미검증` : '시험 경로를 선택하세요';
+  $('positionBasis').textContent = point.limited ? '도면 경계에 제한 · 실제 위치 미확정' : correction ? `${correction.label} 기준 임시 맞춤` : preview ? '미검증 GPS 추정' : '검증 보정 좌표';
   const [a, b, , d, e] = fit.p;
   const determinant = a * e - b * d;
   if (Math.abs(determinant) < 1e-10) { lastMapPoint = null; status('보정 행렬 오류'); return; }
+  const sum = a * a + b * b + d * d + e * e;
+  const uncertaintyPx = accuracy * Math.sqrt((sum + Math.sqrt(Math.max(0, sum * sum - 4 * determinant * determinant))) / 2);
+  if (routePoints) {
+    const nearest = routeProjection(routePoints, point);
+    $('routeDistance').textContent = `${nearest.distance.toFixed(0)} SVG 좌표 단위 · 정합 미검증`;
+    if (!previousNavigation || position.timestamp > previousNavigation.timestamp) {
+      const observation = { ...nearest, x, y, timestamp: position.timestamp };
+      const decision = navigationDecision(previousNavigation, observation, uncertaintyPx, offRouteStreak, !point.limited && accuracy <= 20 && Boolean(correction || validated));
+      previousNavigation = observation;
+      offRouteStreak = decision.offRoute;
+      $('navigationState').textContent = point.limited ? '도면 경계 밖 · 판단 보류' : decision.offRoute ? `경로 이탈 의심 ${decision.offRoute}/3 · ${decision.direction}` : decision.direction;
+      if (decision.reroute && routeGraph && routeDestination) {
+        const match = matchEdge(routeGraph, point, Math.max(30, uncertaintyPx * 2), previousMatch, true);
+        if (match) {
+          const reroute = routeFromEdge(routeGraph, match, routeDestination.nodeId);
+          if (reroute) {
+            previousMatch = match;
+            showRoute(reroute.points, { x: match.x, y: match.y }, routeDestination, reroute.ids.length - 1, '현재 추정 위치에서 재탐색');
+            $('matching').textContent = `${match.edge.id} 후보 통로 · 미검증`;
+            $('navigationState').textContent = '경로 이탈 추정 · 시험 경로 재탐색';
+          }
+        } else $('navigationState').textContent = '이탈 의심 · 통로 후보 불명확, 위치를 다시 지정하세요';
+        offRouteStreak = 0;
+      }
+    }
+  } else { $('routeDistance').textContent = '시험 경로를 선택하세요'; $('navigationState').textContent = '경로를 선택하세요'; }
   const firstPoint = !lastMapPoint;
   lastMapPoint = { x, y, width: w, height: h };
   const layer = $('gpsLayer');
-  layer.append(element('circle', { cx: 0, cy: 0, r: accuracy, transform: `matrix(${a} ${d} ${b} ${e} ${x} ${y})`, fill: '#1a73e844', stroke: '#1a73e8', 'stroke-width': 2 / Math.sqrt(Math.abs(determinant)) }));
-  layer.append(element('circle', { cx: x, cy: y, r: 8, fill: '#1a73e8', stroke: '#fff', 'stroke-width': 3 }));
-  if (preview) { const label = element('text', { x: x + 12, y: y - 12, fill: '#a52714', 'font-size': 20, 'font-weight': 800 }); label.textContent = '추정 위치 · 미검증'; layer.append(label); }
-  status(`${source === 'mock' ? '모의 위치 · ' : '실시간 GPS · '}${preview ? '추정 위치 (미검증)' : '검증 지도 위치'} · ±${Math.round(accuracy)} m · ${new Date(position.timestamp).toLocaleTimeString('ko-KR')}`);
+  if (correction && rawX >= 0 && rawX <= w && rawY >= 0 && rawY <= h) layer.append(element('circle', { cx: rawX, cy: rawY, r: 10, fill: 'none', stroke: '#1a73e8', 'stroke-width': 3, 'stroke-dasharray': '5 3' }));
+  layer.append(element('circle', { cx: 0, cy: 0, r: accuracy, transform: `matrix(${a} ${d} ${b} ${e} ${x} ${y})`, fill: correction ? '#8f5bd533' : '#1a73e844', stroke: correction ? '#7545ae' : '#1a73e8', 'stroke-width': 2 / Math.sqrt(Math.abs(determinant)) }));
+  layer.append(element('circle', { cx: x, cy: y, r: 9, fill: correction ? '#7545ae' : '#1a73e8', stroke: '#fff', 'stroke-width': 3, 'data-role': 'current-location' }));
+  const label = element('text', { x: x + 12, y: y - 12, fill: point.limited ? '#a52714' : '#60408e', 'font-size': 20, 'font-weight': 800 });
+  label.textContent = point.limited ? '도면 경계 제한 · 실제 위치 미확정' : correction ? '사용자 맞춤 · 추정' : preview ? 'GPS 추정 · 미검증' : '현재 위치';
+  layer.append(label);
+  status(`${source === 'mock' ? '모의 위치 · ' : '실시간 GPS · '}${point.limited ? '도면 밖 추정을 경계에 표시' : correction ? '사용자 맞춤 추정 위치' : preview ? '미검증 추정 위치' : '검증 지도 위치'} · ±${Math.round(accuracy)} m · ${new Date(position.timestamp).toLocaleTimeString('ko-KR')}`);
   if (firstPoint && source === 'gps') $('gpsCenter').click();
-  $('matching').textContent = '미검증 그래프 · 안내 연결 보류';
+  if (!previousMatch) $('matching').textContent = '미검증 그래프 · 안내 연결 보류';
+}
+function setCorrection(target, label) {
+  if (!rawPoint || !latest || validPosition(latest)) { $('correctionStatus').textContent = '먼저 새 GPS 위치를 수신하세요'; return; }
+  const fixed = constrainToFloor(target, current().viewBox);
+  correction = { dx: fixed.x - rawPoint.x, dy: fixed.y - rawPoint.y, floor: current().floor, label };
+  previousNavigation = null;
+  offRouteStreak = 0;
+  lastMapPoint = null;
+  $('clearCorrection').disabled = false;
+  $('correctionStatus').textContent = `${label} 기준 임시 맞춤 · 이 화면을 닫으면 삭제`;
+  display(smoothed || latest);
 }
 function receive(position, kind) {
-  if (source !== kind) smoothed = null;
+  if (source !== kind) { smoothed = null; correction = null; previousNavigation = null; offRouteStreak = 0; previousMatch = null; $('clearCorrection').disabled = true; $('correctionStatus').textContent = '수동 맞춤 없음 · 원 GPS 추정 위치'; }
   source = kind;
   latest = position;
   if (!validPosition(position)) {
@@ -133,6 +204,7 @@ function stop() {
 function start() {
   stop();
   if (!navigator.geolocation || !window.isSecureContext) { status('HTTPS 또는 localhost의 위치 기능이 필요합니다'); return; }
+  if (source !== 'gps') { correction = null; previousNavigation = null; offRouteStreak = 0; previousMatch = null; $('clearCorrection').disabled = true; $('correctionStatus').textContent = '수동 맞춤 없음 · 원 GPS 추정 위치'; }
   source = 'gps'; latest = smoothed = null; rejected = 0;
   lastMapPoint = null;
   $('gpsLayer').replaceChildren();
@@ -142,6 +214,36 @@ function start() {
 }
 $('gpsOn').addEventListener('click', () => { $('experimental').checked = true; start(); });
 $('testRoute').addEventListener('click', drawTestRoute);
+$('useCheckpoint').addEventListener('click', () => {
+  const place = routeGraph?.places.find(item => item.id === $('checkpointPlace').value);
+  if (!place) { $('correctionStatus').textContent = '현재 서 있는 시설을 선택하세요'; return; }
+  setCorrection(place, `${place.name} 시설 대표점`);
+});
+$('editPosition').addEventListener('click', () => {
+  if (!rawPoint || !latest || validPosition(latest)) { $('correctionStatus').textContent = '먼저 새 GPS 위치를 수신하세요'; return; }
+  editing = !editing;
+  $('editPosition').setAttribute('aria-pressed', String(editing));
+  $('map').classList.toggle('position-editing', editing);
+  $('correctionStatus').textContent = editing ? '지도에서 실제 서 있는 위치를 누르세요' : correction ? `${correction.label} 기준 임시 맞춤` : '수동 맞춤 없음';
+  if (editing) $('viewport').scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+});
+$('map').addEventListener('click', event => {
+  if (!editing) return;
+  const svg = $('map'), matrix = svg.getScreenCTM?.();
+  if (!matrix || !svg.createSVGPoint) { $('correctionStatus').textContent = '이 브라우저에서 지도 좌표를 읽을 수 없습니다'; return; }
+  const point = svg.createSVGPoint();
+  point.x = event.clientX; point.y = event.clientY;
+  setCorrection(point.matrixTransform(matrix.inverse()), '사용자 지정 위치');
+  editing = false;
+  svg.classList.remove('position-editing');
+  $('editPosition').setAttribute('aria-pressed', 'false');
+});
+$('clearCorrection').addEventListener('click', () => {
+  correction = null; previousNavigation = null; offRouteStreak = 0;
+  $('clearCorrection').disabled = true;
+  $('correctionStatus').textContent = '수동 맞춤 없음 · 원 GPS 추정 위치';
+  if (latest) display(smoothed || latest);
+});
 $('gpsRetry').addEventListener('click', start);
 $('gpsCenter').addEventListener('click', () => {
   if (!lastMapPoint) return;
@@ -150,7 +252,7 @@ $('gpsCenter').addEventListener('click', () => {
   viewport.scrollTo?.({ left: Math.max(0, x / width * scene.clientWidth - viewport.clientWidth / 2), top: Math.max(0, y / height * scene.clientHeight - viewport.clientHeight / 2), behavior: 'smooth' });
   viewport.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
 });
-$('gpsOff').addEventListener('click', () => { stop(); lastMapPoint = null; status('꺼짐'); $('gpsLayer').replaceChildren(); });
+$('gpsOff').addEventListener('click', () => { stop(); correction = null; rawPoint = null; lastMapPoint = null; previousNavigation = null; offRouteStreak = 0; previousMatch = null; $('clearCorrection').disabled = true; $('correctionStatus').textContent = '수동 맞춤 없음 · 원 GPS 추정 위치'; status('꺼짐'); $('gpsLayer').replaceChildren(); });
 $('experimental').addEventListener('change', () => { if (latest) display(latest); });
 $('floor').addEventListener('change', () => { latest = smoothed = null; source = null; refreshMap(); status('층 변경 · 새 위치 대기'); });
 $('mockApply').addEventListener('click', () => {

@@ -36,6 +36,12 @@ test('엣지 중간 투영과 일방통행 임시 출발점', () => {
   assert.equal(graph.nodes.length, 2);
   assert.equal(distanceToPolyline([{ x: 0, y: 0 }, { x: 100, y: 0 }], { x: 40, y: 5 }), 5);
 });
+test('미검증 엣지는 명시한 시험 모드에서만 평가하고 모호한 후보는 보류한다', () => {
+  const graph = { nodes: [{ id: 'A', x: 0, y: 0 }, { id: 'B', x: 10, y: 0 }, { id: 'C', x: 0, y: 2 }, { id: 'D', x: 10, y: 2 }], edges: [{ id: 'E1', source: 'A', target: 'B', verified: false }, { id: 'E2', source: 'C', target: 'D', verified: false }] };
+  assert.equal(edgeCandidates(graph, { x: 5, y: 1 }, 5).length, 0);
+  assert.equal(edgeCandidates(graph, { x: 5, y: 1 }, 5, true).length, 2);
+  assert.equal(matchEdge(graph, { x: 5, y: 1 }, 5, null, true), null);
+});
 
 test('층별 시험 경로 자료는 같은 SVG 좌표계와 초 단위 비용을 쓴다', async () => {
   const { readFile } = await import('node:fs/promises');

@@ -30,6 +30,7 @@
       <label class="preview-toggle"><input id="experimental" type="checkbox"> 미검증 추정 위치를 지도에 표시</label>
       <p>아래 버튼을 누르면 미검증 추정 위치 표시가 켜집니다. 점은 GPS 측정값으로만 움직이며 경로에 자동으로 붙지 않습니다.</p>
       <div class="gps-actions"><button id="gpsOn" class="primary">내 위치 지도에 표시 (미검증 시험)</button><button id="gpsRetry">위치 재확인</button><button id="gpsCenter">위치로 이동</button><button id="gpsOff" disabled>끄기</button></div>
+      <div class="position-correction"><strong>실제 서 있는 곳을 알고 있나요?</strong><label>시설 선택 <select id="checkpointPlace" disabled><option>시설 불러오는 중</option></select></label><button id="useCheckpoint" disabled>이 시설에 위치 맞추기</button><button id="editPosition">지도에서 직접 위치 지정</button><button id="clearCorrection" disabled>수동 맞춤 해제</button><p id="correctionStatus" role="status">수동 맞춤 없음 · 원 GPS 추정 위치</p></div>
       <dl>
         <div><dt>상태</dt><dd id="gpsStatus" role="status">꺼짐</dd></div>
         <div><dt>수신 종류</dt><dd id="source">—</dd></div>
@@ -39,6 +40,8 @@
         <div><dt>마지막 갱신</dt><dd id="updated">—</dd></div>
         <div><dt>권한</dt><dd id="permission">확인 전</dd></div>
         <div><dt>경로와 거리</dt><dd id="routeDistance">위치와 경로를 선택하세요</dd></div>
+        <div><dt>이동 판단</dt><dd id="navigationState">경로와 위치를 선택하세요</dd></div>
+        <div><dt>위치 기준</dt><dd id="positionBasis">GPS 추정 · 미검증</dd></div>
         <div><dt>mapId</dt><dd id="mapId">—</dd></div>
         <div><dt>보정</dt><dd id="calibration">불러오는 중</dd></div>
         <div><dt>검증점 오차</dt><dd id="validation">—</dd></div>
@@ -50,7 +53,7 @@
       <div class="map-head"><h2>같은 지도에서 경로와 위치 비교</h2><div class="map-tools"><button id="zoomOut">−</button><button id="zoomIn">＋</button><button id="rotate">회전</button><button id="zoomReset">원래 크기</button></div></div>
       <p id="mapFixStatus" class="map-fix-status" role="status">내 위치를 켜면 수신 상태가 여기에 표시됩니다.</p>
       <div id="viewport" class="viewport"><div id="scene" class="scene"><svg id="map" viewBox="0 0 1861 1961" role="img" aria-label="선택한 층 평면도와 GPS 시험 경로"><image id="floorImage" x="0" y="0" width="1861" height="1961" href="/assets/daejeon_marked_plans_and_coordinates/floor_3_marked.svg"/><g id="testRouteLayer"></g><g id="gpsLayer"></g></svg></div></div>
-      <p>노란 선: 미검증 시험 경로 · 파란 점: GPS 추정 위치 · 파란 영역: 기기 GPS 오차 범위. 도면 정합 오차는 포함되지 않습니다.</p>
+      <p>노란 선: 미검증 시험 경로 · 파란 점: GPS 추정 위치 · 보라 점: 사용자가 맞춘 임시 위치 · 점선 원: 원 GPS 위치. 지도 가장자리 점은 도면 범위 밖 추정을 경계에 제한한 표시이며 실제 위치가 아닙니다. 오차 범위에는 도면 정합·시설 대표점 오차가 포함되지 않습니다.</p>
     </section>
 
     <section class="gps-panel"><h2>모의 위치 · 개발용</h2><p>실제 GPS와 구분되어 표시됩니다. 입력값은 서버에 전송하거나 저장하지 않습니다.</p>
