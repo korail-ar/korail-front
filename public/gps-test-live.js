@@ -3,11 +3,13 @@ import { calibration, candidatePreview, smoothPosition, validPosition, matchEdge
 import { constrainToFloor, routeProjection, navigationDecision } from './gps-navigation.js';
 import { project, localMeters } from './station-route-math.js';
 import { nearestReachablePlace, routeToPlace, sessionSummary, sessionCsv } from './gps-session.js';
+import { createStepDetector, routePointAtMeters } from './step-assist.js';
 
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
 let settings, points, graph, stopWatch, lastSample, smoothed, pendingJump, lastRaw, lastPoint, correction, manualAnchor, match, route, destination, walking = false, streak = 0, previousProgress, lastReroute = 0, zoom = 1, rotation = 0, request = 0, phase = 'unmarked';
 let rows = [], counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }, lastAccepted;
+let stopSteps, stepCount = 0, stepMeters = 0, stepRequest = 0, motionTimeout;
 const floorConfig = () => settings.floors.find(item => item.floor === Number($('floor').value));
 const note = value => { $('status').textContent = value; };
 function chooseDestination(place) {
@@ -51,7 +53,28 @@ function routeForCurrent() {
   route = routeToPlace(graph, match, destination);
   drawRoute();
   previousProgress = null; streak = 0;
+  stepMeters = 0; $('stepLayer').replaceChildren();
+  if (stopSteps) $('stepStatus').textContent = `걸음 추정 ${stepCount}걸음 · 새 출발점부터 0m`;
   return Boolean(route);
+}
+function stopStepAssist() {
+  stepRequest++;
+  clearTimeout(motionTimeout);
+  stopSteps?.(); stopSteps = null;
+  $('stepsOn').textContent = '걸음 보조 켜기';
+}
+function onStep() {
+  if (!walking || !route) return;
+  const stride = Number($('stride').value);
+  if (!Number.isFinite(stride) || stride < 0.3 || stride > 1.2) return;
+  stepCount++;
+  stepMeters += stride;
+  const capped = Math.min(25, stepMeters);
+  const point = routePointAtMeters(route, capped);
+  if (point) $('stepLayer').replaceChildren(svg('circle', { cx: point.x, cy: point.y, r: 12, fill: '#f28c28', stroke: '#fff', 'stroke-width': 3, 'data-role': 'step-estimate' }));
+  const state = stepMeters > 25 ? '25m 한계 · 지도에서 위치를 다시 지정하세요' : '계획 경로를 따라간다는 가정';
+  $('stepStatus').textContent = `걸음 추정 ${stepCount}걸음 · 마지막 위치 지정 이후 ${stepMeters.toFixed(1)}m · ${state}`;
+  rows.push({ eventType: 'step', timestamp: Date.now(), phase, floor: floorConfig().floor, mapId: floorConfig().mapId, stepCount, strideM: stride, stepDistanceM: stepMeters, stepX: point?.x, stepY: point?.y, state, source: 'device-motion-estimate' });
 }
 function accept(sample, record = true) {
   const wrapped = { coords: sample, timestamp: sample.timestamp }, invalid = validPosition(wrapped);
@@ -116,8 +139,9 @@ function accept(sample, record = true) {
 }
 async function loadFloor() {
   const token = ++request, config = floorConfig();
-  graph = null; match = route = destination = correction = manualAnchor = pendingJump = smoothed = lastAccepted = previousProgress = lastRaw = lastSample = null; streak = 0; walking = false;
-  $('positionLayer').replaceChildren(); drawRoute(); $('destination').disabled = true; $('destinationSearch').value = '';
+  stopStepAssist();
+  graph = null; match = route = destination = correction = manualAnchor = pendingJump = smoothed = lastAccepted = previousProgress = lastRaw = lastSample = null; streak = 0; walking = false; stepMeters = 0;
+  $('positionLayer').replaceChildren(); $('stepLayer').replaceChildren(); drawRoute(); $('destination').disabled = true; $('destinationSearch').value = '';
   $('floorImage').setAttribute('href', `/assets/daejeon_marked_plans_and_coordinates/floor_${config.floor}_marked.svg`);
   $('map').setAttribute('viewBox', config.viewBox.join(' '));
   for (const [key, value] of Object.entries({ x: config.viewBox[0], y: config.viewBox[1], width: config.viewBox[2], height: config.viewBox[3] })) $('floorImage').setAttribute(key, value);
@@ -134,9 +158,9 @@ async function loadFloor() {
   } catch (error) { note(error.message); }
 }
 function finish() {
-  stopWatch?.(); stopWatch = null; walking = false; $('stop').disabled = true; $('measure').disabled = false;
+  stopWatch?.(); stopWatch = null; stopStepAssist(); walking = false; $('stop').disabled = true; $('measure').disabled = false;
   const result = sessionSummary(rows, counters);
-  $('summary').textContent = `수신 ${result.samples}건 · 평균 측정 정확도 ${result.meanAccuracy == null ? '—' : `±${result.meanAccuracy.toFixed(0)}m`} · 이동 추정 ${result.estimatedDistance.toFixed(0)}m · 이탈 의심 ${result.offRoute}회 · 재탐색 ${result.reroutes}회 · 위치 불확실 ${result.uncertain}회 (실제 보행 거리와 다를 수 있음)`;
+  $('summary').textContent = `수신 ${result.samples}건 · 평균 측정 정확도 ${result.meanAccuracy == null ? '—' : `±${result.meanAccuracy.toFixed(0)}m`} · GPS 이동 추정 ${result.estimatedDistance.toFixed(0)}m · 걸음 추정 ${stepCount}걸음 · 이탈 의심 ${result.offRoute}회 · 재탐색 ${result.reroutes}회 · 위치 불확실 ${result.uncertain}회 (실제 보행 거리와 다를 수 있음)`;
   $('scenarios').textContent = `A 위치 정확도: 판단 불가 · B 정상 이동: ${rows.some(r => r.state === '정상 이동') && counters.distance >= 20 ? '성공 (시험)' : '판단 불가'} · C 다른 통로: ${counters.reroutes ? '성공 (시험)' : '판단 불가'} · 도면 기준점과 실제 출입구 검증 전에는 현장 정확도를 판정할 수 없습니다.`;
   $('csv').disabled = !rows.length; note('테스트 종료');
 }
@@ -148,7 +172,7 @@ try {
 } catch (error) { note(`초기화 실패: ${error.message}`); }
 $('measure').onclick = () => {
   if (stopWatch) return;
-  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = pendingJump = null; phase = 'unmarked'; $('phase').value = phase;
+  rows = []; counters = { distance: 0, offRoute: 0, reroutes: 0, uncertain: 0 }; lastAccepted = null; lastSample = null; smoothed = pendingJump = null; phase = 'unmarked'; stepCount = stepMeters = 0; $('phase').value = phase;
   $('summary').textContent = '측정 중'; $('csv').disabled = true;
   try {
     stopWatch = browserLocationProvider().subscribe(accept, error => { counters.uncertain++; note(error.code === 1 ? '위치 권한이 거부되었습니다' : error.code === 3 ? '위치 수신 시간 초과' : '위치 수신 실패'); });
@@ -175,11 +199,35 @@ $('map').onclick = event => {
     $('positionLayer').replaceChildren(svg('circle', { cx: match.x, cy: match.y, r: 11, fill: '#7545ae', stroke: '#fff', 'stroke-width': 3 }));
   }
   recommend();
+  if (walking && destination) routeForCurrent();
   note('출발 위치 지정됨 · 목적지를 선택하고 이동 테스트를 시작하세요');
 };
 $('phase').onchange = () => { phase = $('phase').value; rows.push({ eventType: 'phase-change', timestamp: Date.now(), phase, floor: floorConfig()?.floor, mapId: floorConfig()?.mapId, state: '현장 구간 표시', source: 'user' }); };
+$('stepsOn').onclick = async () => {
+  if (stopSteps) { stopStepAssist(); $('stepStatus').textContent = '걸음 보조 꺼짐'; return; }
+  if (!walking || !route) { $('stepStatus').textContent = '먼저 이동 테스트를 시작하세요'; return; }
+  const stride = Number($('stride').value);
+  if (!Number.isFinite(stride) || stride < 0.3 || stride > 1.2) { $('stepStatus').textContent = '보폭은 0.3~1.2m로 입력하세요'; return; }
+  if (!globalThis.isSecureContext || !('DeviceMotionEvent' in globalThis)) { $('stepStatus').textContent = '이 브라우저에서는 모션 센서를 사용할 수 없습니다'; return; }
+  const requestId = ++stepRequest;
+  try {
+    if (typeof DeviceMotionEvent.requestPermission === 'function' && await DeviceMotionEvent.requestPermission() !== 'granted') { $('stepStatus').textContent = '모션 센서 권한이 거부되었습니다'; return; }
+    if (requestId !== stepRequest || !walking) return;
+    const detect = createStepDetector();
+    const motion = event => {
+      clearTimeout(motionTimeout);
+      const a = event.accelerationIncludingGravity;
+      if (a && [a.x, a.y, a.z].every(Number.isFinite) && detect(Math.hypot(a.x, a.y, a.z))) onStep();
+    };
+    window.addEventListener('devicemotion', motion);
+    stopSteps = () => window.removeEventListener('devicemotion', motion);
+    $('stepsOn').textContent = '걸음 보조 끄기';
+    $('stepStatus').textContent = '센서 수신 대기 · 휴대폰을 들고 걸어 보세요';
+    motionTimeout = setTimeout(() => { if (stopSteps) $('stepStatus').textContent = '센서 값이 들어오지 않습니다 · 모션 권한과 브라우저 지원을 확인하세요'; }, 5000);
+  } catch { $('stepStatus').textContent = '모션 센서를 시작할 수 없습니다'; }
+};
 for (const [id, factor] of [['zoomIn', 1.3], ['zoomOut', 1 / 1.3]]) $(id).onclick = () => { zoom = Math.max(1, Math.min(4, zoom * factor)); $('scene').style.width = `${zoom * 100}%`; };
 $('rotate').onclick = () => { rotation = (rotation + 90) % 360; $('map').style.transform = `rotate(${rotation}deg)`; };
 $('csv').onclick = () => { const url = URL.createObjectURL(new Blob([sessionCsv(rows)], { type: 'text/csv;charset=utf-8' })); const link = document.createElement('a'); link.href = url; link.download = 'daejeon-gps-test.csv'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
-window.addEventListener('pagehide', () => stopWatch?.());
+window.addEventListener('pagehide', () => { stopWatch?.(); stopStepAssist(); });
 setInterval(() => { if (stopWatch && lastSample && Date.now() - lastSample.timestamp > 15000) { note('위치 확인 필요 · 새 위치 수신 중단'); $('positionLayer').replaceChildren(); } }, 1000);

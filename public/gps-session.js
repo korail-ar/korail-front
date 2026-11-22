@@ -25,7 +25,12 @@ export function routeToPlace(graph, match, place) {
   if (!place?.nodeId) return null;
   const augmented = withEdgeStart(graph, match);
   const route = fastestRoute(augmented, START_ID, place.nodeId);
-  return route.reachable ? { route, points: route.nodeIds.map(id => augmented.nodes.find(n => n.id === id)) } : null;
+  if (!route.reachable) return null;
+  const nodes = new Map(augmented.nodes.map(node => [node.id, node]));
+  const edges = new Map(augmented.edges.map(edge => [edge.id, edge]));
+  const points = route.nodeIds.map(id => nodes.get(id));
+  const segments = route.edgeIds.map((id, index) => ({ from: points[index], to: points[index + 1], meters: edges.get(id)?.selectedDistanceM }));
+  return { route, points, segments };
 }
 export function sessionSummary(rows, counters) {
   const samples = rows.filter(r => r.eventType === 'sample' || !r.eventType);
@@ -40,7 +45,7 @@ export function sessionSummary(rows, counters) {
   };
 }
 export function sessionCsv(rows) {
-  const keys = ['eventType', 'timestamp', 'phase', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'rawX', 'rawY', 'x', 'y', 'correctionDx', 'correctionDy', 'positionBasis', 'boundaryLimited', 'matchedX', 'matchedY', 'edgeId', 'nearestEdgeId', 'nearestEdgeDistanceSvg', 'nearbyEdgeCount', 'matchReason', 'routeActive', 'destinationId', 'routeEdgeIds', 'routeDistanceSvg', 'offRouteStreak', 'state', 'source'];
+  const keys = ['eventType', 'timestamp', 'phase', 'latitude', 'longitude', 'accuracy', 'heading', 'speed', 'floor', 'mapId', 'rawX', 'rawY', 'x', 'y', 'correctionDx', 'correctionDy', 'positionBasis', 'boundaryLimited', 'matchedX', 'matchedY', 'edgeId', 'nearestEdgeId', 'nearestEdgeDistanceSvg', 'nearbyEdgeCount', 'matchReason', 'routeActive', 'destinationId', 'routeEdgeIds', 'routeDistanceSvg', 'offRouteStreak', 'stepCount', 'strideM', 'stepDistanceM', 'stepX', 'stepY', 'state', 'source'];
   const cell = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
   return [keys.join(','), ...rows.map(row => keys.map(key => cell(row[key])).join(','))].join('\r\n');
 }
