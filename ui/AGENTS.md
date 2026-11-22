@@ -21,7 +21,8 @@
 2026-11-22에 셋업했습니다. 버전은 `package.json`을 기준으로 합니다.
 
 - **Next.js 16 (App Router, Turbopack)** + **React 19** + **TypeScript**
-- **Tailwind CSS v4**: 설정 파일 없이 `src/app/globals.css`의 `@theme`에 토큰을 정의합니다.
+- **Tailwind CSS v4**: 설정 파일 없이 `src/styles/tokens.css`의 `@theme static`에 디자인 토큰을 정의합니다.
+  Tailwind 기본 색·글자 크기·라운드·그림자는 지웠으므로 토큰 클래스만 씁니다(`docs/DESIGN_SYSTEM.md`).
   Next.js에서는 `@tailwindcss/turbopack` 로더, Storybook에서는 `@tailwindcss/vite` 플러그인으로 처리합니다.
 - **Storybook 10** (`@storybook/nextjs-vite`, addon: docs, a11y)
 - **테스트:** Vitest + Testing Library(jsdom). 테스트 파일은 `*.test.ts(x)`로 소스 옆에 둡니다.
@@ -32,7 +33,10 @@
 
 - `src/app/`: 라우트(App Router)
 - `src/components/<Name>/`: 재사용 컴포넌트. `Name.tsx`, `Name.stories.tsx`, `Name.test.tsx`를 같은 폴더에 둡니다.
+- `src/styles/tokens.css`: 디자인 토큰(Figma 기준). 화면을 만들 때는 새 값을 만들기 전에 토큰과 기존 컴포넌트부터 찾습니다.
+- `src/design-system/`: Storybook 전용 문서 페이지(토큰 레퍼런스, Figma 컴포넌트 시트)
 - `src/lib/`: 유틸(`cn` 등)
+- `public/icons/`: Figma 원본 아이콘 SVG(`Icon` 컴포넌트가 사용)
 - `public/`: 정적 파일(Storybook `staticDirs`도 이 폴더를 씁니다)
 
 자주 쓰는 명령(항상 `ui/` 안에서 실행):

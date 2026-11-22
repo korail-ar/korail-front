@@ -32,4 +32,10 @@ describe('Button', () => {
 
     expect(handleClick).not.toHaveBeenCalled();
   });
+
+  it('아이콘은 장식이라 버튼 이름에 들어가지 않는다', () => {
+    render(<Button icon="pin">여기로 안내</Button>);
+
+    expect(screen.getByRole('button', { name: '여기로 안내' })).toBeInTheDocument();
+  });
 });

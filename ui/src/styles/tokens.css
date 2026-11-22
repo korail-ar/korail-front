@@ -1,0 +1,167 @@
+/*
+ * 대전역 길찾기 디자인 토큰.
+ * 출처: Figma "Korail-Project"
+ *   - 컴포넌트에 연결된 변수 「길찾기 · Tokens」 (node 82:72) — 값이 겹치면 이쪽을 따른다.
+ *   - 컬러 · 타이포 레퍼런스 v2 (node 110:96) — 원색(Primitives)과 나머지 시맨틱 토큰.
+ * Tailwind 기본 팔레트·글자 크기·라운드·그림자는 지우고 이 토큰만 쓴다(임의 색 사용 방지).
+ */
+
+@theme static {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --drop-shadow-*: initial;
+
+  /* ---------- Primitives ---------- */
+  --color-white: #ffffff;
+
+  --color-blue-50: #f2f7ff;
+  --color-blue-100: #e3ebff;
+  --color-blue-200: #c9d6ff;
+  --color-blue-300: #a5b6fd;
+  --color-blue-400: #7d93fb;
+  --color-blue-500: #5673f9;
+  --color-blue-600: #3f5ce6;
+  --color-blue-700: #2f47c2;
+  --color-blue-800: #253996;
+  --color-blue-900: #1b2a6b;
+
+  /* 민트는 700까지만 쓴다(레퍼런스 v2 기준 500까지 정의됨). */
+  --color-mint-50: #e2f6f2;
+  --color-mint-100: #c9efe8;
+  --color-mint-200: #9fe3d6;
+  --color-mint-300: #6fd3c1;
+  --color-mint-400: #3fc0aa;
+  --color-mint-500: #1fa892;
+
+  /* 빨강은 오류 전용. */
+  --color-red-50: #fff1f1;
+  --color-red-100: #ffdcdc;
+  --color-red-200: #ffb8b8;
+  --color-red-300: #ff8585;
+  --color-red-400: #ff4d4d;
+  --color-red-500: #ff1717;
+  --color-red-600: #dc0f0f;
+
+  --color-gray-50: #fcfdff;
+  --color-gray-100: #f3f4f7;
+  --color-gray-200: #e4e7ec;
+  --color-gray-300: #c0c5cd;
+  --color-gray-400: #8c919a;
+  --color-gray-500: #6b7079;
+  --color-gray-600: #56595f;
+  --color-gray-700: #454545;
+  --color-gray-800: #2b2b2b;
+  --color-gray-900: #171717;
+
+  /* ---------- Semantic ---------- */
+  --color-bg: var(--color-gray-50);
+  --color-surface: var(--color-white);
+  --color-surface-sunken: var(--color-gray-100);
+
+  --color-ink: var(--color-gray-900);
+  --color-ink-sub: var(--color-gray-700);
+  --color-ink-mute: var(--color-gray-500);
+  --color-ink-disabled: var(--color-gray-400);
+  --color-on-color: var(--color-white);
+
+  --color-line: var(--color-gray-200);
+  --color-line-strong: var(--color-gray-400);
+
+  --color-brand: var(--color-blue-500);
+  --color-brand-hover: var(--color-blue-600);
+  --color-brand-press: var(--color-blue-700);
+  --color-brand-soft: var(--color-blue-50);
+  --color-brand-tint: var(--color-blue-100);
+  --color-focus: var(--color-blue-500);
+
+  --color-disabled-bg: var(--color-gray-100);
+  --color-disabled-ink: var(--color-gray-400);
+
+  --color-route: var(--color-blue-500);
+  --color-route-transfer: var(--color-blue-300);
+  /* 목적지·안내 시작 위치 색은 컴포넌트에 연결된 변수 값. 레퍼런스 v2와 다르다(docs/DESIGN_SYSTEM.md 참고). */
+  --color-dest: #0d7a6b;
+  --color-start: #f2b705;
+  --color-start-ink: #b8860b;
+  --color-start-soft: #fff8e1;
+
+  --color-success: var(--color-mint-300);
+  --color-success-bg: var(--color-mint-50);
+  --color-info: var(--color-blue-700);
+  --color-info-bg: var(--color-blue-50);
+  --color-warn-bg: var(--color-gray-100);
+  --color-warn-fill: var(--color-gray-200);
+  --color-warn-ink: var(--color-gray-900);
+  --color-warn-icon: var(--color-gray-900);
+  --color-danger: var(--color-red-600);
+  --color-danger-bg: var(--color-red-50);
+
+  --color-map-ground: var(--color-gray-100);
+  --color-map-floor: var(--color-white);
+  --color-map-room: var(--color-gray-50);
+  --color-map-wall: var(--color-gray-200);
+  --color-map-zone: var(--color-blue-50);
+  --color-map-zone-line: var(--color-blue-100);
+  --color-marker: var(--color-gray-700);
+  --color-marker-line: var(--color-gray-400);
+
+  /* ---------- Typography (Noto Sans KR) ---------- */
+  --font-sans:
+    var(--font-noto-sans-kr, 'Noto Sans KR'), system-ui, -apple-system, 'Apple SD Gothic Neo',
+    'Malgun Gothic', sans-serif;
+
+  --text-display: 28px;
+  --text-display--line-height: 36px;
+  --text-display--font-weight: 700;
+  --text-title: 22px;
+  --text-title--line-height: 30px;
+  --text-title--font-weight: 700;
+  --text-heading: 18px;
+  --text-heading--line-height: 26px;
+  --text-heading--font-weight: 700;
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 26px;
+  --text-body-lg--font-weight: 700;
+  --text-button: 16px;
+  --text-button--line-height: 24px;
+  --text-button--font-weight: 700;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-body--font-weight: 400;
+  --text-label: 14px;
+  --text-label--line-height: 20px;
+  --text-label--font-weight: 700;
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+  --text-caption--font-weight: 400;
+  --text-map-label: 12px;
+  --text-map-label--line-height: 16px;
+  --text-map-label--font-weight: 700;
+
+  /* ---------- Spacing ----------
+   * Tailwind 기본 --spacing(4px)을 그대로 쓴다: space-1=p-1(4px), 2=8, 3=12, 4=16, 5=20, 6=24, 8=32.
+   */
+
+  /* ---------- Radius ---------- */
+  /* xs(6px)는 토큰 목록에는 없지만 Tag·MapLabel·NumberBadge가 공통으로 쓰는 값이라 이름을 붙였다. */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* ---------- Shadow ---------- */
+  --shadow-float: 0 2px 8px 0 rgb(27 31 39 / 0.18);
+  --shadow-sheet: 0 -4px 20px 0 rgb(27 31 39 / 0.12);
+
+  /* ---------- Sizes ---------- */
+  --spacing-tap-min: 48px;
+  --spacing-icon-sm: 16px;
+  --spacing-icon-md: 20px;
+  --spacing-icon-lg: 24px;
+  --spacing-marker-facility: 28px;
+  --spacing-marker-selected: 40px;
+  --spacing-route-width: 6px;
+}
