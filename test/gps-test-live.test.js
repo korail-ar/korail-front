@@ -56,11 +56,15 @@ test('모호한 GPS 매칭 없이 지도 출발점과 목적지 검색으로 이
     motion(9.8); now += 350; motion(12);
     assert.match($('stepStatus').textContent, /1걸음/);
     assert.ok($('stepLayer').querySelector('[data-role="step-estimate"]'));
+    const fixedRoute = $('routeLayer').querySelector('polyline').getAttribute('points');
+    map.dispatchEvent(new dom.window.MouseEvent('click', { clientX: 160, clientY: 100 }));
+    assert.equal($('routeLayer').querySelector('polyline').getAttribute('points'), fixedRoute);
+    assert.match($('stepStatus').textContent, /기준 경로 유지/);
     $('stop').click();
     assert.match($('summary').textContent, /수신 2건/);
     assert.match($('summary').textContent, /걸음 추정 1걸음/);
     now += 400; motion(9.5); now += 400; motion(12);
-    assert.match($('stepStatus').textContent, /1걸음/);
+    assert.match($('stepStatus').textContent, /이 구간에서 보류/);
   } finally {
     globalThis.setInterval = interval;
     Date.now = originalNow;
