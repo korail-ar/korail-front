@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { browserLocationProvider } from '../public/location-provider.js';
-import { withEdgeStart, nearestReachablePlace, routeToPlace, sessionCsv } from '../public/gps-session.js';
+import { withEdgeStart, nearestReachablePlace, routeToPlace, sessionCsv, sessionSummary } from '../public/gps-session.js';
 
 test('브라우저 공급자는 위치를 전달하고 watcher를 정확히 한 번 정리한다', () => {
   const oldSecure = globalThis.isSecureContext;
@@ -27,4 +27,7 @@ test('일방통행 엣지 중간에서 비용 단위를 유지하고 도달 가�
 
 test('CSV는 필드 구분 문자를 이스케이프한다', () => {
   assert.match(sessionCsv([{ state: '위치, "확인"' }]), /"위치, ""확인"""/);
+  assert.match(sessionCsv([]).split('\r\n')[0], /rawX,rawY,x,y,correctionDx,correctionDy,positionBasis/);
+  assert.match(sessionCsv([]).split('\r\n')[0], /matchReason,routeActive,destinationId,routeEdgeIds,routeDistanceSvg/);
+  assert.equal(sessionSummary([{ eventType: 'manual-anchor' }, { eventType: 'sample', accuracy: 20 }], {}).samples, 1);
 });
