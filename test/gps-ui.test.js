@@ -11,7 +11,7 @@ test('내 위치 구독은 실시간 갱신되고 종료 시 정리된다', asyn
   const dom = new JSDOM(html, { url: 'https://example.test/gps-test.html' });
   const originals = Object.fromEntries(['window', 'document', 'navigator', 'fetch'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   const interval = globalThis.setInterval;
-  let success, clearCount = 0, watchCount = 0;
+  let success, clearCount = 0, watchCount = 0, centered = 0;
   const requested = [];
   try {
     Object.defineProperty(globalThis, 'window', { configurable: true, value: dom.window });
@@ -27,14 +27,17 @@ test('내 위치 구독은 실시간 갱신되고 종료 시 정리된다', asyn
     document.getElementById('testTo').value = 'P2';
     document.getElementById('testRoute').click();
     assert.equal(document.querySelectorAll('#testRouteLayer polyline').length, 2);
+    document.getElementById('viewport').scrollIntoView = () => { centered++; };
     const routeShape = document.querySelector('#testRouteLayer [data-role="gps-test-route"]');
     const routeGeometry = routeShape.getAttribute('points');
-    document.getElementById('experimental').checked = true;
     document.getElementById('gpsOn').click();
     assert.equal(watchCount, 1);
+    assert.equal(document.getElementById('experimental').checked, true);
     const emit = latitude => success({ coords: { latitude, longitude: 127.434, accuracy: 5 }, timestamp: Date.now() });
     emit(36.332);
+    assert.equal(centered, 1);
     assert.match(document.getElementById('gpsStatus').textContent, /실시간 GPS.*추정 위치/);
+    assert.match(document.getElementById('mapFixStatus').textContent, /실시간 GPS.*추정 위치/);
     assert.match(document.getElementById('routeDistance').textContent, /SVG 좌표 단위/);
     const first = document.querySelector('#gpsLayer circle:last-of-type').getAttribute('cx');
     emit(36.33201);

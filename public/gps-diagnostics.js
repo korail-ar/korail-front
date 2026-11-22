@@ -10,7 +10,7 @@ let routeGraph = null, routePoints = null, routeRequest = 0;
 const element = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v)); return node; };
 const option = (label, value) => { const node = document.createElement('option'); node.textContent = label; node.value = value; return node; };
 const current = () => settings.floors.find(f => f.floor === Number($('floor').value));
-const status = message => { $('gpsStatus').textContent = message; };
+const status = message => { $('gpsStatus').textContent = message; $('mapFixStatus').textContent = message; };
 async function loadRouteGraph(floor, mapId) {
   const request = ++routeRequest;
   routeGraph = null;
@@ -134,11 +134,13 @@ function start() {
   stop();
   if (!navigator.geolocation || !window.isSecureContext) { status('HTTPS 또는 localhost의 위치 기능이 필요합니다'); return; }
   source = 'gps'; latest = smoothed = null; rejected = 0;
+  lastMapPoint = null;
+  $('gpsLayer').replaceChildren();
   status('위치 권한 및 수신 대기');
   $('gpsOn').disabled = true; $('gpsOff').disabled = false;
   watch = navigator.geolocation.watchPosition(p => { $('permission').textContent = '허용'; receive(p, 'gps'); }, error => { $('permission').textContent = error.code === 1 ? '거부' : '확인 필요'; status(error.code === 1 ? '위치 권한 거부' : error.code === 3 ? '위치 수신 시간 초과' : '위치 수신 실패'); if (error.code === 1) { $('gpsLayer').replaceChildren(); stop(); } }, { enableHighAccuracy: true, maximumAge: 0, timeout: 20000 });
 }
-$('gpsOn').addEventListener('click', start);
+$('gpsOn').addEventListener('click', () => { $('experimental').checked = true; start(); });
 $('testRoute').addEventListener('click', drawTestRoute);
 $('gpsRetry').addEventListener('click', start);
 $('gpsCenter').addEventListener('click', () => {
@@ -146,6 +148,7 @@ $('gpsCenter').addEventListener('click', () => {
   const viewport = $('viewport'), scene = $('scene');
   const { x, y, width, height } = lastMapPoint;
   viewport.scrollTo?.({ left: Math.max(0, x / width * scene.clientWidth - viewport.clientWidth / 2), top: Math.max(0, y / height * scene.clientHeight - viewport.clientHeight / 2), behavior: 'smooth' });
+  viewport.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
 });
 $('gpsOff').addEventListener('click', () => { stop(); lastMapPoint = null; status('꺼짐'); $('gpsLayer').replaceChildren(); });
 $('experimental').addEventListener('change', () => { if (latest) display(latest); });

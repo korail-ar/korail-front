@@ -28,8 +28,8 @@
     <section class="gps-panel" aria-labelledby="liveTitle">
       <h2 id="liveTitle">2. 내 위치 보며 걷기</h2>
       <label class="preview-toggle"><input id="experimental" type="checkbox"> 미검증 추정 위치를 지도에 표시</label>
-      <p>현재 현장 기준점이 없어 이 선택을 켜야 지도에 점이 보입니다. 점은 GPS 측정값으로만 움직이며 경로에 자동으로 붙지 않습니다.</p>
-      <div class="gps-actions"><button id="gpsOn" class="primary">내 위치 켜기</button><button id="gpsRetry">위치 재확인</button><button id="gpsCenter">위치로 이동</button><button id="gpsOff" disabled>끄기</button></div>
+      <p>아래 버튼을 누르면 미검증 추정 위치 표시가 켜집니다. 점은 GPS 측정값으로만 움직이며 경로에 자동으로 붙지 않습니다.</p>
+      <div class="gps-actions"><button id="gpsOn" class="primary">내 위치 지도에 표시 (미검증 시험)</button><button id="gpsRetry">위치 재확인</button><button id="gpsCenter">위치로 이동</button><button id="gpsOff" disabled>끄기</button></div>
       <dl>
         <div><dt>상태</dt><dd id="gpsStatus" role="status">꺼짐</dd></div>
         <div><dt>수신 종류</dt><dd id="source">—</dd></div>
@@ -48,6 +48,7 @@
 
     <section class="map-section" aria-label="GPS와 시험 경로 지도">
       <div class="map-head"><h2>같은 지도에서 경로와 위치 비교</h2><div class="map-tools"><button id="zoomOut">−</button><button id="zoomIn">＋</button><button id="rotate">회전</button><button id="zoomReset">원래 크기</button></div></div>
+      <p id="mapFixStatus" class="map-fix-status" role="status">내 위치를 켜면 수신 상태가 여기에 표시됩니다.</p>
       <div id="viewport" class="viewport"><div id="scene" class="scene"><svg id="map" viewBox="0 0 1861 1961" role="img" aria-label="선택한 층 평면도와 GPS 시험 경로"><image id="floorImage" x="0" y="0" width="1861" height="1961" href="/assets/daejeon_marked_plans_and_coordinates/floor_3_marked.svg"/><g id="testRouteLayer"></g><g id="gpsLayer"></g></svg></div></div>
       <p>노란 선: 미검증 시험 경로 · 파란 점: GPS 추정 위치 · 파란 영역: 기기 GPS 오차 범위. 도면 정합 오차는 포함되지 않습니다.</p>
     </section>
