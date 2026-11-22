@@ -1,13 +1,63 @@
-import { calibration, candidatePreview, validPosition, smoothPosition } from './gps-location.js';
+import { calibration, candidatePreview, validPosition, smoothPosition, distanceToPolyline } from './gps-location.js';
+import { fastestRoute } from './assets/json/fastest-route.mjs';
 import { project } from './station-route-math.js';
 const $ = id => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
 const base = '/assets/daejeon_marked_plans_and_coordinates/';
 let lastMapPoint = null;
 let settings, points, watch = null, latest = null, smoothed = null, source = null, timer = null, zoom = 1, rotation = 0, rejected = 0;
+let routeGraph = null, routePoints = null, routeRequest = 0;
 const element = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v)); return node; };
+const option = (label, value) => { const node = document.createElement('option'); node.textContent = label; node.value = value; return node; };
 const current = () => settings.floors.find(f => f.floor === Number($('floor').value));
 const status = message => { $('gpsStatus').textContent = message; };
+async function loadRouteGraph(floor, mapId) {
+  const request = ++routeRequest;
+  routeGraph = null;
+  for (const id of ['testFrom', 'testTo', 'testRoute']) $(id).disabled = true;
+  $('testRouteStatus').textContent = '시험 경로 후보를 불러오는 중입니다.';
+  try {
+    const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
+    if (!response.ok) throw Error('경로 자료를 읽을 수 없습니다');
+    const graph = await response.json();
+    if (request !== routeRequest) return;
+    if (graph.floor !== floor || graph.mapId !== mapId || graph.weightUnit !== 's') throw Error('지도와 경로 자료가 맞지 않습니다');
+    routeGraph = graph;
+    for (const id of ['testFrom', 'testTo']) {
+      const select = $(id);
+      select.replaceChildren(option('시설을 선택하세요', ''));
+      for (const place of graph.places) select.add(option(place.name, place.id));
+      select.disabled = false;
+    }
+    $('testRoute').disabled = false;
+    $('testRouteStatus').textContent = `선택 가능 시설 ${graph.places.length}개 · 후보 통로 미검증`;
+  } catch (error) {
+    if (request === routeRequest) $('testRouteStatus').textContent = `시험 경로 불러오기 실패: ${error.message}`;
+  }
+}
+function drawTestRoute() {
+  $('testRouteLayer').replaceChildren();
+  routePoints = null;
+  $('routeDistance').textContent = '위치와 경로를 선택하세요';
+  if (!routeGraph) return;
+  const from = routeGraph.places.find(place => place.id === $('testFrom').value);
+  const to = routeGraph.places.find(place => place.id === $('testTo').value);
+  if (!from || !to || from.id === to.id) { $('testRouteStatus').textContent = '서로 다른 출발지와 목적지를 선택하세요'; return; }
+  try {
+    const route = fastestRoute(routeGraph, from.nodeId, to.nodeId);
+    if (!route.reachable) { $('testRouteStatus').textContent = '두 시설 사이의 후보 경로가 없습니다'; return; }
+    if (route.nodeIds.length < 2) { $('testRouteStatus').textContent = '두 시설이 같은 후보 접근점에 연결되어 경로선을 표시할 수 없습니다'; return; }
+    const nodes = new Map(routeGraph.nodes.map(node => [node.id, node]));
+    routePoints = route.nodeIds.map(id => nodes.get(id));
+    const layer = $('testRouteLayer');
+    const path = routePoints.map(p => `${p.x},${p.y}`).join(' ');
+    layer.append(element('polyline', { points: path, fill: 'none', stroke: '#17324c', 'stroke-width': 18, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    layer.append(element('polyline', { points: path, fill: 'none', stroke: '#ffdf3d', 'stroke-width': 10, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'data-role': 'gps-test-route' }));
+    for (const [place, color] of [[from, '#1a73e8'], [to, '#f48726']]) layer.append(element('circle', { cx: place.x, cy: place.y, r: 12, fill: color, stroke: '#fff', 'stroke-width': 3 }));
+    $('testRouteStatus').textContent = `${from.name} → ${to.name} · 미검증 시험 경로 (후보 통로 ${route.edgeIds.length}개)`;
+    if (latest) display(smoothed || latest);
+  } catch (error) { $('testRouteStatus').textContent = `경로 계산 실패: ${error.message}`; }
+}
 function refreshMap() {
   const f = current(), [x, y, w, h] = f.viewBox;
   $('map').setAttribute('viewBox', f.viewBox.join(' '));
@@ -19,7 +69,11 @@ function refreshMap() {
   $('validation').textContent = result.errors.length ? `${Math.max(...result.errors).toFixed(1)} SVG 단위 (최대)` : '독립 검증점 없음';
   $('pointCount').textContent = `도면 지점 ${points.filter(p => p.floor === f.floor).length}개 · 경로 노드와 별도`;
   $('gpsLayer').replaceChildren();
+  $('testRouteLayer').replaceChildren();
+  routePoints = null;
+  $('routeDistance').textContent = '위치와 경로를 선택하세요';
   lastMapPoint = null;
+  loadRouteGraph(f.floor, f.mapId);
   if (latest) display(latest);
 }
 function display(position) {
@@ -41,6 +95,7 @@ function display(position) {
   const [x, y] = project(fit, latitude, longitude);
   const [, , w, h] = f.viewBox;
   if (x < 0 || x > w || y < 0 || y > h) { lastMapPoint = null; status('지도 범위 밖'); return; }
+  $('routeDistance').textContent = routePoints ? `${distanceToPolyline(routePoints, { x, y }).toFixed(0)} SVG 좌표 단위 · 정합 미검증` : '시험 경로를 선택하세요';
   const [a, b, , d, e] = fit.p;
   const determinant = a * e - b * d;
   if (Math.abs(determinant) < 1e-10) { lastMapPoint = null; status('보정 행렬 오류'); return; }
@@ -84,6 +139,7 @@ function start() {
   watch = navigator.geolocation.watchPosition(p => { $('permission').textContent = '허용'; receive(p, 'gps'); }, error => { $('permission').textContent = error.code === 1 ? '거부' : '확인 필요'; status(error.code === 1 ? '위치 권한 거부' : error.code === 3 ? '위치 수신 시간 초과' : '위치 수신 실패'); if (error.code === 1) { $('gpsLayer').replaceChildren(); stop(); } }, { enableHighAccuracy: true, maximumAge: 0, timeout: 20000 });
 }
 $('gpsOn').addEventListener('click', start);
+$('testRoute').addEventListener('click', drawTestRoute);
 $('gpsRetry').addEventListener('click', start);
 $('gpsCenter').addEventListener('click', () => {
   if (!lastMapPoint) return;
