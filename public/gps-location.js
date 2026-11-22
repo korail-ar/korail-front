@@ -31,11 +31,11 @@ export function smoothPosition(previous, next) {
   const factor = Math.min(1, Math.max(0.25, distance / Math.max(1, next.coords.accuracy)));
   return { ...next, coords: { ...next.coords, latitude: previous.coords.latitude + factor * (next.coords.latitude - previous.coords.latitude), longitude: previous.coords.longitude + factor * (next.coords.longitude - previous.coords.longitude) } };
 }
-export function edgeCandidates(graph, point, accuracyPx = Infinity) {
+export function edgeCandidates(graph, point, accuracyPx = Infinity, includeUnverified = false) {
   const nodes = new Map(graph.nodes.map(n => [n.id, n]));
   return graph.edges.flatMap(edge => {
     const a = nodes.get(edge.source), b = nodes.get(edge.target);
-    if (!a || !b || edge.verified === false) return [];
+    if (!a || !b || edge.enabled === false || (!includeUnverified && edge.verified !== true)) return [];
     const dx = b.x - a.x, dy = b.y - a.y, length2 = dx * dx + dy * dy;
     if (!length2) return [];
     const t = Math.max(0, Math.min(1, ((point.x - a.x) * dx + (point.y - a.y) * dy) / length2));
@@ -43,8 +43,11 @@ export function edgeCandidates(graph, point, accuracyPx = Infinity) {
     return distance <= accuracyPx ? [{ edge, x, y, t, distance }] : [];
   }).sort((a, b) => a.distance - b.distance);
 }
-export function matchEdge(graph, point, accuracyPx, previous = null) {
-  const candidates = edgeCandidates(graph, point, accuracyPx).map(candidate => ({ ...candidate, score: candidate.distance + (previous && previous.edge.id === candidate.edge.id ? -Math.min(accuracyPx / 3, 8) : 0) }));
+export function matchEdge(graph, point, accuracyPx, previous = null, includeUnverified = false) {
+  const candidates = edgeCandidates(graph, point, accuracyPx, includeUnverified).map(candidate => {
+    const connected = previous && [candidate.edge.source, candidate.edge.target].some(id => id === previous.edge.source || id === previous.edge.target);
+    return { ...candidate, score: candidate.distance - (previous?.edge.id === candidate.edge.id ? Math.min(accuracyPx / 3, 8) : connected ? Math.min(accuracyPx / 6, 4) : 0) };
+  });
   candidates.sort((a, b) => a.score - b.score);
   if (!candidates.length || (candidates[1] && candidates[1].score - candidates[0].score < Math.max(3, accuracyPx / 4))) return null;
   return candidates[0];
