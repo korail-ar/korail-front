@@ -19,6 +19,7 @@ let graph, floor = 3, request = 0, selected = null, confirmed = null, match = nu
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
 let compassOffset = null, headingMode = 'pending';
 let fullViewBox = [0, 0, 1861, 1961], autoZoom = true;
+let simulationTimer = null;
 const logs = [];
 const log = message => { logs.unshift(`${new Date().toLocaleTimeString('ko-KR')} ${message}`); logs.length = Math.min(logs.length, 12); $('log').textContent = logs.join('\n'); };
 const status = message => { $('status').textContent = message; $('notice').textContent = message; };
@@ -246,7 +247,7 @@ async function start() {
   setTimeout(() => { if (running && motionSamples === 0) status('동작 센서 값이 없습니다. 기기·브라우저 센서 권한을 확인하세요.'); }, 3000);
   setTimeout(() => { if (running && heading.last === null) status('방향 센서 값이 없습니다. 나침반 지원·권한을 확인하세요.'); }, 3500);
 }
-function stop() { if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
+function stop() { if (simulationTimer !== null) { clearTimeout(simulationTimer); simulationTimer = null; } if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
 function reset() { stop(); detector.reset(); heading.reset(); headingMode = 'pending'; pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
 
 $('floor').addEventListener('change', loadFloor);
@@ -284,7 +285,8 @@ $('simulate').addEventListener('click', () => {
   stop(); if (!confirmed) { status('모의 테스트도 출발 위치를 먼저 확정하세요'); return; }
   source = 'simulation'; $('source').textContent = '모의 센서 · 실제 센서 아님'; pdr.reset(confirmed); navigation.reset(); detector.reset();
   const first = mapHeading() ?? 0, base = Date.now();
-  for (let i = 0; i < 16; i++) {
+  let i = 0;
+  const advance = () => {
     const direction = i < 8 ? first : wrap(first + 90), at = base + i * 600;
     for (let t = 0; t <= 200; t += 50) {
       const sample = { x: t === 50 ? 5 : 0.1, y: 0, z: 0, timestamp: at + t };
@@ -292,8 +294,11 @@ $('simulate').addEventListener('click', () => {
       recorder.add({ event: 'simulated-sensor', source: 'simulation', acceleration: sample, heading: direction, signal: outcome.signal });
       if (outcome.step) processStep(sample.timestamp, 'simulation', direction);
     }
-  }
-  status('모의 이동 완료 · 실제 센서 결과 아님');
+    i++;
+    if (i < 16) { status(`모의 이동 재생 중 · ${i}/16 구간`); simulationTimer = setTimeout(advance, 180); }
+    else { simulationTimer = null; status('모의 이동 완료 · 실제 센서 결과 아님'); }
+  };
+  advance();
 });
 ['sensitivity', 'minInterval', 'maxInterval'].forEach(id => $(id).addEventListener('change', () => { detector.sensitivity = Number($('sensitivity').value) || 1; detector.minInterval = Number($('minInterval').value) || 300; detector.maxInterval = Number($('maxInterval').value) || 1200; }));
 const support = SensorProvider.support(); $('sensorSupport').textContent = `동작 ${support.motion ? '지원' : '미지원'} · 방향 ${support.orientation ? '지원' : '미지원'} · ${support.secure ? '보안 연결' : 'HTTPS 필요'}`;

@@ -21,6 +21,17 @@ test('manual sensor values visibly move the marker on the real 3F map', async ()
     const marker = () => [...document.querySelectorAll('#positionLayer circle')].find(node => node.getAttribute('fill') === '#1874ca');
     const start = { x: Number(marker().getAttribute('cx')), y: Number(marker().getAttribute('cy')) };
     document.getElementById('simulate').click();
+    const waitForSteps = async count => {
+      const deadline = Date.now() + 5000;
+      while (Number(document.getElementById('steps').textContent) < count && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 30));
+      assert.ok(Number(document.getElementById('steps').textContent) >= count, `simulation should reach ${count} steps`);
+      return { x: Number(marker().getAttribute('cx')), y: Number(marker().getAttribute('cy')) };
+    };
+    const middle = await waitForSteps(6);
+    assert.ok(Math.hypot(middle.x - start.x, middle.y - start.y) > 0, 'the point should move partway through playback');
+    const later = await waitForSteps(12);
+    assert.ok(Math.hypot(later.x - middle.x, later.y - middle.y) > 0, 'the point should continue moving after the first playback segment');
+    await waitForSteps(15);
     const end = { x: Number(marker().getAttribute('cx')), y: Number(marker().getAttribute('cy')) };
     const box = document.getElementById('map').getAttribute('viewBox').split(' ').map(Number);
     const shift = { x: (end.x - start.x) / box[2] * 360, y: (end.y - start.y) / box[3] * 360 };
