@@ -155,8 +155,9 @@ function draw() {
 function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
   const movedM = confirmed && pdr.point && pixelsPerMeter ? Math.hypot(pdr.point.x - confirmed.x, pdr.point.y - confirmed.y) / pixelsPerMeter : 0;
-  $('mapMovement').textContent = pdr.mapSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정 · ${headingMode === 'relative' ? '상대 방향만 사용, 동서남북 미확정' : uncertainHeading ? '방위 오차 큼' : '나침반 기준'}` : !confirmed ? '출발점 미설정' : headingMode === 'pending' ? '방향 센서 대기 · 이동 보류' : '첫 방향 걸음 대기';
+  $('mapMovement').textContent = pdr.mapSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정 · ${source === 'simulation' ? '모의 이동' : headingMode === 'relative' ? '상대 방향만 사용, 동서남북 미확정' : uncertainHeading ? '방위 오차 큼' : '나침반 기준'}` : !confirmed ? '출발점 미설정' : headingMode === 'pending' ? '방향 센서 대기 · 이동 보류' : '첫 방향 걸음 대기';
   $('mapMovementSummary').textContent = $('mapMovement').textContent;
+  $('mapCoordinates').textContent = confirmed && pdr.point ? `Δx ${(pdr.point.x - confirmed.x).toFixed(1)}, Δy ${(pdr.point.y - confirmed.y).toFixed(1)} SVG` : '출발점 대기';
   $('eastWest').textContent = pdr.directionalSteps ? `${pdr.eastM >= 0 ? '동' : '서'} ${Math.abs(pdr.eastM).toFixed(2)} m 추정` : '측정 대기';
   $('northSouth').textContent = pdr.directionalSteps ? `${pdr.northM >= 0 ? '북' : '남'} ${Math.abs(pdr.northM).toFixed(2)} m 추정` : '측정 대기';
   $('heading').textContent = heading.absolute ? cardinalReading(heading.last, heading.accuracyDegrees) : '절대 나침반 측정 불가';
