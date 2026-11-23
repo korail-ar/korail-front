@@ -18,6 +18,20 @@ test('stationary rotation and isolated shake do not add steps; periodic pulses d
   assert.ok(count >= 2 && count <= 4);
 });
 
+test('walking oscillation is counted with and without gravity while steady motion is ignored', () => {
+  for (const includesGravity of [false, true]) {
+    const detector = new StepDetector();
+    let count = 0;
+    for (let t = 0; t <= 6000; t += 40) {
+      const walking = t >= 1200 && t < 4800;
+      const magnitude = (includesGravity ? 9.8 : 0.8) + (walking ? 0.9 * Math.sin(2 * Math.PI * (t - 1200) / 600) : 0);
+      count += Number(detector.push({ x: magnitude, y: 0, z: 0, includesGravity, timestamp: t + 1 }).step);
+    }
+    assert.ok(count >= 3 && count <= 7, `${includesGravity ? 'gravity' : 'gravity-free'} count ${count}`);
+    assert.ok(detector.peakCount >= count);
+  }
+});
+
 test('relative heading calibration and meter-to-map movement', () => {
   const heading = new HeadingEstimator();
   heading.sample({ alpha: 0 });

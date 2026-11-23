@@ -192,12 +192,19 @@ function processStep(timestamp, mode = source, forcedHeading = null) {
 function onMotion(event) {
   if (!running || source !== 'real') return;
   const vector = event.acceleration && [event.acceleration.x, event.acceleration.y, event.acceleration.z].every(Number.isFinite) ? event.acceleration : event.accelerationIncludingGravity;
-  if (!vector) { status('가속도 센서 값 없음'); return; }
+  if (!vector || ![vector.x, vector.y, vector.z].every(Number.isFinite)) { $('motionDiagnostic').textContent = '이벤트 수신 · 가속도 축 값 없음'; status('가속도 센서 값 없음'); return; }
   const includesGravity = vector === event.accelerationIncludingGravity, timestamp = performance.timeOrigin + event.timeStamp;
   const interval = lastMotionAt ? timestamp - lastMotionAt : null; lastMotionAt = timestamp;
   const sample = { timestamp, intervalMs: interval, acceleration: { x: vector.x, y: vector.y, z: vector.z }, includesGravity, orientation: latestOrientation, steps: pdr.steps, source: 'real' };
   const outcome = detector.push({ ...vector, includesGravity, timestamp });
-  if (++motionSamples % 20 === 0) { updateDashboard({ ...sample, signal: outcome.signal.toFixed(2) }); recorder.add({ event: 'sensor', ...sample, signal: outcome.signal }); $('sensorSupport').textContent = `동작 수신 ${motionSamples}건 · 방향 ${heading.last === null ? '대기' : '수신'}`; }
+  motionSamples++;
+  if (motionSamples === 1 || motionSamples % 10 === 0) {
+    updateDashboard({ ...sample, signal: outcome.signal.toFixed(2), baseline: outcome.baseline?.toFixed(2), peakCount: outcome.peakCount });
+    recorder.add({ event: 'sensor', ...sample, signal: outcome.signal, peakCount: outcome.peakCount });
+    $('sensorSupport').textContent = `동작 수신 ${motionSamples}건 · 방향 ${heading.last === null ? '대기' : '수신'}`;
+    $('motionDiagnostic').textContent = `수신 ${motionSamples} · 피크 ${outcome.peakCount} · 신호 ${outcome.signal.toFixed(2)} m/s²`;
+    if (motionSamples >= 100 && pdr.steps === 0) status(outcome.peakCount === 0 ? '동작 값은 수신 중이지만 보행 피크가 없습니다. 휴대폰을 들고 걸으며 민감도를 조정해 보세요.' : '보행 피크는 있으나 주기적인 걸음으로 인정되지 않았습니다. 걸음 간격 설정을 확인하세요.');
+  }
   if (outcome.step) processStep(timestamp);
 }
 let latestOrientation = null;
@@ -220,7 +227,7 @@ async function start() {
   setTimeout(() => { if (running && heading.last === null) status('방향 센서 값이 없습니다. 나침반 지원·권한을 확인하세요.'); }, 3500);
 }
 function stop() { if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
-function reset() { stop(); detector.reset(); heading.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
+function reset() { stop(); detector.reset(); heading.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
 
 $('floor').addEventListener('change', loadFloor);
 $('map').addEventListener('click', event => {
