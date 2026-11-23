@@ -120,17 +120,16 @@ function draw() {
 }
 function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
-  $('heading').textContent = heading.heading === null ? '확인 필요' : `${heading.heading.toFixed(0)}°${uncertainHeading ? ' · 불확실' : ' · 추정'}`;
+  $('heading').textContent = heading.heading === null ? heading.last === null ? '센서 값 대기' : `기기 ${heading.last.toFixed(0)}° · 지도 보정 필요` : `${heading.heading.toFixed(0)}°${uncertainHeading ? ' · 불확실' : ' · 추정'}`;
   $('matching').textContent = result ? `${result.candidates.length}개 · ${result.match?.edge.id || result.reason}` : '없음';
   if (observation) $('raw').textContent = JSON.stringify(observation, null, 2);
 }
 function processStep(timestamp, mode = source, forcedHeading = null) {
-  if (!confirmed) return;
   const direction = forcedHeading ?? heading.heading;
-  if (mode === 'real' && (direction === null || uncertainHeading)) {
+  if (!confirmed || mode === 'real' && (direction === null || uncertainHeading)) {
     const step = pdr.step({ heading: null, strideM: Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65)), pixelsPerMeter, timestamp, source: mode });
     recorder.add({ event: 'step', floor, ...step, headingUncertain: true, navigation: '판단 보류' });
-    updateDashboard(); status('방향 불확실 · 걸음만 기록, 지도 이동 보류. 진행 방향을 확인하세요.'); return;
+    updateDashboard(); status(confirmed ? '방향 불확실 · 걸음만 기록, 지도 이동 보류. 진행 방향을 확인하세요.' : '걸음 감지 중 · 지도 출발 위치를 선택하면 이동 추정을 시작합니다.'); return;
   }
   if (mode === 'real' && lastStepHeading !== null && Math.abs(difference(direction, lastStepHeading)) > 35) {
     uncertainHeading = true; status('방향 불확실 · 몸과 휴대폰 회전을 구분할 수 없습니다. 방향을 다시 보정하세요.'); log('큰 방향 변화 감지: 자동 이동 보류'); return;
@@ -162,7 +161,7 @@ function onMotion(event) {
   const interval = lastMotionAt ? timestamp - lastMotionAt : null; lastMotionAt = timestamp;
   const sample = { timestamp, intervalMs: interval, acceleration: { x: vector.x, y: vector.y, z: vector.z }, includesGravity, orientation: latestOrientation, steps: pdr.steps, source: 'real' };
   const outcome = detector.push({ ...vector, includesGravity, timestamp });
-  if (++motionSamples % 20 === 0) { updateDashboard({ ...sample, signal: outcome.signal.toFixed(2) }); recorder.add({ event: 'sensor', ...sample, signal: outcome.signal }); }
+  if (++motionSamples % 20 === 0) { updateDashboard({ ...sample, signal: outcome.signal.toFixed(2) }); recorder.add({ event: 'sensor', ...sample, signal: outcome.signal }); $('sensorSupport').textContent = `동작 수신 ${motionSamples}건 · 방향 ${heading.last === null ? '대기' : '수신'}`; }
   if (outcome.step) processStep(timestamp);
 }
 let latestOrientation = null;
@@ -175,10 +174,11 @@ function onOrientation(event) {
 }
 const provider = new SensorProvider({ onMotion, onOrientation, onStatus: message => { $('sensorSupport').textContent = message; log(message); } });
 async function start() {
-  if (!confirmed || !route) { status('출발 위치와 목적지 경로를 먼저 확정하세요'); return; }
   source = 'real'; $('source').textContent = '실제 센서'; detector.reset(); lastMotionAt = 0;
   if (!await provider.start()) return;
-  running = true; $('start').disabled = true; $('stop').disabled = false; status('추적 중 · 방향 보정 필요');
+  running = true; motionSamples = 0; $('start').disabled = true; $('stop').disabled = false; status('센서 추적 중 · 지도 이동은 출발 위치와 방향 보정 후 시작');
+  setTimeout(() => { if (running && motionSamples === 0) status('동작 센서 값이 없습니다. 기기·브라우저 센서 권한을 확인하세요.'); }, 3000);
+  setTimeout(() => { if (running && heading.last === null) status('방향 센서 값이 없습니다. 나침반 지원·권한을 확인하세요.'); }, 3500);
 }
 function stop() { if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
 function reset() { stop(); detector.reset(); heading.reset(); pdr.reset(); navigation.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
