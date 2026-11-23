@@ -123,7 +123,7 @@ function autoCalibrate() {
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
-  $('map').setAttribute('viewBox', (autoZoom && pdr.mapSteps > 0 ? trackingViewBox(fullViewBox, pdr.point) : fullViewBox).join(' '));
+  $('map').setAttribute('viewBox', (autoZoom && pdr.mapSteps > 0 ? trackingViewBox(fullViewBox, confirmed) : fullViewBox).join(' '));
   if (route?.points?.length) {
     const path = route.points.map(point => `${point.x},${point.y}`).join(' ');
     routeLayer.append(svg('polyline', { points: path, fill: 'none', stroke: '#263b4e', 'stroke-width': 13, 'stroke-linejoin': 'round' }));

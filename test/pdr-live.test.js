@@ -35,16 +35,23 @@ test('real motion pulses move the map estimate with absolute or relative orienta
     Object.defineProperties(orientation, { alpha: { value: 270 }, absolute: { value: absolute } });
     dom.window.dispatchEvent(orientation);
     const initial = Number(document.querySelectorAll('#positionLayer circle')[1].getAttribute('cy'));
+    let firstZoomViewBox = null, firstZoomPointY = null;
     for (let i = 0; i < 5; i++) {
       for (let t = 0; t <= 200; t += 50) {
         const motion = new dom.window.Event('devicemotion');
         Object.defineProperties(motion, { acceleration: { value: { x: t === 50 ? 5 : 0.1, y: 0, z: 0 } }, timeStamp: { value: 1000 + i * 600 + t } });
         dom.window.dispatchEvent(motion);
       }
+      if (i === 1) {
+        firstZoomViewBox = document.getElementById('map').getAttribute('viewBox');
+        firstZoomPointY = Number(document.querySelectorAll('#positionLayer circle')[1].getAttribute('cy'));
+      }
     }
     assert.ok(Number(document.getElementById('steps').textContent) >= 2);
     const moved = Number(document.querySelectorAll('#positionLayer circle')[1].getAttribute('cy'));
     assert.ok(moved < initial, `expected map y to decrease: ${initial} -> ${moved}; ${document.getElementById('mapMovement').textContent}`);
+    assert.ok(moved < firstZoomPointY, 'the point must continue moving after the first zoom');
+    assert.equal(document.getElementById('map').getAttribute('viewBox'), firstZoomViewBox, 'the viewport must stay fixed while testing short walks');
     assert.match(document.getElementById('mapMovement').textContent, /이동 추정/);
     if (!absolute) {
       assert.match(document.getElementById('mapMovement').textContent, /동서남북 미확정/);
