@@ -9,6 +9,7 @@ Node.js 22 이상에서 `npm install` 후 `npm run dev`를 실행합니다. `.en
 - `/`: 3층 시설 검색, 경로 표시, 단계별 안내
 - `/festivals.html`: 진행 중이거나 예정된 대전 축제 최대 3개
 - `/gps-test.html`: 위치 수신과 지도 좌표 보정을 확인하는 별도 테스트 화면
+- `/pdr-test.html`: 스마트폰 걸음·방향 센서로 상대 위치를 추정하는 실험 화면 ([기술 정리](docs/INDOOR_POSITIONING_TECH.md), [테스트 절차](docs/PDR_TEST.md))
 
 ## 코드 흐름
 
