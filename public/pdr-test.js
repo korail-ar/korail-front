@@ -149,6 +149,7 @@ function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
   const movedM = confirmed && pdr.point && pixelsPerMeter ? Math.hypot(pdr.point.x - confirmed.x, pdr.point.y - confirmed.y) / pixelsPerMeter : 0;
   $('mapMovement').textContent = pdr.directionalSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정${uncertainHeading ? ' · 방향 확인 중' : ''}` : !confirmed ? '출발점 미설정' : !heading.absolute ? '절대 나침반 없음 · 이동 보류' : compassOffset === null ? '지도 방위 기준 없음 · 이동 보류' : uncertainHeading ? '방향 안정 확인 중 · 이동 보류' : '첫 방향 걸음 대기';
+  $('mapMovementSummary').textContent = $('mapMovement').textContent;
   $('eastWest').textContent = pdr.directionalSteps ? `${pdr.eastM >= 0 ? '동' : '서'} ${Math.abs(pdr.eastM).toFixed(2)} m 추정` : '측정 대기';
   $('northSouth').textContent = pdr.directionalSteps ? `${pdr.northM >= 0 ? '북' : '남'} ${Math.abs(pdr.northM).toFixed(2)} m 추정` : '측정 대기';
   $('heading').textContent = heading.absolute ? cardinalReading(heading.last, heading.accuracyDegrees) : '절대 나침반 측정 불가';
