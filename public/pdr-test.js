@@ -9,6 +9,7 @@ import { SensorProvider } from './location-engine/sensor-provider.js';
 import { TestRecorder } from './location-engine/test-recorder.js';
 import { mapCompassOffset } from './location-engine/map-orientation.js';
 import { routeSegments, DirectionTracker } from './location-engine/route-directions.js';
+import { trackingViewBox } from './location-engine/map-viewport.js';
 
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
@@ -18,6 +19,7 @@ const directionTracker = new DirectionTracker();
 let graph, floor = 3, request = 0, selected = null, confirmed = null, match = null, route = null, destination = null, pixelsPerMeter = null, scaleVerified = false;
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
 let compassOffset = null;
+let fullViewBox = [0, 0, 1861, 1961], autoZoom = true;
 const logs = [];
 const log = message => { logs.unshift(`${new Date().toLocaleTimeString('ko-KR')} ${message}`); logs.length = Math.min(logs.length, 12); $('log').textContent = logs.join('\n'); };
 const status = message => { $('status').textContent = message; $('notice').textContent = message; };
@@ -48,7 +50,8 @@ async function loadFloor() {
     }
     $('compassStatus').textContent = compassOffset === null ? '이 층은 지도 방향 기준이 없어 나침반과 지도 정렬을 보류합니다.' : `동·서광장 기준 지도 회전 ${compassOffset.toFixed(0)}° · 지리 좌표 미검증, 지도 정렬은 잠정값`;
     const boxes = { 1: [0, 0, 984, 2039], 2: [0, 0, 700, 589], 3: [0, 0, 1861, 1961], 4: [0, 0, 700, 1033] };
-    const [x, y, width, height] = boxes[floor]; $('map').setAttribute('viewBox', boxes[floor].join(' '));
+    fullViewBox = boxes[floor];
+    const [x, y, width, height] = fullViewBox; $('map').setAttribute('viewBox', fullViewBox.join(' '));
     Object.entries({ x, y, width, height }).forEach(([key, value]) => $('floorImage').setAttribute(key, value));
     $('floorImage').setAttribute('href', `/assets/daejeon_marked_plans_and_coordinates/floor_${floor}_marked.svg`);
     $('destination').replaceChildren(option('목적지 선택', ''));
@@ -74,7 +77,7 @@ function confirmPoint() {
   if (!candidate) { status('통로에서 너무 멉니다. 다른 위치를 선택하세요.'); return; }
   confirmed = { x: candidate.x, y: candidate.y }; match = candidate; pdr.reset(confirmed); navigation.reset(); directionTracker.reset(); walkingHeadingGate.reset(); lastStepHeading = null; uncertainHeading = !heading.absolute || compassOffset === null;
   $('guide').textContent = `출발점 ${candidate.edge.id} 선택 · 방향 보정 후 추적 시작`;
-  status('출발 위치 확인 · 방향 보정 필요'); draw();
+  status(uncertainHeading ? '출발 위치 확인 · 절대 나침반 대기' : '출발 위치 확인 · 지도 이동 준비'); updateDashboard(); draw();
 }
 function drawRoute() {
   if (!graph || !confirmed) { status('먼저 출발 위치를 확정하세요'); return; }
@@ -120,6 +123,7 @@ function autoCalibrate() {
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
+  $('map').setAttribute('viewBox', (autoZoom && pdr.directionalSteps > 0 ? trackingViewBox(fullViewBox, pdr.point) : fullViewBox).join(' '));
   if (route?.points?.length) {
     const path = route.points.map(point => `${point.x},${point.y}`).join(' ');
     routeLayer.append(svg('polyline', { points: path, fill: 'none', stroke: '#263b4e', 'stroke-width': 13, 'stroke-linejoin': 'round' }));
@@ -143,6 +147,8 @@ function draw() {
 }
 function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
+  const movedM = confirmed && pdr.point && pixelsPerMeter ? Math.hypot(pdr.point.x - confirmed.x, pdr.point.y - confirmed.y) / pixelsPerMeter : 0;
+  $('mapMovement').textContent = pdr.directionalSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정${uncertainHeading ? ' · 방향 확인 중' : ''}` : !confirmed ? '출발점 미설정' : !heading.absolute ? '절대 나침반 없음 · 이동 보류' : compassOffset === null ? '지도 방위 기준 없음 · 이동 보류' : uncertainHeading ? '방향 안정 확인 중 · 이동 보류' : '첫 방향 걸음 대기';
   $('eastWest').textContent = pdr.directionalSteps ? `${pdr.eastM >= 0 ? '동' : '서'} ${Math.abs(pdr.eastM).toFixed(2)} m 추정` : '측정 대기';
   $('northSouth').textContent = pdr.directionalSteps ? `${pdr.northM >= 0 ? '북' : '남'} ${Math.abs(pdr.northM).toFixed(2)} m 추정` : '측정 대기';
   $('heading').textContent = heading.absolute ? cardinalReading(heading.last, heading.accuracyDegrees) : '절대 나침반 측정 불가';
@@ -239,6 +245,7 @@ function stop() { if (provider.active) provider.stop(); running = false; $('star
 function reset() { stop(); detector.reset(); heading.reset(); walkingHeadingGate.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
 
 $('floor').addEventListener('change', loadFloor);
+$('zoomToggle').addEventListener('click', () => { autoZoom = !autoZoom; $('zoomToggle').textContent = `추적 위치 확대: ${autoZoom ? '켜짐' : '꺼짐'}`; draw(); });
 $('map').addEventListener('click', event => {
   if (!graph) return;
   const point = $('map').createSVGPoint(); point.x = event.clientX; point.y = event.clientY;

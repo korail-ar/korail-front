@@ -6,6 +6,7 @@ import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
 import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
 import { routeSegments, DirectionTracker } from '../public/location-engine/route-directions.js';
+import { trackingViewBox } from '../public/location-engine/map-viewport.js';
 
 test('stationary rotation and isolated shake do not add steps; periodic pulses do', () => {
   const detector = new StepDetector();
@@ -115,4 +116,14 @@ test('map movement can resume after three consistent walking headings', () => {
   assert.equal(gate.streak, 1);
   assert.equal(gate.observe(null), false);
   assert.equal(gate.streak, 0);
+});
+
+test('tracking viewport magnifies movement and remains inside the floor plan', () => {
+  const full = [0, 0, 1861, 1961];
+  const center = trackingViewBox(full, { x: 900, y: 1000 });
+  assert.ok(center[2] < full[2] / 2);
+  assert.ok(center[0] <= 900 && center[0] + center[2] >= 900);
+  const edge = trackingViewBox(full, { x: 5, y: 5 });
+  assert.equal(edge[0], 0);
+  assert.equal(edge[1], 0);
 });
