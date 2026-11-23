@@ -5,6 +5,7 @@ import { HeadingEstimator, cardinal, cardinalReading } from '../public/location-
 import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
 import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
+import { routeSegments, DirectionTracker } from '../public/location-engine/route-directions.js';
 
 test('stationary rotation and isolated shake do not add steps; periodic pulses do', () => {
   const detector = new StepDetector();
@@ -65,4 +66,26 @@ test('cardinal display requires absolute heading and rejects uncalibrated iPhone
   assert.equal(cardinal(estimator.last), '동');
   assert.match(cardinalReading(80, 8), /^동/);
   assert.match(cardinalReading(45, 8), /^방위 불확실/);
+});
+
+test('Dijkstra route geometry becomes cardinal legs and sustained walking mismatch raises suspicion', () => {
+  const segments = routeSegments([{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }], 0);
+  assert.deepEqual(segments.map(segment => segment.cardinal), ['동', '남']);
+  const tracker = new DirectionTracker();
+  const aligned = tracker.observe({ segments, point: { x: 30, y: 0 }, compassBearing: 115, accuracyDegrees: 10 });
+  assert.equal(aligned.status, '경로 방향과 대체로 일치');
+  let mismatch;
+  for (let i = 0; i < 3; i++) mismatch = tracker.observe({ segments, point: { x: 30, y: 0 }, compassBearing: 270, accuracyDegrees: 10 });
+  assert.equal(mismatch.status, '경로 이탈 의심 · 방향 불일치 지속');
+  assert.equal(mismatch.mismatchStreak, 3);
+  const held = tracker.observe({ segments, point: { x: 30, y: 0 }, compassBearing: null, accuracyDegrees: null });
+  assert.equal(held.status, '방향 판단 보류');
+});
+
+test('route turn accepts either adjacent direction at a junction', () => {
+  const segments = routeSegments([{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }], 0);
+  const tracker = new DirectionTracker();
+  const result = tracker.observe({ segments, point: { x: 100, y: 0 }, compassBearing: 180, accuracyDegrees: 8 });
+  assert.equal(result.expected.cardinal, '남');
+  assert.equal(result.status, '경로 방향과 대체로 일치');
 });
