@@ -123,7 +123,7 @@ function autoCalibrate() {
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
-  $('map').setAttribute('viewBox', (autoZoom && pdr.mapSteps > 0 ? trackingViewBox(fullViewBox, confirmed) : fullViewBox).join(' '));
+  $('map').setAttribute('viewBox', (autoZoom && pdr.mapSteps > 0 ? trackingViewBox(fullViewBox, confirmed, 6) : fullViewBox).join(' '));
   if (route?.points?.length) {
     const path = route.points.map(point => `${point.x},${point.y}`).join(' ');
     routeLayer.append(svg('polyline', { points: path, fill: 'none', stroke: '#263b4e', 'stroke-width': 13, 'stroke-linejoin': 'round' }));
@@ -137,6 +137,13 @@ function draw() {
   }
   const point = pdr.point || selected;
   if (!point) return;
+  if (confirmed && pdr.mapSteps) {
+    const points = [confirmed, ...pdr.history.map(step => step.pdrPoint).filter(Boolean)];
+    const path = points.map(position => `${position.x},${position.y}`).join(' ');
+    positionLayer.append(svg('polyline', { points: path, fill: 'none', stroke: 'white', 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    positionLayer.append(svg('polyline', { points: path, fill: 'none', stroke: '#1174c9', 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    positionLayer.append(svg('circle', { cx: confirmed.x, cy: confirmed.y, r: 7, fill: 'white', stroke: '#1174c9', 'stroke-width': 3 }));
+  }
   const radius = pdr.point && pixelsPerMeter ? Math.min(250, Math.max(12, pdr.uncertaintyM * pixelsPerMeter)) : 20;
   positionLayer.append(svg('circle', { cx: point.x, cy: point.y, r: radius, fill: '#2184dd25', stroke: '#2184dd', 'stroke-width': 2, 'stroke-dasharray': '7 5' }));
   positionLayer.append(svg('circle', { cx: point.x, cy: point.y, r: 10, fill: confirmed ? '#1874ca' : '#8359bf', stroke: 'white', 'stroke-width': 3 }));

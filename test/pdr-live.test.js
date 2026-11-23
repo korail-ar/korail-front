@@ -52,6 +52,10 @@ test('real motion pulses move the map estimate with absolute or relative orienta
     assert.ok(moved < initial, `expected map y to decrease: ${initial} -> ${moved}; ${document.getElementById('mapMovement').textContent}`);
     assert.ok(moved < firstZoomPointY, 'the point must continue moving after the first zoom');
     assert.equal(document.getElementById('map').getAttribute('viewBox'), firstZoomViewBox, 'the viewport must stay fixed while testing short walks');
+    const trail = document.querySelector('#positionLayer polyline');
+    assert.ok(trail, 'the movement trail must be visible');
+    assert.ok(trail.getAttribute('points').split(' ').length >= 3, 'the trail must contain repeated movement positions');
+    assert.ok(Number(firstZoomViewBox.split(' ')[2]) < 400, 'the short-walk view must be magnified enough to show a few steps');
     assert.match(document.getElementById('mapMovement').textContent, /이동 추정/);
     if (!absolute) {
       assert.match(document.getElementById('mapMovement').textContent, /동서남북 미확정/);
