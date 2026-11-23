@@ -1,7 +1,7 @@
 import { fastestRoute } from './assets/json/fastest-route.mjs';
 import { edgeCandidates, routeFromEdge } from './gps-location.js';
 import { StepDetector } from './location-engine/step-detector.js';
-import { HeadingEstimator, wrap, difference } from './location-engine/heading-estimator.js';
+import { HeadingEstimator, wrap, difference, cardinalReading } from './location-engine/heading-estimator.js';
 import { PdrEngine } from './location-engine/pdr-engine.js';
 import { matchPosition } from './location-engine/map-matcher.js';
 import { NavigationState } from './location-engine/navigation-state.js';
@@ -14,7 +14,7 @@ const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); fo
 const detector = new StepDetector(), heading = new HeadingEstimator(), pdr = new PdrEngine(), navigation = new NavigationState(), recorder = new TestRecorder();
 let graph, floor = 3, request = 0, selected = null, confirmed = null, match = null, route = null, destination = null, pixelsPerMeter = null, scaleVerified = false;
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
-let compassOffset = null, autoCompassRequested = true;
+let compassOffset = null;
 const logs = [];
 const log = message => { logs.unshift(`${new Date().toLocaleTimeString('ko-KR')} ${message}`); logs.length = Math.min(logs.length, 12); $('log').textContent = logs.join('\n'); };
 const status = message => { $('status').textContent = message; $('notice').textContent = message; };
@@ -27,7 +27,7 @@ function graphScale(data) {
 async function loadFloor() {
   const id = ++request;
   stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); heading.reset(); detector.reset(); uncertainHeading = true;
-  floor = Number($('floor').value); autoCompassRequested = true; $('guide').textContent = '지도와 그래프를 불러오는 중'; draw();
+  floor = Number($('floor').value); $('guide').textContent = '지도와 그래프를 불러오는 중'; draw();
   try {
     const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
     if (!response.ok) throw Error(`HTTP ${response.status}`);
@@ -43,7 +43,7 @@ async function loadFloor() {
         if (west && east) compassOffset = mapCompassOffset({ ...west, ...west.candidateGps }, { ...east, ...east.candidateGps });
       } catch { /* manual alignment remains available */ }
     }
-    $('compassStatus').textContent = compassOffset === null ? '이 층은 동·서광장 기준 좌표가 없어 수동 방향 보정이 필요합니다.' : `동·서광장 기준 지도 회전 ${compassOffset.toFixed(0)}° · 지리 좌표 미검증, 나침반 자동 보정은 잠정값`;
+    $('compassStatus').textContent = compassOffset === null ? '이 층은 지도 방향 기준이 없어 나침반과 지도 정렬을 보류합니다.' : `동·서광장 기준 지도 회전 ${compassOffset.toFixed(0)}° · 지리 좌표 미검증, 지도 정렬은 잠정값`;
     const boxes = { 1: [0, 0, 984, 2039], 2: [0, 0, 700, 589], 3: [0, 0, 1861, 1961], 4: [0, 0, 700, 1033] };
     const [x, y, width, height] = boxes[floor]; $('map').setAttribute('viewBox', boxes[floor].join(' '));
     Object.entries({ x, y, width, height }).forEach(([key, value]) => $('floorImage').setAttribute(key, value));
@@ -103,19 +103,10 @@ function mapHeading() {
     const distance = Math.hypot(current.x - a.x - t * dx, current.y - a.y - t * dy);
     if (!best || distance < best.distance) best = { a, b, distance };
   }
-  return best ? wrap(Math.atan2(best.b.x - best.a.x, best.a.y - best.b.y) * 180 / Math.PI + Number($('mapRotation').value || 0)) : null;
-}
-function calibrateHeading() {
-  autoCompassRequested = false;
-  const direction = mapHeading() ?? Number($('mapRotation').value || 0);
-  if (!heading.calibrate(direction)) { status('기기 방향 센서 값이 없습니다. 센서 권한을 허용하고 다시 누르세요.'); return; }
-  uncertainHeading = false; lastStepHeading = heading.heading;
-  log(`방향 보정: 지도 ${direction.toFixed(0)}° / 센서 ${heading.last.toFixed(0)}°`); status(route ? '경로 방향 보정 완료 · 추정 방향' : '현재 걷는 방향을 지도 위쪽으로 보정 · 추정 방향'); draw();
+  return best ? wrap(Math.atan2(best.b.x - best.a.x, best.a.y - best.b.y) * 180 / Math.PI) : null;
 }
 function autoCalibrate() {
-  autoCompassRequested = true;
-  if (compassOffset === null) { status('동·서광장 지도 기준 없음 · 수동 보정 사용'); return; }
-  if (!heading.calibrateAbsolute(compassOffset)) { status('절대 나침반 수신 대기 · 지원되지 않으면 수동 보정 사용'); return; }
+  if (compassOffset === null || !heading.calibrateAbsolute(compassOffset)) return;
   uncertainHeading = false; lastStepHeading = heading.heading;
   $('compassStatus').textContent = `나침반 → 예시 지도 자동 정렬 · 지도 회전 ${compassOffset.toFixed(0)}° (미검증 기준점)`;
   status('나침반 자동 보정 · 잠정 방향'); updateDashboard(); draw();
@@ -140,7 +131,9 @@ function draw() {
 }
 function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
-  $('heading').textContent = heading.heading === null ? heading.last === null ? '센서 값 대기' : `기기 ${heading.last.toFixed(0)}° · 지도 보정 필요` : `${heading.heading.toFixed(0)}°${uncertainHeading ? ' · 불확실' : ' · 추정'}`;
+  $('eastWest').textContent = pdr.directionalSteps ? `${pdr.eastM >= 0 ? '동' : '서'} ${Math.abs(pdr.eastM).toFixed(2)} m 추정` : '측정 대기';
+  $('northSouth').textContent = pdr.directionalSteps ? `${pdr.northM >= 0 ? '북' : '남'} ${Math.abs(pdr.northM).toFixed(2)} m 추정` : '측정 대기';
+  $('heading').textContent = heading.absolute ? cardinalReading(heading.last, heading.accuracyDegrees) : '절대 나침반 측정 불가';
   $('matching').textContent = result ? `${result.candidates.length}개 · ${result.match?.edge.id || result.reason}` : '없음';
   if (observation) $('raw').textContent = JSON.stringify(observation, null, 2);
 }
@@ -156,7 +149,7 @@ function processStep(timestamp, mode = source, forcedHeading = null) {
   }
   lastStepHeading = direction;
   const strideM = Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65));
-  const step = pdr.step({ heading: direction, strideM, pixelsPerMeter, timestamp, source: mode });
+  const step = pdr.step({ heading: direction, compassHeading: mode === 'real' ? heading.last : null, strideM, pixelsPerMeter, timestamp, source: mode });
   const uncertaintyPx = pdr.uncertaintyM * (pixelsPerMeter || 1);
   const result = matchPosition(graph, pdr.point, { previous: match, heading: direction, uncertaintyPx, routeEdgeIds: route?.edgeIds });
   let nav = null;
@@ -189,10 +182,11 @@ function onMotion(event) {
 let latestOrientation = null;
 function onOrientation(event) {
   if (!running || source !== 'real') return;
-  if (heading.absolute && event.absolute !== true && !Number.isFinite(event.webkitCompassHeading)) return;
+  if (heading.absolute && event.absolute !== true && !(Number.isFinite(event.webkitCompassHeading) && event.webkitCompassAccuracy !== -1)) return;
   latestOrientation = { alpha: event.alpha, beta: event.beta, gamma: event.gamma, absolute: event.absolute, webkitCompassHeading: event.webkitCompassHeading ?? null };
   heading.sample(event, screen.orientation?.angle ?? window.orientation ?? 0);
-  if (autoCompassRequested && heading.absolute && compassOffset !== null && heading.reference === null) autoCalibrate();
+  if (heading.absolute && compassOffset !== null && heading.reference === null) autoCalibrate();
+  if (!heading.absolute || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25) { uncertainHeading = true; status('나침반 방향 불확실 · 지도 이동 보류'); }
   if (lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35) { uncertainHeading = true; status('방향 불확실 · 폰 회전 또는 실제 회전. 진행 방향을 다시 확인하세요.'); }
   updateDashboard(); draw();
 }
@@ -226,8 +220,6 @@ $('map').addEventListener('click', event => {
 });
 $('confirm').addEventListener('click', confirmPoint);
 $('route').addEventListener('click', drawRoute);
-$('calibrate').addEventListener('click', calibrateHeading);
-$('autoCompass').addEventListener('click', autoCalibrate);
 $('start').addEventListener('click', start);
 $('homeStart').addEventListener('click', async () => {
   if (!graph || !selected) { status('지도를 불러오는 중입니다'); return; }

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { StepDetector } from '../public/location-engine/step-detector.js';
-import { HeadingEstimator } from '../public/location-engine/heading-estimator.js';
+import { HeadingEstimator, cardinal, cardinalReading } from '../public/location-engine/heading-estimator.js';
 import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
 import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
@@ -24,10 +24,12 @@ test('relative heading calibration and meter-to-map movement', () => {
   heading.sample({ alpha: 270 });
   assert.equal(heading.heading, 180);
   const pdr = new PdrEngine(); pdr.reset({ x: 10, y: 10 });
-  const step = pdr.step({ heading: 90, strideM: 0.65, pixelsPerMeter: 10, timestamp: 100, source: 'real' });
+  const step = pdr.step({ heading: 90, compassHeading: 90, strideM: 0.65, pixelsPerMeter: 10, timestamp: 100, source: 'real' });
   assert.ok(Math.abs(step.pdrPoint.x - 16.5) < 1e-8);
   assert.ok(Math.abs(step.pdrPoint.y - 10) < 1e-8);
   assert.equal(step.source, 'real');
+  assert.ok(Math.abs(step.eastM - 0.65) < 1e-8);
+  assert.ok(Math.abs(step.northM) < 1e-8);
 });
 
 test('map matching leaves intersecting corridors ambiguous', () => {
@@ -48,4 +50,19 @@ test('east/west anchors rotate an absolute compass into map coordinates only whe
   assert.ok(Math.min(heading.heading, 360 - heading.heading) < 0.01);
   east.candidateGps.usableForProduction = true;
   assert.equal(mapCompassOffset(west, east), null);
+});
+
+test('cardinal display requires absolute heading and rejects uncalibrated iPhone compass', () => {
+  assert.deepEqual([0, 90, 180, 270, 359].map(cardinal), ['북', '동', '남', '서', '북']);
+  const estimator = new HeadingEstimator();
+  estimator.sample({ alpha: 20, absolute: false });
+  assert.equal(estimator.absolute, false);
+  estimator.sample({ alpha: 20, absolute: false, webkitCompassHeading: 80, webkitCompassAccuracy: -1 });
+  assert.equal(estimator.absolute, false);
+  estimator.sample({ alpha: 20, absolute: false, webkitCompassHeading: 80, webkitCompassAccuracy: 8 });
+  assert.equal(estimator.absolute, true);
+  assert.equal(estimator.accuracyDegrees, 8);
+  assert.equal(cardinal(estimator.last), '동');
+  assert.match(cardinalReading(80, 8), /^동/);
+  assert.match(cardinalReading(45, 8), /^방위 불확실/);
 });
