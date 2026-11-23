@@ -7,12 +7,14 @@ import { matchPosition } from './location-engine/map-matcher.js';
 import { NavigationState } from './location-engine/navigation-state.js';
 import { SensorProvider } from './location-engine/sensor-provider.js';
 import { TestRecorder } from './location-engine/test-recorder.js';
+import { mapCompassOffset } from './location-engine/map-orientation.js';
 
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
 const detector = new StepDetector(), heading = new HeadingEstimator(), pdr = new PdrEngine(), navigation = new NavigationState(), recorder = new TestRecorder();
 let graph, floor = 3, request = 0, selected = null, confirmed = null, match = null, route = null, destination = null, pixelsPerMeter = null, scaleVerified = false;
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
+let compassOffset = null, autoCompassRequested = true;
 const logs = [];
 const log = message => { logs.unshift(`${new Date().toLocaleTimeString('ko-KR')} ${message}`); logs.length = Math.min(logs.length, 12); $('log').textContent = logs.join('\n'); };
 const status = message => { $('status').textContent = message; $('notice').textContent = message; };
@@ -25,13 +27,23 @@ function graphScale(data) {
 async function loadFloor() {
   const id = ++request;
   stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); heading.reset(); detector.reset(); uncertainHeading = true;
-  floor = Number($('floor').value); $('guide').textContent = '지도와 그래프를 불러오는 중'; draw();
+  floor = Number($('floor').value); autoCompassRequested = true; $('guide').textContent = '지도와 그래프를 불러오는 중'; draw();
   try {
     const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
     if (!response.ok) throw Error(`HTTP ${response.status}`);
     const data = await response.json(); if (id !== request) return;
     if (data.floor !== floor || data.mapId !== `daejeon-station-${floor}F-map.svg`) throw Error('지도와 그래프 좌표계 불일치');
     graph = data; pixelsPerMeter = graphScale(data); scaleVerified = false;
+    compassOffset = null;
+    if (floor === 1 || floor === 3) {
+      try {
+        const points = (await (await fetch('/gps-points.json')).json()).points.filter(point => point.floor === floor);
+        const west = points.find(point => point.name.includes('서광장') && point.candidateGps);
+        const east = points.find(point => point.name.includes('동광장') && point.candidateGps);
+        if (west && east) compassOffset = mapCompassOffset({ ...west, ...west.candidateGps }, { ...east, ...east.candidateGps });
+      } catch { /* manual alignment remains available */ }
+    }
+    $('compassStatus').textContent = compassOffset === null ? '이 층은 동·서광장 기준 좌표가 없어 수동 방향 보정이 필요합니다.' : `동·서광장 기준 지도 회전 ${compassOffset.toFixed(0)}° · 지리 좌표 미검증, 나침반 자동 보정은 잠정값`;
     const boxes = { 1: [0, 0, 984, 2039], 2: [0, 0, 700, 589], 3: [0, 0, 1861, 1961], 4: [0, 0, 700, 1033] };
     const [x, y, width, height] = boxes[floor]; $('map').setAttribute('viewBox', boxes[floor].join(' '));
     Object.entries({ x, y, width, height }).forEach(([key, value]) => $('floorImage').setAttribute(key, value));
@@ -94,10 +106,19 @@ function mapHeading() {
   return best ? wrap(Math.atan2(best.b.x - best.a.x, best.a.y - best.b.y) * 180 / Math.PI + Number($('mapRotation').value || 0)) : null;
 }
 function calibrateHeading() {
+  autoCompassRequested = false;
   const direction = mapHeading() ?? Number($('mapRotation').value || 0);
   if (!heading.calibrate(direction)) { status('기기 방향 센서 값이 없습니다. 센서 권한을 허용하고 다시 누르세요.'); return; }
   uncertainHeading = false; lastStepHeading = heading.heading;
   log(`방향 보정: 지도 ${direction.toFixed(0)}° / 센서 ${heading.last.toFixed(0)}°`); status(route ? '경로 방향 보정 완료 · 추정 방향' : '현재 걷는 방향을 지도 위쪽으로 보정 · 추정 방향'); draw();
+}
+function autoCalibrate() {
+  autoCompassRequested = true;
+  if (compassOffset === null) { status('동·서광장 지도 기준 없음 · 수동 보정 사용'); return; }
+  if (!heading.calibrateAbsolute(compassOffset)) { status('절대 나침반 수신 대기 · 지원되지 않으면 수동 보정 사용'); return; }
+  uncertainHeading = false; lastStepHeading = heading.heading;
+  $('compassStatus').textContent = `나침반 → 예시 지도 자동 정렬 · 지도 회전 ${compassOffset.toFixed(0)}° (미검증 기준점)`;
+  status('나침반 자동 보정 · 잠정 방향'); updateDashboard(); draw();
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
@@ -168,8 +189,10 @@ function onMotion(event) {
 let latestOrientation = null;
 function onOrientation(event) {
   if (!running || source !== 'real') return;
+  if (heading.absolute && event.absolute !== true && !Number.isFinite(event.webkitCompassHeading)) return;
   latestOrientation = { alpha: event.alpha, beta: event.beta, gamma: event.gamma, absolute: event.absolute, webkitCompassHeading: event.webkitCompassHeading ?? null };
   heading.sample(event, screen.orientation?.angle ?? window.orientation ?? 0);
+  if (autoCompassRequested && heading.absolute && compassOffset !== null && heading.reference === null) autoCalibrate();
   if (lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35) { uncertainHeading = true; status('방향 불확실 · 폰 회전 또는 실제 회전. 진행 방향을 다시 확인하세요.'); }
   updateDashboard(); draw();
 }
@@ -204,6 +227,7 @@ $('map').addEventListener('click', event => {
 $('confirm').addEventListener('click', confirmPoint);
 $('route').addEventListener('click', drawRoute);
 $('calibrate').addEventListener('click', calibrateHeading);
+$('autoCompass').addEventListener('click', autoCalibrate);
 $('start').addEventListener('click', start);
 $('homeStart').addEventListener('click', async () => {
   if (!graph || !selected) { status('지도를 불러오는 중입니다'); return; }

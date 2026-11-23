@@ -4,6 +4,7 @@ import { StepDetector } from '../public/location-engine/step-detector.js';
 import { HeadingEstimator } from '../public/location-engine/heading-estimator.js';
 import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
+import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
 
 test('stationary rotation and isolated shake do not add steps; periodic pulses do', () => {
   const detector = new StepDetector();
@@ -34,4 +35,17 @@ test('map matching leaves intersecting corridors ambiguous', () => {
   const outcome = matchPosition(graph, { x: 50, y: 0 }, { uncertaintyPx: 10 });
   assert.equal(outcome.match, null);
   assert.equal(outcome.candidates.length, 2);
+});
+
+test('east/west anchors rotate an absolute compass into map coordinates only when marked unverified', () => {
+  const west = { x: 0, y: 100, lat: 36.33, lng: 127.43, candidateGps: { usableForProduction: false } };
+  const east = { x: 0, y: 0, lat: 36.33, lng: 127.431, candidateGps: { usableForProduction: false } };
+  assert.equal(bearingOnMap(west, east), 0);
+  assert.ok(Math.abs(geographicBearing(west, east) - 90) < 0.01);
+  assert.ok(Math.abs(mapCompassOffset(west, east) - 270) < 0.01);
+  const heading = new HeadingEstimator(); heading.sample({ alpha: 270, absolute: true });
+  assert.equal(heading.calibrateAbsolute(mapCompassOffset(west, east)), true);
+  assert.ok(Math.min(heading.heading, 360 - heading.heading) < 0.01);
+  east.candidateGps.usableForProduction = true;
+  assert.equal(mapCompassOffset(west, east), null);
 });

@@ -16,7 +16,8 @@ export class SensorProvider {
     this.orientationListener = event => this.onOrientation(event);
     window.addEventListener('devicemotion', this.motionListener);
     window.addEventListener('deviceorientation', this.orientationListener);
+    window.addEventListener('deviceorientationabsolute', this.orientationListener);
     this.active = true; this.onStatus('센서 수신 대기'); return true;
   }
-  stop() { if (this.motionListener) window.removeEventListener('devicemotion', this.motionListener); if (this.orientationListener) window.removeEventListener('deviceorientation', this.orientationListener); this.active = false; this.onStatus('중지'); }
+  stop() { if (this.motionListener) window.removeEventListener('devicemotion', this.motionListener); if (this.orientationListener) { window.removeEventListener('deviceorientation', this.orientationListener); window.removeEventListener('deviceorientationabsolute', this.orientationListener); } this.active = false; this.onStatus('중지'); }
 }
