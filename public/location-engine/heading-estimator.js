@@ -23,3 +23,14 @@ export class HeadingEstimator {
   get heading() { return this.reference === null || this.last === null ? null : wrap(this.mapReference + difference(this.last, this.reference)); }
   get rotation() { return this.reference === null || this.last === null ? null : difference(this.last, this.reference); }
 }
+
+export class WalkingHeadingGate {
+  constructor() { this.reset(); }
+  reset() { this.candidate = null; this.streak = 0; }
+  observe(heading) {
+    if (!Number.isFinite(heading)) { this.reset(); return false; }
+    if (this.candidate === null || Math.abs(difference(heading, this.candidate)) > 20) { this.candidate = heading; this.streak = 1; }
+    else { this.candidate = wrap(this.candidate + difference(heading, this.candidate) * 0.3); this.streak++; }
+    return this.streak >= 3;
+  }
+}

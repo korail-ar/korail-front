@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { StepDetector } from '../public/location-engine/step-detector.js';
-import { HeadingEstimator, cardinal, cardinalReading } from '../public/location-engine/heading-estimator.js';
+import { HeadingEstimator, WalkingHeadingGate, cardinal, cardinalReading } from '../public/location-engine/heading-estimator.js';
 import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
 import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
@@ -102,4 +102,17 @@ test('route turn accepts either adjacent direction at a junction', () => {
   const result = tracker.observe({ segments, point: { x: 100, y: 0 }, compassBearing: 180, accuracyDegrees: 8 });
   assert.equal(result.expected.cardinal, '남');
   assert.equal(result.status, '경로 방향과 대체로 일치');
+});
+
+test('map movement can resume after three consistent walking headings', () => {
+  const gate = new WalkingHeadingGate();
+  assert.equal(gate.observe(92), false);
+  assert.equal(gate.observe(100), false);
+  assert.equal(gate.observe(87), true);
+  gate.reset();
+  assert.equal(gate.observe(90), false);
+  assert.equal(gate.observe(160), false);
+  assert.equal(gate.streak, 1);
+  assert.equal(gate.observe(null), false);
+  assert.equal(gate.streak, 0);
 });

@@ -1,7 +1,7 @@
 import { fastestRoute } from './assets/json/fastest-route.mjs';
 import { edgeCandidates, routeFromEdge } from './gps-location.js';
 import { StepDetector } from './location-engine/step-detector.js';
-import { HeadingEstimator, wrap, difference, cardinalReading } from './location-engine/heading-estimator.js';
+import { HeadingEstimator, WalkingHeadingGate, wrap, difference, cardinalReading } from './location-engine/heading-estimator.js';
 import { PdrEngine } from './location-engine/pdr-engine.js';
 import { matchPosition } from './location-engine/map-matcher.js';
 import { NavigationState } from './location-engine/navigation-state.js';
@@ -13,6 +13,7 @@ import { routeSegments, DirectionTracker } from './location-engine/route-directi
 const $ = id => document.getElementById(id), NS = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs) => { const node = document.createElementNS(NS, tag); for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value)); return node; };
 const detector = new StepDetector(), heading = new HeadingEstimator(), pdr = new PdrEngine(), navigation = new NavigationState(), recorder = new TestRecorder();
+const walkingHeadingGate = new WalkingHeadingGate();
 const directionTracker = new DirectionTracker();
 let graph, floor = 3, request = 0, selected = null, confirmed = null, match = null, route = null, destination = null, pixelsPerMeter = null, scaleVerified = false;
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
@@ -28,7 +29,7 @@ function graphScale(data) {
 }
 async function loadFloor() {
   const id = ++request;
-  stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); directionTracker.reset(); heading.reset(); detector.reset(); uncertainHeading = true;
+  stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); directionTracker.reset(); heading.reset(); walkingHeadingGate.reset(); detector.reset(); uncertainHeading = true;
   floor = Number($('floor').value); $('guide').textContent = '지도와 그래프를 불러오는 중'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; draw();
   try {
     const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
@@ -71,7 +72,7 @@ function selectPoint(point, recommendation = false) {
 function confirmPoint() {
   const candidates = $('candidate')._candidates || [], index = Number($('candidate').value || 0), candidate = candidates[index];
   if (!candidate) { status('통로에서 너무 멉니다. 다른 위치를 선택하세요.'); return; }
-  confirmed = { x: candidate.x, y: candidate.y }; match = candidate; pdr.reset(confirmed); navigation.reset(); directionTracker.reset(); lastStepHeading = null; uncertainHeading = !heading.absolute || compassOffset === null;
+  confirmed = { x: candidate.x, y: candidate.y }; match = candidate; pdr.reset(confirmed); navigation.reset(); directionTracker.reset(); walkingHeadingGate.reset(); lastStepHeading = null; uncertainHeading = !heading.absolute || compassOffset === null;
   $('guide').textContent = `출발점 ${candidate.edge.id} 선택 · 방향 보정 후 추적 시작`;
   status('출발 위치 확인 · 방향 보정 필요'); draw();
 }
@@ -162,10 +163,18 @@ function processStep(timestamp, mode = source, forcedHeading = null) {
     const step = pdr.step({ heading: null, strideM: Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65)), pixelsPerMeter, timestamp, source: mode });
     const directionObservation = observeRouteDirection(mode);
     recorder.add({ event: 'step', floor, ...step, headingUncertain: true, directionObservation, navigation: '판단 보류' });
-    updateDashboard(); status(directionObservation?.mismatchStreak >= 3 ? '경로 이탈 의심 · 나침반 방향 불일치가 지속됩니다' : confirmed ? '방향 불확실 · 걸음만 기록, 지도 이동 보류' : '걸음 감지 중 · 지도 출발 위치를 선택하세요'); return;
+    const canRecover = confirmed && mode === 'real' && heading.absolute && compassOffset !== null && (heading.accuracyDegrees === null || heading.accuracyDegrees <= 25);
+    if (canRecover && walkingHeadingGate.observe(direction)) {
+      uncertainHeading = false; lastStepHeading = direction; walkingHeadingGate.reset();
+      status('방향이 3걸음 동안 안정적이어서 지도 이동 추정을 재개합니다');
+    } else {
+      if (!canRecover) walkingHeadingGate.reset();
+      status(directionObservation?.mismatchStreak >= 3 ? '경로 이탈 의심 · 나침반 방향 불일치가 지속됩니다' : !confirmed ? '지도 출발 위치 미선택 · 걸음만 기록' : !heading.absolute ? '절대 나침반 없음 · 걸음만 기록' : compassOffset === null ? '지도 방위 기준 없음 · 걸음만 기록' : `방향 안정 확인 중 ${walkingHeadingGate.streak}/3걸음 · 지도 이동 보류`);
+    }
+    updateDashboard(); return;
   }
   if (mode === 'real' && lastStepHeading !== null && Math.abs(difference(direction, lastStepHeading)) > 35) {
-    uncertainHeading = true; status('방향 불확실 · 몸과 휴대폰 회전을 구분할 수 없습니다. 방향을 다시 보정하세요.'); log('큰 방향 변화 감지: 자동 이동 보류'); return;
+    uncertainHeading = true; walkingHeadingGate.reset(); status('큰 방향 변화 · 보행 방향이 안정될 때까지 지도 이동 보류'); log('큰 방향 변화 감지: 자동 이동 보류'); return;
   }
   lastStepHeading = direction;
   const strideM = Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65));
@@ -214,8 +223,8 @@ function onOrientation(event) {
   latestOrientation = { alpha: event.alpha, beta: event.beta, gamma: event.gamma, absolute: event.absolute, webkitCompassHeading: event.webkitCompassHeading ?? null };
   heading.sample(event, screen.orientation?.angle ?? window.orientation ?? 0);
   if (heading.absolute && compassOffset !== null && heading.reference === null) autoCalibrate();
-  if (!heading.absolute || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25) { uncertainHeading = true; status('나침반 방향 불확실 · 지도 이동 보류'); }
-  if (lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35) { uncertainHeading = true; status('방향 불확실 · 폰 회전 또는 실제 회전. 진행 방향을 다시 확인하세요.'); }
+  if (!heading.absolute || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25) { uncertainHeading = true; walkingHeadingGate.reset(); status('나침반 방향 불확실 · 지도 이동 보류'); }
+  if (lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35) { if (!uncertainHeading) walkingHeadingGate.reset(); uncertainHeading = true; status('폰 또는 몸 회전 감지 · 보행 방향 안정 확인 중'); }
   updateDashboard(); draw();
 }
 const provider = new SensorProvider({ onMotion, onOrientation, onStatus: message => { $('sensorSupport').textContent = message; log(message); } });
@@ -227,7 +236,7 @@ async function start() {
   setTimeout(() => { if (running && heading.last === null) status('방향 센서 값이 없습니다. 나침반 지원·권한을 확인하세요.'); }, 3500);
 }
 function stop() { if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
-function reset() { stop(); detector.reset(); heading.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
+function reset() { stop(); detector.reset(); heading.reset(); walkingHeadingGate.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
 
 $('floor').addEventListener('change', loadFloor);
 $('map').addEventListener('click', event => {
