@@ -31,11 +31,12 @@ export class DirectionTracker {
   constructor() { this.reset(); }
   reset() { this.mismatchStreak = 0; this.alignedStreak = 0; this.status = '방향 관측 대기'; }
   observe({ segments, point, compassBearing, accuracyDegrees }) {
-    if (!Number.isFinite(compassBearing) || !segments.length || accuracyDegrees !== null && accuracyDegrees > 25) return { status: '방향 판단 보류', mismatchStreak: this.mismatchStreak, expected: null };
+    if (!Number.isFinite(compassBearing) || !segments.length || accuracyDegrees !== null && accuracyDegrees > 45) return { status: '방향 판단 보류', mismatchStreak: this.mismatchStreak, expected: null };
     const expected = nearbyRouteDirection(segments, point, compassBearing);
     if (!expected) return { status: '방향 판단 보류', mismatchStreak: this.mismatchStreak, expected: null };
-    if (expected.angleDifference <= 60) { this.alignedStreak++; this.mismatchStreak = 0; this.status = '경로 방향과 대체로 일치'; }
-    else if (expected.angleDifference >= 75) { this.mismatchStreak++; this.alignedStreak = 0; this.status = this.mismatchStreak >= 3 ? '경로 이탈 의심 · 방향 불일치 지속' : '경로 방향과 다를 수 있음'; }
+    const margin = accuracyDegrees === null ? 0 : Math.min(20, accuracyDegrees / 2);
+    if (expected.angleDifference <= 60 + margin) { this.alignedStreak++; this.mismatchStreak = 0; this.status = '경로 방향과 대체로 일치'; }
+    else if (expected.angleDifference >= 75 + margin) { this.mismatchStreak++; this.alignedStreak = 0; this.status = this.mismatchStreak >= 3 ? '경로 이탈 의심 · 방향 불일치 지속' : '경로 방향과 다를 수 있음'; }
     else this.status = '방향 판단 보류';
     return { status: this.status, mismatchStreak: this.mismatchStreak, expected };
   }

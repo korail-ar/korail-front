@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { StepDetector } from '../public/location-engine/step-detector.js';
-import { HeadingEstimator, WalkingHeadingGate, cardinal, cardinalReading } from '../public/location-engine/heading-estimator.js';
+import { HeadingEstimator, cardinal, cardinalReading } from '../public/location-engine/heading-estimator.js';
 import { PdrEngine } from '../public/location-engine/pdr-engine.js';
 import { matchPosition } from '../public/location-engine/map-matcher.js';
 import { bearingOnMap, geographicBearing, mapCompassOffset } from '../public/location-engine/map-orientation.js';
@@ -97,6 +97,13 @@ test('Dijkstra route geometry becomes cardinal legs and sustained walking mismat
   assert.equal(held.status, '방향 판단 보류');
 });
 
+test('coarse compass direction accepts a nearby route bearing without requiring exact east', () => {
+  const segments = routeSegments([{ x: 0, y: 0 }, { x: 100, y: 0 }], 0);
+  const tracker = new DirectionTracker();
+  assert.equal(tracker.observe({ segments, point: { x: 30, y: 0 }, compassBearing: 150, accuracyDegrees: 30 }).status, '경로 방향과 대체로 일치');
+  assert.equal(tracker.observe({ segments, point: { x: 30, y: 0 }, compassBearing: 270, accuracyDegrees: 50 }).status, '방향 판단 보류');
+});
+
 test('route turn accepts either adjacent direction at a junction', () => {
   const segments = routeSegments([{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }], 0);
   const tracker = new DirectionTracker();
@@ -105,17 +112,11 @@ test('route turn accepts either adjacent direction at a junction', () => {
   assert.equal(result.status, '경로 방향과 대체로 일치');
 });
 
-test('map movement can resume after three consistent walking headings', () => {
-  const gate = new WalkingHeadingGate();
-  assert.equal(gate.observe(92), false);
-  assert.equal(gate.observe(100), false);
-  assert.equal(gate.observe(87), true);
-  gate.reset();
-  assert.equal(gate.observe(90), false);
-  assert.equal(gate.observe(160), false);
-  assert.equal(gate.streak, 1);
-  assert.equal(gate.observe(null), false);
-  assert.equal(gate.streak, 0);
+test('uncertain compass movement grows the position uncertainty', () => {
+  const pdr = new PdrEngine(); pdr.reset({ x: 20, y: 30 });
+  const result = pdr.step({ heading: 90, compassHeading: 90, strideM: 0.65, pixelsPerMeter: 10, timestamp: 100, source: 'real', uncertaintyExtraM: 0.65 });
+  assert.ok(result.pdrPoint.x > 20);
+  assert.ok(result.uncertaintyM > 1.65);
 });
 
 test('tracking viewport magnifies movement and remains inside the floor plan', () => {
