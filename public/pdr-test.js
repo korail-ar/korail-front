@@ -17,7 +17,7 @@ const detector = new StepDetector(), heading = new HeadingEstimator(), pdr = new
 const directionTracker = new DirectionTracker();
 let graph, floor = 3, request = 0, selected = null, confirmed = null, match = null, route = null, destination = null, pixelsPerMeter = null, scaleVerified = false;
 let running = false, source = 'real', lastMotionAt = 0, lastStepHeading = null, uncertainHeading = true, measurePoints = null, motionSamples = 0;
-let compassOffset = null;
+let compassOffset = null, headingMode = 'pending';
 let fullViewBox = [0, 0, 1861, 1961], autoZoom = true;
 const logs = [];
 const log = message => { logs.unshift(`${new Date().toLocaleTimeString('ko-KR')} ${message}`); logs.length = Math.min(logs.length, 12); $('log').textContent = logs.join('\n'); };
@@ -30,7 +30,7 @@ function graphScale(data) {
 }
 async function loadFloor() {
   const id = ++request;
-  stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); directionTracker.reset(); heading.reset(); detector.reset(); uncertainHeading = true;
+  stop(); graph = null; selected = confirmed = match = route = destination = null; pdr.reset(); navigation.reset(); directionTracker.reset(); heading.reset(); headingMode = 'pending'; detector.reset(); uncertainHeading = true;
   floor = Number($('floor').value); $('guide').textContent = '지도와 그래프를 불러오는 중'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; draw();
   try {
     const response = await fetch(`/assets/json/gps-test-floor-${floor}.json`);
@@ -74,9 +74,9 @@ function selectPoint(point, recommendation = false) {
 function confirmPoint() {
   const candidates = $('candidate')._candidates || [], index = Number($('candidate').value || 0), candidate = candidates[index];
   if (!candidate) { status('통로에서 너무 멉니다. 다른 위치를 선택하세요.'); return; }
-  confirmed = { x: candidate.x, y: candidate.y }; match = candidate; pdr.reset(confirmed); navigation.reset(); directionTracker.reset(); lastStepHeading = null; uncertainHeading = !heading.absolute || compassOffset === null;
+  confirmed = { x: candidate.x, y: candidate.y }; match = candidate; pdr.reset(confirmed); navigation.reset(); directionTracker.reset(); lastStepHeading = null; uncertainHeading = headingMode !== 'absolute';
   $('guide').textContent = `출발점 ${candidate.edge.id} 선택 · 방향 보정 후 추적 시작`;
-  status(uncertainHeading ? '출발 위치 확인 · 절대 나침반 대기' : '출발 위치 확인 · 지도 이동 준비'); updateDashboard(); draw();
+  status(headingMode === 'pending' ? '출발 위치 확인 · 방향 센서 대기' : '출발 위치 확인 · 지도 이동 준비'); updateDashboard(); draw();
 }
 function drawRoute() {
   if (!graph || !confirmed) { status('먼저 출발 위치를 확정하세요'); return; }
@@ -116,13 +116,14 @@ function mapHeading() {
 }
 function autoCalibrate() {
   if (compassOffset === null || !heading.calibrateAbsolute(compassOffset)) return;
+  headingMode = 'absolute';
   uncertainHeading = false; lastStepHeading = heading.heading;
   $('compassStatus').textContent = `나침반 → 예시 지도 자동 정렬 · 지도 회전 ${compassOffset.toFixed(0)}° (미검증 기준점)`;
   status('나침반 자동 보정 · 잠정 방향'); updateDashboard(); draw();
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
-  $('map').setAttribute('viewBox', (autoZoom && pdr.directionalSteps > 0 ? trackingViewBox(fullViewBox, pdr.point) : fullViewBox).join(' '));
+  $('map').setAttribute('viewBox', (autoZoom && pdr.mapSteps > 0 ? trackingViewBox(fullViewBox, pdr.point) : fullViewBox).join(' '));
   if (route?.points?.length) {
     const path = route.points.map(point => `${point.x},${point.y}`).join(' ');
     routeLayer.append(svg('polyline', { points: path, fill: 'none', stroke: '#263b4e', 'stroke-width': 13, 'stroke-linejoin': 'round' }));
@@ -147,7 +148,7 @@ function draw() {
 function updateDashboard(observation = null, result = null) {
   $('steps').textContent = String(pdr.steps); $('distance').textContent = `${pdr.distanceM.toFixed(2)} m (보폭 추정)`;
   const movedM = confirmed && pdr.point && pixelsPerMeter ? Math.hypot(pdr.point.x - confirmed.x, pdr.point.y - confirmed.y) / pixelsPerMeter : 0;
-  $('mapMovement').textContent = pdr.directionalSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정${uncertainHeading ? ' · 방위 오차 큼' : ''}` : !confirmed ? '출발점 미설정' : !heading.absolute ? '절대 나침반 없음 · 이동 보류' : compassOffset === null ? '지도 방위 기준 없음 · 이동 보류' : '첫 방향 걸음 대기';
+  $('mapMovement').textContent = pdr.mapSteps ? `출발점에서 ${movedM.toFixed(1)} m 이동 추정 · ${headingMode === 'relative' ? '상대 방향만 사용, 동서남북 미확정' : uncertainHeading ? '방위 오차 큼' : '나침반 기준'}` : !confirmed ? '출발점 미설정' : headingMode === 'pending' ? '방향 센서 대기 · 이동 보류' : '첫 방향 걸음 대기';
   $('mapMovementSummary').textContent = $('mapMovement').textContent;
   $('eastWest').textContent = pdr.directionalSteps ? `${pdr.eastM >= 0 ? '동' : '서'} ${Math.abs(pdr.eastM).toFixed(2)} m 추정` : '측정 대기';
   $('northSouth').textContent = pdr.directionalSteps ? `${pdr.northM >= 0 ? '북' : '남'} ${Math.abs(pdr.northM).toFixed(2)} m 추정` : '측정 대기';
@@ -165,17 +166,17 @@ function observeRouteDirection(mode) {
 }
 function processStep(timestamp, mode = source, forcedHeading = null) {
   const direction = forcedHeading ?? heading.heading;
-  if (!confirmed || mode === 'real' && (direction === null || !heading.absolute || compassOffset === null)) {
+  if (!confirmed || mode === 'real' && (direction === null || headingMode === 'pending')) {
     const step = pdr.step({ heading: null, strideM: Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65)), pixelsPerMeter, timestamp, source: mode });
     const directionObservation = observeRouteDirection(mode);
     recorder.add({ event: 'step', floor, ...step, headingUncertain: true, directionObservation, navigation: '판단 보류' });
-    status(directionObservation?.mismatchStreak >= 3 ? '경로 이탈 의심 · 나침반 방향 불일치가 지속됩니다' : !confirmed ? '지도 출발 위치 미선택 · 걸음만 기록' : !heading.absolute ? '절대 나침반 없음 · 걸음만 기록' : '지도 방위 기준 없음 · 걸음만 기록');
+    status(directionObservation?.mismatchStreak >= 3 ? '경로 이탈 의심 · 나침반 방향 불일치가 지속됩니다' : !confirmed ? '지도 출발 위치 미선택 · 걸음만 기록' : '방향 센서 값 없음 · 걸음만 기록');
     updateDashboard(); return;
   }
-  uncertainHeading = mode === 'real' && (heading.accuracyDegrees !== null && heading.accuracyDegrees > 25 || lastStepHeading !== null && Math.abs(difference(direction, lastStepHeading)) > 35);
+  uncertainHeading = mode === 'real' && (headingMode !== 'absolute' || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25 || lastStepHeading !== null && Math.abs(difference(direction, lastStepHeading)) > 35);
   lastStepHeading = direction;
   const strideM = Math.min(1, Math.max(0.4, Number($('stride').value) || 0.65));
-  const step = pdr.step({ heading: direction, compassHeading: mode === 'real' ? heading.last : null, strideM, pixelsPerMeter, timestamp, source: mode, uncertaintyExtraM: uncertainHeading ? strideM : 0 });
+  const step = pdr.step({ heading: direction, compassHeading: mode === 'real' && headingMode === 'absolute' ? heading.last : null, strideM, pixelsPerMeter, timestamp, source: mode, uncertaintyExtraM: uncertainHeading ? strideM : 0 });
   const directionObservation = observeRouteDirection(mode);
   const uncertaintyPx = pdr.uncertaintyM * (pixelsPerMeter || 1);
   const result = matchPosition(graph, pdr.point, { previous: match, heading: direction, uncertaintyPx, routeEdgeIds: route?.edgeIds });
@@ -219,8 +220,13 @@ function onOrientation(event) {
   if (heading.absolute && event.absolute !== true && !(Number.isFinite(event.webkitCompassHeading) && event.webkitCompassAccuracy !== -1)) return;
   latestOrientation = { alpha: event.alpha, beta: event.beta, gamma: event.gamma, absolute: event.absolute, webkitCompassHeading: event.webkitCompassHeading ?? null };
   heading.sample(event, screen.orientation?.angle ?? window.orientation ?? 0);
-  if (heading.absolute && compassOffset !== null && heading.reference === null) autoCalibrate();
-  uncertainHeading = !heading.absolute || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25 || lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35;
+  if (heading.absolute && compassOffset !== null && headingMode !== 'absolute') autoCalibrate();
+  else if (heading.last !== null && headingMode === 'pending') {
+    heading.calibrate(mapHeading() ?? 0);
+    headingMode = 'relative';
+    $('compassStatus').textContent = '절대 나침반 없음 · 첫 기기 방향을 지도 위쪽으로 둔 상대 이동 실험 (동서남북 미확정)';
+  }
+  uncertainHeading = headingMode !== 'absolute' || heading.accuracyDegrees !== null && heading.accuracyDegrees > 25 || lastStepHeading !== null && heading.heading !== null && Math.abs(difference(heading.heading, lastStepHeading)) > 35;
   if (uncertainHeading) status('방위 오차 또는 방향 변화 · 지도 위치는 추정치');
   updateDashboard(); draw();
 }
@@ -233,7 +239,7 @@ async function start() {
   setTimeout(() => { if (running && heading.last === null) status('방향 센서 값이 없습니다. 나침반 지원·권한을 확인하세요.'); }, 3500);
 }
 function stop() { if (provider.active) provider.stop(); running = false; $('start').disabled = false; $('stop').disabled = true; }
-function reset() { stop(); detector.reset(); heading.reset(); pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
+function reset() { stop(); detector.reset(); heading.reset(); headingMode = 'pending'; pdr.reset(); navigation.reset(); directionTracker.reset(); selected = confirmed = match = route = null; uncertainHeading = true; lastStepHeading = null; $('source').textContent = '실제 센서 대기'; $('motionDiagnostic').textContent = '수신 대기'; $('routeDirections').textContent = '목적지를 선택하면 경로의 동·서·남·북 방향을 표시합니다.'; $('expectedDirection').textContent = '경로 선택 대기'; $('directionMatch').textContent = '관측 대기'; updateDashboard(); draw(); status('대기 · 지도에서 출발 위치를 선택하세요'); }
 
 $('floor').addEventListener('change', loadFloor);
 $('zoomToggle').addEventListener('click', () => { autoZoom = !autoZoom; $('zoomToggle').textContent = `추적 위치 확대: ${autoZoom ? '켜짐' : '꺼짐'}`; draw(); });
