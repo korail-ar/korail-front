@@ -3,20 +3,25 @@ export class StepDetector {
     Object.assign(this, { sensitivity, minInterval, maxInterval });
     this.reset();
   }
-  reset() { this.gravity = 0; this.filtered = 0; this.previous = 0; this.peak = 0; this.peakAt = 0; this.lastStep = 0; this.lastSample = 0; this.candidates = 0; }
+  reset() { this.baseline = null; this.filtered = 0; this.peak = 0; this.peakAt = 0; this.lastStep = 0; this.lastSample = null; this.candidates = 0; this.peakCount = 0; this.sampleCount = 0; }
   push({ x, y, z, includesGravity = false, timestamp }) {
-    if (![x, y, z, timestamp].every(Number.isFinite)) return { step: false, signal: 0 };
+    if (![x, y, z, timestamp].every(Number.isFinite)) return { step: false, signal: 0, valid: false };
     const magnitude = Math.hypot(x, y, z);
-    const dt = this.lastSample ? Math.max(0, Math.min(1, (timestamp - this.lastSample) / 1000)) : 0.02;
+    const dt = this.lastSample === null ? 0.02 : Math.max(0.001, Math.min(0.2, (timestamp - this.lastSample) / 1000));
     this.lastSample = timestamp;
-    if (includesGravity) this.gravity += Math.min(1, dt / 0.7) * (magnitude - this.gravity);
-    const dynamic = includesGravity ? magnitude - this.gravity : magnitude;
-    this.filtered += Math.min(1, dt / 0.12) * (dynamic - this.filtered);
+    this.sampleCount++;
+    // Remove the changing baseline for both sensor variants. The magnitude of
+    // gravity-free acceleration is positive even between walking peaks.
+    if (this.baseline === null) this.baseline = magnitude;
+    const dynamic = magnitude - this.baseline;
+    this.baseline += Math.min(1, dt / (includesGravity ? 0.8 : 0.6)) * dynamic;
+    this.filtered += Math.min(1, dt / 0.08) * (dynamic - this.filtered);
     const signal = this.filtered;
-    const threshold = 0.7 * this.sensitivity;
+    const threshold = 0.25 * this.sensitivity;
     if (signal > threshold && signal > this.peak) { this.peak = signal; this.peakAt = timestamp; }
     let step = false;
-    if (this.peak > threshold && signal < threshold * 0.45 && this.previous >= signal) {
+    if (this.peak > threshold && signal < 0) {
+      this.peakCount++;
       const gap = this.lastStep ? this.peakAt - this.lastStep : 0;
       if (!this.lastStep || gap >= this.minInterval && gap <= this.maxInterval) {
         this.candidates++;
@@ -27,7 +32,6 @@ export class StepDetector {
       this.peak = 0;
     }
     if (this.lastStep && timestamp - this.lastStep > this.maxInterval) this.candidates = 0;
-    this.previous = signal;
-    return { step, signal, stationary: !this.lastStep || timestamp - this.lastStep > this.maxInterval };
+    return { step, signal, magnitude, baseline: this.baseline, peakCount: this.peakCount, stationary: !this.lastStep || timestamp - this.lastStep > this.maxInterval, valid: true };
   }
 }
