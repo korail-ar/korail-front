@@ -94,11 +94,10 @@ function mapHeading() {
   return best ? wrap(Math.atan2(best.b.x - best.a.x, best.a.y - best.b.y) * 180 / Math.PI + Number($('mapRotation').value || 0)) : null;
 }
 function calibrateHeading() {
-  const direction = mapHeading();
-  if (direction === null) { status('목적지 경로를 먼저 표시하세요'); return; }
+  const direction = mapHeading() ?? Number($('mapRotation').value || 0);
   if (!heading.calibrate(direction)) { status('기기 방향 센서 값이 없습니다. 센서 권한을 허용하고 다시 누르세요.'); return; }
   uncertainHeading = false; lastStepHeading = heading.heading;
-  log(`방향 보정: 지도 ${direction.toFixed(0)}° / 센서 ${heading.last.toFixed(0)}°`); status('방향 보정 완료 · 추정 방향'); draw();
+  log(`방향 보정: 지도 ${direction.toFixed(0)}° / 센서 ${heading.last.toFixed(0)}°`); status(route ? '경로 방향 보정 완료 · 추정 방향' : '현재 걷는 방향을 지도 위쪽으로 보정 · 추정 방향'); draw();
 }
 function draw() {
   const routeLayer = $('routeLayer'), positionLayer = $('positionLayer'); routeLayer.replaceChildren(); positionLayer.replaceChildren();
@@ -140,7 +139,9 @@ function processStep(timestamp, mode = source, forcedHeading = null) {
   const uncertaintyPx = pdr.uncertaintyM * (pixelsPerMeter || 1);
   const result = matchPosition(graph, pdr.point, { previous: match, heading: direction, uncertaintyPx, routeEdgeIds: route?.edgeIds });
   let nav = null;
-  if (result.match && pdr.uncertaintyM < 8 && scaleVerified) {
+  if (!route) {
+    status('집 테스트 · 걸음 기반 상대 이동 추정 중 (예시 지도)');
+  } else if (result.match && pdr.uncertaintyM < 8 && scaleVerified) {
     match = result.match;
     nav = navigation.update({ routePoints: route?.points, routeEdgeIds: route?.edgeIds || [], match, heading: direction, uncertaintyPx });
     if (nav.reroute && destination) { confirmed = { x: match.x, y: match.y }; drawRoute(); status('새로운 경로를 탐색했습니다 · 추정 위치 기준'); navigation.reset(); }
@@ -204,6 +205,11 @@ $('confirm').addEventListener('click', confirmPoint);
 $('route').addEventListener('click', drawRoute);
 $('calibrate').addEventListener('click', calibrateHeading);
 $('start').addEventListener('click', start);
+$('homeStart').addEventListener('click', async () => {
+  if (!graph || !selected) { status('지도를 불러오는 중입니다'); return; }
+  if (!confirmed) confirmPoint();
+  await start();
+});
 $('stop').addEventListener('click', () => { stop(); status('중지'); });
 $('reset').addEventListener('click', reset);
 $('measure').addEventListener('click', () => { measurePoints = []; status('지도에서 실측 거리의 시작점과 끝점을 선택하세요'); });
