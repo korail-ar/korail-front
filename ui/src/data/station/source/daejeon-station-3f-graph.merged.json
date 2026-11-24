@@ -1,0 +1,2422 @@
+{
+  "schemaVersion": 1,
+  "station": "대전역",
+  "floor": 3,
+  "mapImage": {
+    "fileName": "daejeon_3d_F3(5).png",
+    "width": 2048,
+    "height": 1386,
+    "coordinateUnit": "px",
+    "origin": "top-left"
+  },
+  "referencePdf": "위치도(대전역)(3).pdf",
+  "status": "draft",
+  "weightUnit": "image_px",
+  "nodes": [
+    {
+      "id": "H01",
+      "name": "동측 출입구 앞 홀",
+      "floor": 3,
+      "x": 852,
+      "y": 441,
+      "type": "corridor"
+    },
+    {
+      "id": "H02",
+      "name": "중앙 홀 북쪽",
+      "floor": 3,
+      "x": 730,
+      "y": 455,
+      "type": "corridor"
+    },
+    {
+      "id": "H03",
+      "name": "북측 매장 앞 통로",
+      "floor": 3,
+      "x": 700,
+      "y": 534,
+      "type": "corridor"
+    },
+    {
+      "id": "H04",
+      "name": "홀 북측 분기",
+      "floor": 3,
+      "x": 727,
+      "y": 585,
+      "type": "corridor"
+    },
+    {
+      "id": "H05",
+      "name": "휴게실 옆 통로",
+      "floor": 3,
+      "x": 756,
+      "y": 659,
+      "type": "corridor"
+    },
+    {
+      "id": "H06",
+      "name": "발매기·플라잉스콘 앞 통로",
+      "floor": 3,
+      "x": 786,
+      "y": 735,
+      "type": "corridor"
+    },
+    {
+      "id": "H07",
+      "name": "홀 중간",
+      "floor": 3,
+      "x": 834,
+      "y": 833,
+      "type": "corridor"
+    },
+    {
+      "id": "H08",
+      "name": "매표소 쪽 통로",
+      "floor": 3,
+      "x": 855,
+      "y": 926,
+      "type": "corridor"
+    },
+    {
+      "id": "H09",
+      "name": "화장실 쪽 통로",
+      "floor": 3,
+      "x": 882,
+      "y": 1000,
+      "type": "corridor"
+    },
+    {
+      "id": "H10",
+      "name": "디자인스킨 쪽 통로",
+      "floor": 3,
+      "x": 935,
+      "y": 1087,
+      "type": "corridor"
+    },
+    {
+      "id": "H11",
+      "name": "홀 서측 하단",
+      "floor": 3,
+      "x": 998,
+      "y": 1134,
+      "type": "corridor"
+    },
+    {
+      "id": "H12",
+      "name": "서광장 쪽 홀 분기",
+      "floor": 3,
+      "x": 1117,
+      "y": 1116,
+      "type": "corridor"
+    },
+    {
+      "id": "H13",
+      "name": "서광장 출구 방향 접근점",
+      "floor": 3,
+      "x": 1125,
+      "y": 1158,
+      "type": "corridor"
+    },
+    {
+      "id": "A01",
+      "name": "주차장측 홀 상단",
+      "floor": 3,
+      "x": 914,
+      "y": 443,
+      "type": "corridor"
+    },
+    {
+      "id": "A02",
+      "name": "방풍실 3 쪽 통로",
+      "floor": 3,
+      "x": 944,
+      "y": 519,
+      "type": "corridor"
+    },
+    {
+      "id": "A03",
+      "name": "방풍실 3 앞",
+      "floor": 3,
+      "x": 955,
+      "y": 568,
+      "type": "corridor"
+    },
+    {
+      "id": "A04",
+      "name": "약국 쪽 통로",
+      "floor": 3,
+      "x": 993,
+      "y": 647,
+      "type": "corridor"
+    },
+    {
+      "id": "A05",
+      "name": "임시매장 2 쪽 통로",
+      "floor": 3,
+      "x": 1033,
+      "y": 738,
+      "type": "corridor"
+    },
+    {
+      "id": "A06",
+      "name": "임시매장 1 쪽 통로",
+      "floor": 3,
+      "x": 1072,
+      "y": 823,
+      "type": "corridor"
+    },
+    {
+      "id": "A07",
+      "name": "방풍실 2 쪽 통로",
+      "floor": 3,
+      "x": 1116,
+      "y": 911,
+      "type": "corridor"
+    },
+    {
+      "id": "A08",
+      "name": "남측 상가 앞 통로",
+      "floor": 3,
+      "x": 1094,
+      "y": 990,
+      "type": "corridor"
+    },
+    {
+      "id": "A09",
+      "name": "남측 편의점 쪽 통로",
+      "floor": 3,
+      "x": 1133,
+      "y": 1057,
+      "type": "corridor"
+    },
+    {
+      "id": "B01",
+      "name": "북측 상가 남쪽 통로",
+      "floor": 3,
+      "x": 630,
+      "y": 518,
+      "type": "corridor"
+    },
+    {
+      "id": "B02",
+      "name": "승강장 쪽 상단 분기",
+      "floor": 3,
+      "x": 471,
+      "y": 547,
+      "type": "corridor"
+    },
+    {
+      "id": "B03",
+      "name": "승강장 쪽 2번 분기",
+      "floor": 3,
+      "x": 494,
+      "y": 650,
+      "type": "corridor"
+    },
+    {
+      "id": "B04",
+      "name": "접견실 옆 통로",
+      "floor": 3,
+      "x": 509,
+      "y": 716,
+      "type": "corridor"
+    },
+    {
+      "id": "B05",
+      "name": "승강장 쪽 3번 분기",
+      "floor": 3,
+      "x": 520,
+      "y": 822,
+      "type": "corridor"
+    },
+    {
+      "id": "B06",
+      "name": "꽃집 옆 통로",
+      "floor": 3,
+      "x": 527,
+      "y": 898,
+      "type": "corridor"
+    },
+    {
+      "id": "B07",
+      "name": "승강장 5·6번 방향 분기",
+      "floor": 3,
+      "x": 485,
+      "y": 972,
+      "type": "corridor"
+    },
+    {
+      "id": "B08",
+      "name": "승강장 사이 통로",
+      "floor": 3,
+      "x": 483,
+      "y": 1042,
+      "type": "corridor"
+    },
+    {
+      "id": "B09",
+      "name": "승강장 3·4번 방향 분기",
+      "floor": 3,
+      "x": 482,
+      "y": 1122,
+      "type": "corridor"
+    },
+    {
+      "id": "B10",
+      "name": "승강장 쪽 하단 통로",
+      "floor": 3,
+      "x": 493,
+      "y": 1195,
+      "type": "corridor"
+    },
+    {
+      "id": "B11",
+      "name": "승강장 연결통로 1 방향 분기",
+      "floor": 3,
+      "x": 487,
+      "y": 1310,
+      "type": "corridor"
+    },
+    {
+      "id": "C01",
+      "name": "중앙 좌석 사이 횡단 통로",
+      "floor": 3,
+      "x": 985,
+      "y": 788,
+      "type": "corridor"
+    },
+    {
+      "id": "P02",
+      "name": "엘리베이터(2번 출구·동광장) 접근점",
+      "floor": 3,
+      "x": 853,
+      "y": 420,
+      "type": "approach",
+      "placeId": 2
+    },
+    {
+      "id": "P03",
+      "name": "출입구(방풍실 4) 접근점",
+      "floor": 3,
+      "x": 831,
+      "y": 425,
+      "type": "approach",
+      "placeId": 3
+    },
+    {
+      "id": "P04",
+      "name": "레드아이 접근점",
+      "floor": 3,
+      "x": 726,
+      "y": 428,
+      "type": "approach",
+      "placeId": 4
+    },
+    {
+      "id": "P07",
+      "name": "엘리베이터(지도 상단 승강장 연결통로) 접근점",
+      "floor": 3,
+      "x": 379,
+      "y": 534,
+      "type": "approach",
+      "placeId": 7
+    },
+    {
+      "id": "P08",
+      "name": "승강장 연결통로(지도 상단) 접근점",
+      "floor": 3,
+      "x": 238,
+      "y": 556,
+      "type": "approach",
+      "placeId": 8
+    },
+    {
+      "id": "P09",
+      "name": "직영편의점(북) 접근점",
+      "floor": 3,
+      "x": 565,
+      "y": 540,
+      "type": "approach",
+      "placeId": 9
+    },
+    {
+      "id": "P10",
+      "name": "KR스타트업 라운지(공단) 접근점",
+      "floor": 3,
+      "x": 930,
+      "y": 473,
+      "type": "approach",
+      "placeId": 10
+    },
+    {
+      "id": "P12",
+      "name": "출입구(방풍실 3) 접근점",
+      "floor": 3,
+      "x": 962,
+      "y": 574,
+      "type": "approach",
+      "placeId": 12
+    },
+    {
+      "id": "P13",
+      "name": "직영명품마루 접근점",
+      "floor": 3,
+      "x": 610,
+      "y": 568,
+      "type": "approach",
+      "placeId": 13
+    },
+    {
+      "id": "P14",
+      "name": "꿈돌이와대전여행 접근점",
+      "floor": 3,
+      "x": 985,
+      "y": 605,
+      "type": "approach",
+      "placeId": 14
+    },
+    {
+      "id": "P15",
+      "name": "엘리베이터(지도 위에서 두 번째 승강장 연결통로) 접근점",
+      "floor": 3,
+      "x": 439,
+      "y": 658,
+      "type": "approach",
+      "placeId": 15
+    },
+    {
+      "id": "P17",
+      "name": "휴게실2 접근점",
+      "floor": 3,
+      "x": 740,
+      "y": 635,
+      "type": "approach",
+      "placeId": 17
+    },
+    {
+      "id": "P18",
+      "name": "승강장 연결통로(지도 위에서 두 번째) 접근점",
+      "floor": 3,
+      "x": 288,
+      "y": 684,
+      "type": "approach",
+      "placeId": 18
+    },
+    {
+      "id": "P20",
+      "name": "대전역약국 접근점",
+      "floor": 3,
+      "x": 1013,
+      "y": 650,
+      "type": "approach",
+      "placeId": 20
+    },
+    {
+      "id": "P21",
+      "name": "고객 접견실 접근점",
+      "floor": 3,
+      "x": 540,
+      "y": 714,
+      "type": "approach",
+      "placeId": 21
+    },
+    {
+      "id": "P22",
+      "name": "자동발매기실 접근점",
+      "floor": 3,
+      "x": 775,
+      "y": 715,
+      "type": "approach",
+      "placeId": 22
+    },
+    {
+      "id": "P23",
+      "name": "(임시) 매장 2 접근점",
+      "floor": 3,
+      "x": 1053,
+      "y": 755,
+      "type": "approach",
+      "placeId": 23
+    },
+    {
+      "id": "P25",
+      "name": "플라잉스콘 접근점",
+      "floor": 3,
+      "x": 763,
+      "y": 779,
+      "type": "approach",
+      "placeId": 25
+    },
+    {
+      "id": "P26",
+      "name": "마루노바 접근점",
+      "floor": 3,
+      "x": 568,
+      "y": 820,
+      "type": "approach",
+      "placeId": 26
+    },
+    {
+      "id": "P27",
+      "name": "엘리베이터(지도 위에서 세 번째 승강장 연결통로) 접근점",
+      "floor": 3,
+      "x": 469,
+      "y": 842,
+      "type": "approach",
+      "placeId": 27
+    },
+    {
+      "id": "P28",
+      "name": "(임시) 매장 1 접근점",
+      "floor": 3,
+      "x": 1091,
+      "y": 830,
+      "type": "approach",
+      "placeId": 28
+    },
+    {
+      "id": "P29",
+      "name": "승강장 연결통로(지도 위에서 세 번째) 접근점",
+      "floor": 3,
+      "x": 297,
+      "y": 880,
+      "type": "approach",
+      "placeId": 29
+    },
+    {
+      "id": "P30",
+      "name": "도심속작은자연 flos 접근점",
+      "floor": 3,
+      "x": 479,
+      "y": 913,
+      "type": "approach",
+      "placeId": 30
+    },
+    {
+      "id": "P31",
+      "name": "엘리베이터(5·6번 승강장) 접근점",
+      "floor": 3,
+      "x": 439,
+      "y": 968,
+      "type": "approach",
+      "placeId": 31
+    },
+    {
+      "id": "P32",
+      "name": "매표소(매표실) 접근점",
+      "floor": 3,
+      "x": 817,
+      "y": 940,
+      "type": "approach",
+      "placeId": 32
+    },
+    {
+      "id": "P33",
+      "name": "출입구(방풍실 2) 접근점",
+      "floor": 3,
+      "x": 1128,
+      "y": 957,
+      "type": "approach",
+      "placeId": 33
+    },
+    {
+      "id": "P34",
+      "name": "승강장 연결통로 3 (5·6번 승강장) 접근점",
+      "floor": 3,
+      "x": 245,
+      "y": 1007,
+      "type": "approach",
+      "placeId": 34
+    },
+    {
+      "id": "P35",
+      "name": "신청도할매김밥 접근점",
+      "floor": 3,
+      "x": 566,
+      "y": 986,
+      "type": "approach",
+      "placeId": 35
+    },
+    {
+      "id": "P36",
+      "name": "남자화장실 접근점",
+      "floor": 3,
+      "x": 809,
+      "y": 995,
+      "type": "approach",
+      "placeId": 36
+    },
+    {
+      "id": "P37",
+      "name": "복순도가 접근점",
+      "floor": 3,
+      "x": 452,
+      "y": 1037,
+      "type": "approach",
+      "placeId": 37
+    },
+    {
+      "id": "P38",
+      "name": "카페스토리웨이 접근점",
+      "floor": 3,
+      "x": 1152,
+      "y": 1031,
+      "type": "approach",
+      "placeId": 38
+    },
+    {
+      "id": "P40",
+      "name": "디자인스킨 접근점",
+      "floor": 3,
+      "x": 855,
+      "y": 1063,
+      "type": "approach",
+      "placeId": 40
+    },
+    {
+      "id": "P41",
+      "name": "직영편의점(남) 접근점",
+      "floor": 3,
+      "x": 1169,
+      "y": 1071,
+      "type": "approach",
+      "placeId": 41
+    },
+    {
+      "id": "P42",
+      "name": "엘리베이터(3·4번 승강장) 접근점",
+      "floor": 3,
+      "x": 406,
+      "y": 1128,
+      "type": "approach",
+      "placeId": 42
+    },
+    {
+      "id": "P43",
+      "name": "엘리베이터(1번 출구·서광장 A) 접근점",
+      "floor": 3,
+      "x": 1168,
+      "y": 1136,
+      "type": "approach",
+      "placeId": 43
+    },
+    {
+      "id": "P44",
+      "name": "승강장 연결통로 2 (3·4번 승강장) 접근점",
+      "floor": 3,
+      "x": 209,
+      "y": 1160,
+      "type": "approach",
+      "placeId": 44
+    },
+    {
+      "id": "P45",
+      "name": "여객편의시설 접근점",
+      "floor": 3,
+      "x": 1034,
+      "y": 1146,
+      "type": "approach",
+      "placeId": 45
+    },
+    {
+      "id": "P46",
+      "name": "여객화장실(남)1 접근점",
+      "floor": 3,
+      "x": 931,
+      "y": 1177,
+      "type": "approach",
+      "placeId": 46
+    },
+    {
+      "id": "P47",
+      "name": "1번 출구 방향(서광장·지하철 타는 곳) 접근점",
+      "floor": 3,
+      "x": 1139,
+      "y": 1165,
+      "type": "approach",
+      "placeId": 47
+    },
+    {
+      "id": "P50",
+      "name": "계단·에스컬레이터(지도 하단 왼쪽) 접근점",
+      "floor": 3,
+      "x": 553,
+      "y": 1253,
+      "type": "approach",
+      "placeId": 50
+    },
+    {
+      "id": "P51",
+      "name": "1층행 에스컬레이터(서측) 접근점",
+      "floor": 3,
+      "x": 1115,
+      "y": 1181,
+      "type": "approach",
+      "placeId": 51
+    },
+    {
+      "id": "P52",
+      "name": "엘리베이터(연결통로 1) 접근점",
+      "floor": 3,
+      "x": 437,
+      "y": 1334,
+      "type": "approach",
+      "placeId": 52
+    },
+    {
+      "id": "P53",
+      "name": "승강장 연결통로 1 접근점",
+      "floor": 3,
+      "x": 228,
+      "y": 1360,
+      "type": "approach",
+      "placeId": 53
+    }
+  ],
+  "edges": [
+    {
+      "id": "E001",
+      "source": "H01",
+      "target": "H02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 122.8
+    },
+    {
+      "id": "E002",
+      "source": "H02",
+      "target": "H03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 84.5
+    },
+    {
+      "id": "E003",
+      "source": "H03",
+      "target": "H04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 57.71
+    },
+    {
+      "id": "E004",
+      "source": "H04",
+      "target": "H05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 79.48
+    },
+    {
+      "id": "E005",
+      "source": "H05",
+      "target": "H06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 81.71
+    },
+    {
+      "id": "E006",
+      "source": "H06",
+      "target": "H07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 109.12
+    },
+    {
+      "id": "E007",
+      "source": "H07",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 95.34
+    },
+    {
+      "id": "E008",
+      "source": "H08",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 78.77
+    },
+    {
+      "id": "E009",
+      "source": "H09",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 101.87
+    },
+    {
+      "id": "E010",
+      "source": "H10",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 78.6
+    },
+    {
+      "id": "E011",
+      "source": "H11",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 120.35
+    },
+    {
+      "id": "E012",
+      "source": "H12",
+      "target": "H13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 42.76
+    },
+    {
+      "id": "E013",
+      "source": "H01",
+      "target": "A01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 62.03
+    },
+    {
+      "id": "E014",
+      "source": "A01",
+      "target": "A02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 81.71
+    },
+    {
+      "id": "E015",
+      "source": "A02",
+      "target": "A03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.22
+    },
+    {
+      "id": "E016",
+      "source": "A03",
+      "target": "A04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 87.66
+    },
+    {
+      "id": "E017",
+      "source": "A04",
+      "target": "A05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 99.4
+    },
+    {
+      "id": "E018",
+      "source": "A05",
+      "target": "A06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 93.52
+    },
+    {
+      "id": "E019",
+      "source": "A06",
+      "target": "A07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 98.39
+    },
+    {
+      "id": "E020",
+      "source": "A07",
+      "target": "A08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 82.01
+    },
+    {
+      "id": "E021",
+      "source": "A08",
+      "target": "A09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 77.52
+    },
+    {
+      "id": "E022",
+      "source": "A09",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 61.13
+    },
+    {
+      "id": "E023",
+      "source": "H03",
+      "target": "B01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 71.81
+    },
+    {
+      "id": "E024",
+      "source": "B01",
+      "target": "B02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 161.62
+    },
+    {
+      "id": "E025",
+      "source": "B02",
+      "target": "B03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 105.54
+    },
+    {
+      "id": "E026",
+      "source": "B03",
+      "target": "B04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 67.68
+    },
+    {
+      "id": "E027",
+      "source": "B04",
+      "target": "B05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 106.57
+    },
+    {
+      "id": "E028",
+      "source": "B05",
+      "target": "B06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 76.32
+    },
+    {
+      "id": "E029",
+      "source": "B06",
+      "target": "B07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 85.09
+    },
+    {
+      "id": "E030",
+      "source": "B07",
+      "target": "B08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 70.03
+    },
+    {
+      "id": "E031",
+      "source": "B08",
+      "target": "B09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 80.01
+    },
+    {
+      "id": "E032",
+      "source": "B09",
+      "target": "B10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 73.82
+    },
+    {
+      "id": "E033",
+      "source": "B10",
+      "target": "B11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 115.16
+    },
+    {
+      "id": "E034",
+      "source": "H07",
+      "target": "C01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 157.56
+    },
+    {
+      "id": "E035",
+      "source": "C01",
+      "target": "A05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 69.31
+    },
+    {
+      "id": "E036",
+      "source": "H01",
+      "target": "P02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 21.02
+    },
+    {
+      "id": "E037",
+      "source": "H01",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 26.4
+    },
+    {
+      "id": "E038",
+      "source": "H02",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 27.29
+    },
+    {
+      "id": "E039",
+      "source": "B02",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 92.91
+    },
+    {
+      "id": "E040",
+      "source": "P07",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 142.71
+    },
+    {
+      "id": "E041",
+      "source": "B01",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 68.62
+    },
+    {
+      "id": "E042",
+      "source": "A01",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 34.0
+    },
+    {
+      "id": "E043",
+      "source": "A03",
+      "target": "P12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 9.22
+    },
+    {
+      "id": "E044",
+      "source": "B01",
+      "target": "P13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 53.85
+    },
+    {
+      "id": "E045",
+      "source": "A03",
+      "target": "P14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 47.63
+    },
+    {
+      "id": "E046",
+      "source": "B03",
+      "target": "P15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.58
+    },
+    {
+      "id": "E047",
+      "source": "H05",
+      "target": "P17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.84
+    },
+    {
+      "id": "E048",
+      "source": "P15",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 153.22
+    },
+    {
+      "id": "E049",
+      "source": "A04",
+      "target": "P20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 20.22
+    },
+    {
+      "id": "E050",
+      "source": "B04",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 31.06
+    },
+    {
+      "id": "E051",
+      "source": "H06",
+      "target": "P22",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 22.83
+    },
+    {
+      "id": "E052",
+      "source": "A05",
+      "target": "P23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 26.25
+    },
+    {
+      "id": "E053",
+      "source": "H06",
+      "target": "P25",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 49.65
+    },
+    {
+      "id": "E054",
+      "source": "B05",
+      "target": "P26",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 48.04
+    },
+    {
+      "id": "E055",
+      "source": "B05",
+      "target": "P27",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.78
+    },
+    {
+      "id": "E056",
+      "source": "A06",
+      "target": "P28",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 20.25
+    },
+    {
+      "id": "E057",
+      "source": "P27",
+      "target": "P29",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 176.15
+    },
+    {
+      "id": "E058",
+      "source": "B06",
+      "target": "P30",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.29
+    },
+    {
+      "id": "E059",
+      "source": "B07",
+      "target": "P31",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 46.17
+    },
+    {
+      "id": "E060",
+      "source": "H08",
+      "target": "P32",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 40.5
+    },
+    {
+      "id": "E061",
+      "source": "A07",
+      "target": "P33",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 47.54
+    },
+    {
+      "id": "E062",
+      "source": "P31",
+      "target": "P34",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 197.88
+    },
+    {
+      "id": "E063",
+      "source": "B07",
+      "target": "P35",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 82.2
+    },
+    {
+      "id": "E064",
+      "source": "H09",
+      "target": "P36",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 73.17
+    },
+    {
+      "id": "E065",
+      "source": "B08",
+      "target": "P37",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 31.4
+    },
+    {
+      "id": "E066",
+      "source": "A08",
+      "target": "P38",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 71.03
+    },
+    {
+      "id": "E067",
+      "source": "H10",
+      "target": "P40",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 83.52
+    },
+    {
+      "id": "E068",
+      "source": "A09",
+      "target": "P41",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 38.63
+    },
+    {
+      "id": "E069",
+      "source": "B09",
+      "target": "P42",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 76.24
+    },
+    {
+      "id": "E070",
+      "source": "H12",
+      "target": "P43",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.78
+    },
+    {
+      "id": "E071",
+      "source": "P42",
+      "target": "P44",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 199.58
+    },
+    {
+      "id": "E072",
+      "source": "H11",
+      "target": "P45",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 37.95
+    },
+    {
+      "id": "E073",
+      "source": "H10",
+      "target": "P46",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 90.09
+    },
+    {
+      "id": "E074",
+      "source": "H13",
+      "target": "P47",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 15.65
+    },
+    {
+      "id": "E075",
+      "source": "B10",
+      "target": "P50",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 83.45
+    },
+    {
+      "id": "E076",
+      "source": "H13",
+      "target": "P51",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.08
+    },
+    {
+      "id": "E077",
+      "source": "B11",
+      "target": "P52",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.46
+    },
+    {
+      "id": "E078",
+      "source": "P52",
+      "target": "P53",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 210.61
+    }
+  ],
+  "places": [
+    {
+      "id": 1,
+      "name": "동측 계단·에스컬레이터",
+      "floor": 3,
+      "category": "vertical_transport",
+      "aliases": [
+        "동광장 계단",
+        "동광장 에스컬레이터"
+      ],
+      "x": 886,
+      "y": 291,
+      "lat": 36.3324564,
+      "lng": 127.4354309,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 2,
+      "name": "엘리베이터(2번 출구·동광장)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "동광장 엘리베이터",
+        "동문 엘리베이터"
+      ],
+      "x": 844,
+      "y": 333,
+      "lat": 36.3324816,
+      "lng": 127.4353473,
+      "nodeId": "P02",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 3,
+      "name": "출입구(방풍실 4)",
+      "floor": 3,
+      "category": "entrance",
+      "aliases": [
+        "방풍실4",
+        "동광장 쪽 출입구"
+      ],
+      "x": 842,
+      "y": 381,
+      "lat": 36.3324682,
+      "lng": 127.435254,
+      "nodeId": "P03",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 4,
+      "name": "레드아이",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "레드 아이"
+      ],
+      "x": 659,
+      "y": 382,
+      "lat": 36.3326364,
+      "lng": 127.4352432,
+      "nodeId": "P04",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 5,
+      "name": "화장실(북측 1)",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "북쪽 화장실",
+        "화장실"
+      ],
+      "x": 552,
+      "y": 385,
+      "lat": 36.3327341,
+      "lng": 127.4352321,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 6,
+      "name": "화장실(북측 2)",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "북쪽 화장실",
+        "화장실"
+      ],
+      "x": 596,
+      "y": 399,
+      "lat": 36.3326891,
+      "lng": 127.4352071,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 7,
+      "name": "엘리베이터(지도 상단 승강장 연결통로)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "승강장 엘리베이터"
+      ],
+      "x": 358,
+      "y": 500,
+      "lat": 36.3328761,
+      "lng": 127.4349995,
+      "nodeId": "P07",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 8,
+      "name": "승강장 연결통로(지도 상단)",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "승강장 통로"
+      ],
+      "x": 225,
+      "y": 524,
+      "lat": 36.332991,
+      "lng": 127.4349464,
+      "nodeId": "P08",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 9,
+      "name": "직영편의점(북)",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "북측 편의점",
+        "북쪽 편의점",
+        "편의점"
+      ],
+      "x": 559,
+      "y": 513,
+      "lat": 36.3326868,
+      "lng": 127.434984,
+      "nodeId": "P09",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 10,
+      "name": "KR스타트업 라운지(공단)",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [
+        "KR 스타트업 라운지",
+        "스타트업 라운지"
+      ],
+      "x": 962,
+      "y": 479,
+      "lat": 36.3323263,
+      "lng": 127.4350697,
+      "nodeId": "P10",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 11,
+      "name": "편의시설(지도 상단 안내 아이콘)",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [],
+      "x": 428,
+      "y": 541,
+      "lat": 36.3327985,
+      "lng": 127.4349233,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 12,
+      "name": "출입구(방풍실 3)",
+      "floor": 3,
+      "category": "entrance",
+      "aliases": [
+        "방풍실3"
+      ],
+      "x": 982,
+      "y": 552,
+      "lat": 36.3322846,
+      "lng": 127.434929,
+      "nodeId": "P12",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 13,
+      "name": "직영명품마루",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "명품마루"
+      ],
+      "x": 595,
+      "y": 586,
+      "lat": 36.3326303,
+      "lng": 127.4348441,
+      "nodeId": "P13",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 14,
+      "name": "꿈돌이와대전여행",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "꿈돌이",
+        "꿈돌이와 대전여행"
+      ],
+      "x": 1015,
+      "y": 596,
+      "lat": 36.3322401,
+      "lng": 127.4348452,
+      "nodeId": "P14",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 15,
+      "name": "엘리베이터(지도 위에서 두 번째 승강장 연결통로)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "승강장 엘리베이터"
+      ],
+      "x": 416,
+      "y": 628,
+      "lat": 36.3327818,
+      "lng": 127.4347539,
+      "nodeId": "P15",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 16,
+      "name": "선상주차장(347대)",
+      "floor": 3,
+      "category": "parking",
+      "aliases": [
+        "주차장",
+        "선상 주차장"
+      ],
+      "x": 1500,
+      "y": 625,
+      "lat": 36.3317841,
+      "lng": 127.4348126,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 17,
+      "name": "휴게실2",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [
+        "휴게실",
+        "휴게실 2"
+      ],
+      "x": 656,
+      "y": 639,
+      "lat": 36.3325572,
+      "lng": 127.4347442,
+      "nodeId": "P17",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 18,
+      "name": "승강장 연결통로(지도 위에서 두 번째)",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "승강장 통로"
+      ],
+      "x": 279,
+      "y": 653,
+      "lat": 36.3329,
+      "lng": 127.4346987,
+      "nodeId": "P18",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 19,
+      "name": "편의시설(고객 접견실 위 안내 아이콘)",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [],
+      "x": 563,
+      "y": 657,
+      "lat": 36.3326371,
+      "lng": 127.4347048,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 20,
+      "name": "대전역약국",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "대전역 약국",
+        "약국"
+      ],
+      "x": 1039,
+      "y": 654,
+      "lat": 36.3321995,
+      "lng": 127.4347338,
+      "nodeId": "P20",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 21,
+      "name": "고객 접견실",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [
+        "고객접견실",
+        "접견실"
+      ],
+      "x": 562,
+      "y": 701,
+      "lat": 36.332624,
+      "lng": 127.4346193,
+      "nodeId": "P21",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 22,
+      "name": "자동발매기실",
+      "floor": 3,
+      "category": "ticketing",
+      "aliases": [
+        "자동발매기",
+        "승차권 발매기",
+        "무인발권기"
+      ],
+      "x": 740,
+      "y": 714,
+      "lat": 36.3324558,
+      "lng": 127.4346028,
+      "nodeId": "P22",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 23,
+      "name": "(임시) 매장 2",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "임시매장2"
+      ],
+      "x": 1078,
+      "y": 748,
+      "lat": 36.3321336,
+      "lng": 127.4345533,
+      "nodeId": "P23",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 24,
+      "name": "화장실(마루노바 인근)",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "화장실"
+      ],
+      "x": 617,
+      "y": 757,
+      "lat": 36.3325554,
+      "lng": 127.4345133,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 25,
+      "name": "플라잉스콘",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "플라잉 스콘"
+      ],
+      "x": 727,
+      "y": 774,
+      "lat": 36.3324487,
+      "lng": 127.4344857,
+      "nodeId": "P25",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 26,
+      "name": "마루노바",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "마루 노바"
+      ],
+      "x": 599,
+      "y": 809,
+      "lat": 36.3325554,
+      "lng": 127.4344115,
+      "nodeId": "P26",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 27,
+      "name": "엘리베이터(지도 위에서 세 번째 승강장 연결통로)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "승강장 엘리베이터"
+      ],
+      "x": 452,
+      "y": 809,
+      "lat": 36.3326909,
+      "lng": 127.4344043,
+      "nodeId": "P27",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 28,
+      "name": "(임시) 매장 1",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "임시매장1"
+      ],
+      "x": 1111,
+      "y": 828,
+      "lat": 36.3320776,
+      "lng": 127.4343996,
+      "nodeId": "P28",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 29,
+      "name": "승강장 연결통로(지도 위에서 세 번째)",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "승강장 통로"
+      ],
+      "x": 293,
+      "y": 842,
+      "lat": 36.3328268,
+      "lng": 127.4343325,
+      "nodeId": "P29",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 30,
+      "name": "도심속작은자연 flos",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "도심 속 작은 자연",
+        "flos",
+        "꽃집"
+      ],
+      "x": 466,
+      "y": 888,
+      "lat": 36.3326527,
+      "lng": 127.4342517,
+      "nodeId": "P30",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 31,
+      "name": "엘리베이터(5·6번 승강장)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "5번 승강장 엘리베이터",
+        "6번 승강장 엘리베이터"
+      ],
+      "x": 408,
+      "y": 936,
+      "lat": 36.3326909,
+      "lng": 127.4341557,
+      "nodeId": "P31",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 32,
+      "name": "매표소(매표실)",
+      "floor": 3,
+      "category": "ticketing",
+      "aliases": [
+        "매표소",
+        "매표실",
+        "승차권 구매",
+        "발권"
+      ],
+      "x": 786,
+      "y": 943,
+      "lat": 36.3323404,
+      "lng": 127.4341606,
+      "nodeId": "P32",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 33,
+      "name": "출입구(방풍실 2)",
+      "floor": 3,
+      "category": "entrance",
+      "aliases": [
+        "방풍실2"
+      ],
+      "x": 1154,
+      "y": 952,
+      "lat": 36.3319984,
+      "lng": 127.4341611,
+      "nodeId": "P33",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 34,
+      "name": "승강장 연결통로 3 (5·6번 승강장)",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "5번 승강장",
+        "6번 승강장",
+        "연결통로3"
+      ],
+      "x": 237,
+      "y": 975,
+      "lat": 36.332836,
+      "lng": 127.4340717,
+      "nodeId": "P34",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 35,
+      "name": "신청도할매김밥",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "청도할매김밥",
+        "김밥"
+      ],
+      "x": 592,
+      "y": 982,
+      "lat": 36.3325067,
+      "lng": 127.4340754,
+      "nodeId": "P35",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 36,
+      "name": "남자화장실",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "남자 화장실",
+        "남성 화장실"
+      ],
+      "x": 772,
+      "y": 991,
+      "lat": 36.3323379,
+      "lng": 127.4340667,
+      "nodeId": "P36",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 37,
+      "name": "복순도가",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "복순 도가"
+      ],
+      "x": 446,
+      "y": 1011,
+      "lat": 36.3326319,
+      "lng": 127.434012,
+      "nodeId": "P37",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 38,
+      "name": "카페스토리웨이",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "카페 스토리웨이",
+        "스토리웨이 카페"
+      ],
+      "x": 1189,
+      "y": 1022,
+      "lat": 36.3319439,
+      "lng": 127.4340269,
+      "nodeId": "P38",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 39,
+      "name": "화장실(디자인스킨 인근)",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "화장실"
+      ],
+      "x": 721,
+      "y": 1063,
+      "lat": 36.3323619,
+      "lng": 127.4339245,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 40,
+      "name": "디자인스킨",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "디자인 스킨"
+      ],
+      "x": 819,
+      "y": 1063,
+      "lat": 36.3322717,
+      "lng": 127.4339293,
+      "nodeId": "P40",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 41,
+      "name": "직영편의점(남)",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "남측 편의점",
+        "남쪽 편의점",
+        "편의점"
+      ],
+      "x": 1207,
+      "y": 1065,
+      "lat": 36.3319135,
+      "lng": 127.4339444,
+      "nodeId": "P41",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 42,
+      "name": "엘리베이터(3·4번 승강장)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "3번 승강장 엘리베이터",
+        "4번 승강장 엘리베이터"
+      ],
+      "x": 394,
+      "y": 1085,
+      "lat": 36.3326562,
+      "lng": 127.4338658,
+      "nodeId": "P42",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 43,
+      "name": "엘리베이터(1번 출구·서광장 A)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "서광장 엘리베이터",
+        "서문 엘리베이터"
+      ],
+      "x": 1268,
+      "y": 1111,
+      "lat": 36.3318427,
+      "lng": 127.4338581,
+      "nodeId": "P43",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 44,
+      "name": "승강장 연결통로 2 (3·4번 승강장)",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "3번 승강장",
+        "4번 승강장",
+        "연결통로2"
+      ],
+      "x": 199,
+      "y": 1128,
+      "lat": 36.3328221,
+      "lng": 127.4337729,
+      "nodeId": "P44",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 45,
+      "name": "여객편의시설",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [
+        "여객 편의시설"
+      ],
+      "x": 1046,
+      "y": 1162,
+      "lat": 36.3320309,
+      "lng": 127.4337482,
+      "nodeId": "P45",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 46,
+      "name": "여객화장실(남)1",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "여객화장실",
+        "남자 화장실"
+      ],
+      "x": 895,
+      "y": 1205,
+      "lat": 36.3321563,
+      "lng": 127.4336574,
+      "nodeId": "P46",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 47,
+      "name": "1번 출구 방향(서광장·지하철 타는 곳)",
+      "floor": 3,
+      "category": "entrance",
+      "aliases": [
+        "1번 출구",
+        "서광장",
+        "서문",
+        "지하철",
+        "도시철도"
+      ],
+      "x": 1154,
+      "y": 1207,
+      "lat": 36.3319171,
+      "lng": 127.4336662,
+      "nodeId": "P47",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 48,
+      "name": "화장실(지도 하단)",
+      "floor": 3,
+      "category": "restroom",
+      "aliases": [
+        "화장실"
+      ],
+      "x": 789,
+      "y": 1226,
+      "lat": 36.3322473,
+      "lng": 127.4336115,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 49,
+      "name": "계단·에스컬레이터(지도 하단 오른쪽)",
+      "floor": 3,
+      "category": "vertical_transport",
+      "aliases": [],
+      "x": 655,
+      "y": 1238,
+      "lat": 36.3323669,
+      "lng": 127.4335816,
+      "nodeId": null,
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 50,
+      "name": "계단·에스컬레이터(지도 하단 왼쪽)",
+      "floor": 3,
+      "category": "vertical_transport",
+      "aliases": [],
+      "x": 588,
+      "y": 1244,
+      "lat": 36.3324267,
+      "lng": 127.4335667,
+      "nodeId": "P50",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "descriptive"
+    },
+    {
+      "id": 51,
+      "name": "1층행 에스컬레이터(서측)",
+      "floor": 3,
+      "category": "vertical_transport",
+      "aliases": [
+        "1층 에스컬레이터",
+        "서측 에스컬레이터"
+      ],
+      "x": 1151,
+      "y": 1252,
+      "lat": 36.3319055,
+      "lng": 127.4335787,
+      "nodeId": "P51",
+      "source": [
+        "png",
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 52,
+      "name": "엘리베이터(연결통로 1)",
+      "floor": 3,
+      "category": "elevator",
+      "aliases": [
+        "연결통로1 엘리베이터"
+      ],
+      "x": 416,
+      "y": 1309,
+      "lat": 36.3325644,
+      "lng": 127.4334322,
+      "nodeId": "P52",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 53,
+      "name": "승강장 연결통로 1",
+      "floor": 3,
+      "category": "platform_access",
+      "aliases": [
+        "연결통로1"
+      ],
+      "x": 221,
+      "y": 1328,
+      "lat": 36.332738,
+      "lng": 127.4333858,
+      "nodeId": "P53",
+      "source": [
+        "png"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 54,
+      "name": "와플샵",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "와플 샵"
+      ],
+      "x": null,
+      "y": null,
+      "lat": 36.3325105,
+      "lng": 127.4343829,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 55,
+      "name": "코브라독스",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "코브라 독스"
+      ],
+      "x": null,
+      "y": null,
+      "lat": 36.3326678,
+      "lng": 127.434974,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 56,
+      "name": "삼진어묵",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "삼진 어묵"
+      ],
+      "x": null,
+      "y": null,
+      "lat": 36.3323066,
+      "lng": 127.4348076,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 57,
+      "name": "에그박스",
+      "floor": 3,
+      "category": "shop",
+      "aliases": [
+        "에그 박스"
+      ],
+      "x": null,
+      "y": null,
+      "lat": 36.3320156,
+      "lng": 127.4341774,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 58,
+      "name": "수유방",
+      "floor": 3,
+      "category": "facility",
+      "aliases": [
+        "수유실",
+        "수유"
+      ],
+      "x": null,
+      "y": null,
+      "lat": null,
+      "lng": null,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    },
+    {
+      "id": 59,
+      "name": "2층행 계단",
+      "floor": 3,
+      "category": "vertical_transport",
+      "aliases": [
+        "2층 계단"
+      ],
+      "x": null,
+      "y": null,
+      "lat": null,
+      "lng": null,
+      "nodeId": null,
+      "source": [
+        "pdf"
+      ],
+      "nameStatus": "labeled"
+    }
+  ],
+  "notes": [
+    "도면과 PNG를 대조해 추정한 3층 보행 그래프 초안입니다.",
+    "접근 노드 좌표는 통로에서 시설로 접근하는 추정 위치이며 시설 마커와 별개입니다. 실제 문, 개찰 및 이용 가능 여부는 현장 확인이 필요합니다.",
+    "서광장·동광장 엘리베이터는 홀 쪽 접근점에서 경로가 끝납니다. 승강장 연결통로도 3층 도면에 나타나는 구간만 포함합니다.",
+    "weight는 원본 이미지상 선분 길이로, 실거리 및 최단거리 보장의 기준이 될 수 없습니다.",
+    "nodeId가 null인 시설은 검색 전용입니다. 층간 이동과 배리어프리 여부는 미검증입니다.",
+    "[좌표] 취합본(WGS84). 기준점 총 6개(교차 확인 0, 카카오 6)로 아핀 변환, RMSE 3.4 m. 1차 기준 출처: 카카오. 카카오 단독/네이버 단독 결과 간 차이 평균 30.5 m, 최대 60.0 m. 현장 검증 전 추정값. 픽셀좌표 없는 place [54, 55, 56, 57]는 검색 좌표 사용. 좌표 없음: place [58, 59]."
+  ]
+}
