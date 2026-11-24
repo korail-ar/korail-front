@@ -1,6 +1,6 @@
 import cn from '@/lib/cn';
 
-export type MapLabelVariant = 'facility' | 'strong' | 'start';
+export type MapLabelVariant = 'facility' | 'strong' | 'start' | 'floor';
 
 interface MapLabelProps {
   label: string;
@@ -10,8 +10,10 @@ interface MapLabelProps {
 
 const VARIANT_CLASS_NAMES: Record<MapLabelVariant, string> = {
   facility: 'bg-surface text-ink-sub',
-  strong: 'bg-ink text-on-color',
-  start: 'bg-start text-on-color',
+  strong: 'bg-map-label-strong text-on-color',
+  start: 'bg-start text-start-ink',
+  // 층 이동 지점 이름(Figma W09 「2층 연결 지점」)
+  floor: 'bg-floor-marker text-ink',
 };
 
 /**

@@ -7,6 +7,9 @@ export type StateMessageType = 'loading' | 'empty' | 'needs-check' | 'no-route' 
 interface StateMessageAction {
   label: string;
   onClick: () => void;
+  /** 기본 모양(상태별)을 바꿀 때. 예: 오류 카드의 '다시 시도' 텍스트 링크(Figma W11) */
+  variant?: ButtonVariant;
+  className?: string;
 }
 
 interface StateMessageProps {
@@ -96,7 +99,11 @@ export default function StateMessage({
         {description ?? config.description}
       </p>
       {action && (
-        <Button variant={config.actionVariant} onClick={action.onClick}>
+        <Button
+          variant={action.variant ?? config.actionVariant}
+          onClick={action.onClick}
+          className={action.className}
+        >
           {action.label}
         </Button>
       )}

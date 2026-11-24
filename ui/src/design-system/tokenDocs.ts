@@ -65,6 +65,19 @@ export const PRIMITIVE_SCALES: PrimitiveScale[] = [
       { step: '900', hex: '#171717' },
     ],
   },
+  {
+    id: 'ink',
+    title: 'Ink (화면 글자)',
+    steps: [
+      { step: '600', hex: '#6B7280' },
+      { step: '900', hex: '#22314A' },
+    ],
+  },
+  {
+    id: 'sunflower',
+    title: 'Sunflower (안내 시작 위치 전용)',
+    steps: [{ step: '100', hex: '#FFF3C4' }],
+  },
 ];
 
 export const SEMANTIC_COLORS = [
@@ -108,6 +121,8 @@ export const SEMANTIC_COLORS = [
   'map-wall',
   'map-zone',
   'map-zone-line',
+  'map-label-strong',
+  'floor-marker',
   'marker',
   'marker-line',
 ] as const;
@@ -134,6 +149,25 @@ export const TYPE_SCALE: TypeToken[] = [
   { name: 'label', spec: '14/20 · w700', className: 'text-label', sample: '화장실' },
   { name: 'caption', spec: '13/18 · w400', className: 'text-caption', sample: '3층 · 동쪽 통로' },
   { name: 'map-label', spec: '12/16 · w700', className: 'text-map-label', sample: '보관함' },
+  {
+    name: 'screen-title',
+    spec: '26/39 · w700',
+    className: 'text-screen-title',
+    sample: '어디로 가시나요?',
+  },
+  {
+    name: 'subtitle',
+    spec: '20/30 · w700',
+    className: 'text-subtitle',
+    sample: '출발 위치 확인도 어려운가요?',
+  },
+  {
+    name: 'body-sm',
+    spec: '14/21 · w400',
+    className: 'text-body-sm',
+    sample: '전광판에서 확인한 번호를 선택하세요.',
+  },
+  { name: 'note', spec: '12/18 · w400', className: 'text-note', sample: 'QR 출발점 기준이에요' },
 ];
 
 export const SPACING = [

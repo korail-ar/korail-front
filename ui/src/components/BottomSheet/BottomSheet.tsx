@@ -11,6 +11,8 @@ interface BottomSheetProps {
   /** 주요 버튼. 맨 아래 가로를 꽉 채운다. */
   footer?: ReactNode;
   defaultExpanded?: boolean;
+  /** 제목 글자 크기를 바꿀 때(홈 화면 패널은 text-screen-title) */
+  titleClassName?: string;
   className?: string;
 }
 
@@ -20,6 +22,7 @@ export default function BottomSheet({
   children,
   footer,
   defaultExpanded = true,
+  titleClassName,
   className,
 }: BottomSheetProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -43,7 +46,7 @@ export default function BottomSheet({
       >
         <span className="h-1 w-10 rounded-[2px] bg-map-wall" />
       </button>
-      <h2 className="text-heading text-ink">{title}</h2>
+      <h2 className={cn('text-heading text-ink', titleClassName)}>{title}</h2>
       <div id={contentId} hidden={!isExpanded} className="flex flex-col gap-3">
         {children}
         {footer && <div className="pt-1 [&>*]:w-full">{footer}</div>}
