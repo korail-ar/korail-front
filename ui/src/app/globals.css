@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+/* 디자인이 라이트 모드만 정의하므로 다크 모드는 아직 지원하지 않는다. */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}

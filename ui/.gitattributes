@@ -1,0 +1,5 @@
+# Prettier(endOfLine: lf)와 맞추기 위해 OS의 core.autocrlf 설정과 상관없이 LF로 체크아웃한다.
+* text=auto eol=lf
+*.ico binary
+*.png binary
+*.jpg binary
