@@ -35,7 +35,10 @@
 - `src/components/<Name>/`: 재사용 컴포넌트. `Name.tsx`, `Name.stories.tsx`, `Name.test.tsx`를 같은 폴더에 둡니다.
 - `src/styles/tokens.css`: 디자인 토큰(Figma 기준). 화면을 만들 때는 새 값을 만들기 전에 토큰과 기존 컴포넌트부터 찾습니다.
 - `src/design-system/`: Storybook 전용 문서 페이지(토큰 레퍼런스, Figma 컴포넌트 시트)
-- `src/lib/`: 유틸(`cn` 등)
+- `src/lib/`: 유틸(`cn` 등). `src/lib/station/`은 대전역 길찾기 로직(경로·단계·검색)
+- `src/data/station/`: 3층 그래프. `source/`는 원본 복사본, `station3f.generated.json`은 `npm run build:station`으로 만든 지도 좌표 데이터
+- `scripts/`: 데이터 생성 스크립트(`build-station-data.mjs`)
+- `public/maps/`: 디자인팀 2D 층별 지도(`web-1F~4F-map.svg`)
 - `public/icons/`: Figma 원본 아이콘 SVG(`Icon` 컴포넌트가 사용)
 - `public/`: 정적 파일(Storybook `staticDirs`도 이 폴더를 씁니다)
 
@@ -50,6 +53,7 @@
 | `npm run format` / `npm run format:check` | Prettier                                           |
 | `npm run typecheck`                       | 라우트 타입 생성(`next typegen`) 후 `tsc --noEmit` |
 | `npm test` / `npm run test:watch`         | Vitest                                             |
+| `npm run build:station`                   | 3층 그래프 → 지도 좌표 데이터 다시 만들기          |
 
 설정할 때 지킬 것(셋업에 반영됨, 설정을 바꿀 때도 지킵니다):
 

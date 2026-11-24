@@ -12,7 +12,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="ko" className={`${notoSansKr.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        {/* 휴대폰 화면(Figma 375px) 기준 앱. 넓은 화면에서는 가운데 한 줄로 둔다. */}
+        <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-bg">{children}</div>
+      </body>
     </html>
   );
 }
