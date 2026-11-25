@@ -31,7 +31,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <>
+    <div className="home-enter flex min-h-0 flex-1 flex-col">
       <AppBar title="대전역 길안내" />
       <div className="relative flex min-h-0 flex-1 flex-col">
         {vm.view === '3d' ? (
@@ -78,6 +78,6 @@ export default function HomeScreen() {
           <p className="text-note text-ink-sub">QR 출발점 기준 · 실시간 위치가 아니에요</p>
         </BottomSheet>
       </div>
-    </>
+    </div>
   );
 }

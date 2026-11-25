@@ -10,88 +10,91 @@ interface EntryLoadingProps {
   startName: string;
 }
 
-interface StatusRow {
-  label: string;
-  status: string;
-  /** 진행 중이거나 끝난 줄은 파랑, 아직 기다리는 줄은 회색 */
-  isActive: boolean;
-}
+const SCREENS = [
+  {
+    phase: 'qr',
+    illustration: '/illustrations/qr-scan.svg',
+    title: 'QR 정보를\n확인하고 있어요',
+  },
+  {
+    phase: 'map',
+    illustration: '/illustrations/route-search.svg',
+    title: '대전역 지도를\n준비하고 있어요',
+  },
+] as const;
 
-const COPY: Record<EntryPhase, { illustration: string; title: string }> = {
-  qr: { illustration: '/illustrations/qr-scan.svg', title: 'QR 정보를\n확인하고 있어요' },
-  map: { illustration: '/illustrations/route-search.svg', title: '대전역 지도를\n준비하고 있어요' },
-};
-
-/**
- * QR로 들어왔을 때 홈 앞에 보이는 진입 로딩(Figma 282:2088 → 282:2125).
- * QR 정보 확인 → 실내 지도 준비 순서로 상태를 보여준다.
- */
+/** 두 Figma 진입 화면(282:2088, 282:2125)을 같은 자리에 겹쳐 부드럽게 전환한다. */
 export default function EntryLoading({ phase, startName }: EntryLoadingProps) {
-  const { illustration, title } = COPY[phase];
-  const description =
-    phase === 'qr'
-      ? '안내를 시작할 위치를 확인해요.\n잠시만 기다려 주세요.'
-      : `${startName}에서 안내를 시작해요.\n목적지를 고를 수 있도록 지도를 불러와요.`;
-  const rows: StatusRow[] = [
-    { label: 'QR 정보 확인', status: phase === 'qr' ? '확인 중' : '완료', isActive: true },
-    {
-      label: '실내 지도 준비',
-      status: phase === 'qr' ? '대기 중' : '불러오는 중',
-      isActive: phase === 'map',
-    },
-  ];
-
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-surface">
+      <div className="h-9 shrink-0" aria-hidden="true" />
       <AppBar title="대전역 길안내" />
-      <div
-        role="status"
-        aria-live="polite"
-        className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 pb-8 text-center"
-      >
-        <p className="mt-7 text-caption font-bold text-brand">AR려줄게</p>
-        <Image
-          // 단계가 바뀌면 새 그림을 바로 보이도록 요소를 새로 만든다(이전 그림이 남아 보이지 않게).
-          key={illustration}
-          src={illustration}
-          alt=""
-          width={280}
-          height={220}
-          unoptimized
-          priority
-          className="mt-4"
-        />
-        <h2 className="mt-6 text-headline whitespace-pre-line text-ink">{title}</h2>
-        <p className="mt-3.5 text-body whitespace-pre-line text-ink-sub">{description}</p>
-        <dl className="mt-7.5 w-full rounded-lg bg-brand-soft px-4 py-2 text-left">
-          {rows.map((row, index) => (
-            <div
-              key={row.label}
-              className={cn(
-                'flex items-center justify-between py-2.5',
-                index > 0 && 'border-t border-line',
-              )}
-            >
-              <dt
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 text-center">
+        <div className="relative min-h-[576px] shrink-0" role="status" aria-live="polite">
+          {SCREENS.map((screen) => {
+            const active = phase === screen.phase;
+            const description =
+              screen.phase === 'qr'
+                ? '안내를 시작할 위치를 확인해요.\n잠시만 기다려 주세요.'
+                : `${startName}에서 안내를 시작해요.\n목적지를 고를 수 있도록 지도를 불러와요.`;
+
+            return (
+              <div
+                key={screen.phase}
+                aria-hidden={!active}
                 className={cn(
-                  'text-body-sm font-medium',
-                  row.isActive ? 'text-ink' : 'text-ink-sub',
+                  'entry-screen absolute inset-x-0 top-0 flex flex-col items-center',
+                  active && 'entry-screen-active',
                 )}
               >
-                {row.label}
-              </dt>
-              <dd
-                className={cn(
-                  'text-caption font-bold',
-                  row.isActive ? 'text-brand' : 'text-ink-sub',
-                )}
-              >
-                {row.status}
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-auto pt-8 text-caption text-ink-sub">QR 설치 위치를 기준으로 안내해요.</p>
+                <p className="mt-7 text-caption font-bold text-brand">AR려줄게</p>
+                <Image
+                  src={screen.illustration}
+                  alt=""
+                  width={280}
+                  height={220}
+                  unoptimized
+                  priority
+                  className="mt-[18px]"
+                />
+                <h2 className="mt-6 text-headline whitespace-pre-line text-ink">{screen.title}</h2>
+                <p className="mt-3.5 text-body whitespace-pre-line text-ink-sub">{description}</p>
+                <dl className="mt-7.5 w-full rounded-lg bg-brand-soft px-4 py-2 text-left">
+                  <div className="flex items-center justify-between py-2.5">
+                    <dt className="text-body-sm font-medium text-ink">QR 정보 확인</dt>
+                    <dd className="text-caption font-bold text-brand">
+                      {screen.phase === 'qr' ? '확인 중' : '완료'}
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-line py-2.5">
+                    <dt
+                      className={cn(
+                        'text-body-sm font-medium',
+                        screen.phase === 'qr' ? 'text-ink-sub' : 'text-ink',
+                      )}
+                    >
+                      실내 지도 준비
+                    </dt>
+                    <dd
+                      className={cn(
+                        'text-caption font-bold',
+                        screen.phase === 'qr' ? 'text-ink-sub' : 'text-brand',
+                      )}
+                    >
+                      {screen.phase === 'qr' ? '대기 중' : '불러오는 중'}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-auto shrink-0 pb-10 text-caption text-ink-sub">
+          QR 설치 위치를 기준으로 안내해요.
+        </p>
+      </div>
+      <div className="relative h-[42px] shrink-0" aria-hidden="true">
+        <div className="absolute bottom-3 left-1/2 h-1 w-[120px] -translate-x-1/2 rounded-full bg-ink" />
       </div>
     </div>
   );

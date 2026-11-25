@@ -6,8 +6,7 @@ import { findNode } from '@/lib/station/data';
 import type { MapPoint } from '@/lib/station/types';
 import useJourney from '@/lib/station/useJourney';
 
-const QR_PHASE_MS = 1200;
-const MAP_PHASE_MIN_MS = 900;
+const ENTRY_PHASE_MS = 3000;
 const ENTRY_SEEN_KEY = 'korail:entry-seen';
 
 export type HomePhase = 'qr' | 'map' | 'done';
@@ -28,39 +27,31 @@ function writeEntrySeen(startId: string) {
   }
 }
 
-function useEntryPhase(isQrEntry: boolean, startId: string): HomePhase {
-  const [phase, setPhase] = useState<HomePhase>(() =>
-    isQrEntry && readEntrySeen() !== startId ? 'qr' : 'done',
-  );
+function useEntryPhase(startId: string): HomePhase {
+  const [phase, setPhase] = useState<HomePhase>('qr');
+
+  useEffect(() => {
+    const image = new window.Image();
+    image.src = '/maps/web-3F-map.svg';
+  }, []);
 
   useEffect(() => {
     if (phase === 'qr') {
-      const timer = setTimeout(() => setPhase('map'), QR_PHASE_MS);
+      if (readEntrySeen() === startId) {
+        const timer = setTimeout(() => setPhase('done'), 0);
+        return () => clearTimeout(timer);
+      }
+      const timer = setTimeout(() => setPhase('map'), ENTRY_PHASE_MS);
       return () => clearTimeout(timer);
     }
     if (phase !== 'map') {
       return undefined;
     }
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const startedAt = Date.now();
-    const finish = () => {
-      timer = setTimeout(
-        () => {
-          writeEntrySeen(startId);
-          setPhase('done');
-        },
-        Math.max(0, MAP_PHASE_MIN_MS - (Date.now() - startedAt)),
-      );
-    };
-    const image = new window.Image();
-    image.onload = finish;
-    image.onerror = finish;
-    image.src = '/maps/web-3F-map.svg';
-    return () => {
-      image.onload = null;
-      image.onerror = null;
-      clearTimeout(timer);
-    };
+    const timer = setTimeout(() => {
+      writeEntrySeen(startId);
+      setPhase('done');
+    }, ENTRY_PHASE_MS);
+    return () => clearTimeout(timer);
   }, [phase, startId]);
 
   return phase;
@@ -68,8 +59,8 @@ function useEntryPhase(isQrEntry: boolean, startId: string): HomePhase {
 
 /** 홈의 일시적 지도 상태와 URL 기반 출발점을 화면에서 분리한다. */
 export default function useHomeViewModel() {
-  const { params, start, href } = useJourney();
-  const phase = useEntryPhase(params.has('start'), start.id);
+  const { start, href } = useJourney();
+  const phase = useEntryPhase(start.id);
   const [view, setView] = useState<'3d' | '2d'>('3d');
   const startNode = findNode(start.nodeId);
   const startPoint: MapPoint | null = startNode ? [startNode.x, startNode.y] : null;
