@@ -1,0 +1,50 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="280" height="220" viewBox="0 0 280 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Illustration / &#235;&#143;&#132;&#236;&#176;&#169; &#236;&#153;&#132;&#235;&#163;&#140;">
+<path id="shadow" d="M140 203C185.84 203 223 199.418 223 195C223 190.582 185.84 187 140 187C94.1604 187 57 190.582 57 195C57 199.418 94.1604 203 140 203Z" fill="#E3EBFF"/>
+<path id="halo" d="M140 189C183.078 189 218 154.078 218 111C218 67.9218 183.078 33 140 33C96.9218 33 62 67.9218 62 111C62 154.078 96.9218 189 140 189Z" fill="#F2F7FF"/>
+<g id="rails">
+<g id="Vector">
+<path d="M112 178L95 199ZM164 178L181 199ZM108 185H170ZM101 194H178Z" fill="black"/>
+<path d="M112 178L95 199M164 178L181 199M108 185H170M101 194H178" stroke-width="4" stroke-linecap="round" stroke="#C9D6FF"/>
+</g>
+</g>
+<g id="train">
+<path id="Vector_2" d="M162 54H121C103.327 54 89 68.3269 89 86V148C89 165.673 103.327 180 121 180H162C179.673 180 194 165.673 194 148V86C194 68.3269 179.673 54 162 54Z" fill="#2F47C2"/>
+<path id="Vector_3" d="M155 49H114C96.3269 49 82 63.3269 82 81V143C82 160.673 96.3269 175 114 175H155C172.673 175 187 160.673 187 143V81C187 63.3269 172.673 49 155 49Z" fill="#5673F9"/>
+<path id="Vector_4" d="M163.5 60H105.5C103.015 60 101 62.0147 101 64.5C101 66.9853 103.015 69 105.5 69H163.5C165.985 69 168 66.9853 168 64.5C168 62.0147 165.985 60 163.5 60Z" fill="#C9D6FF"/>
+<path id="Vector_5" d="M159 79H110C100.611 79 93 86.6112 93 96V112C93 121.389 100.611 129 110 129H159C168.389 129 176 121.389 176 112V96C176 86.6112 168.389 79 159 79Z" fill="white"/>
+<g id="Vector_6">
+<path d="M136 80V128Z" fill="black"/>
+<path d="M136 80V128" stroke-width="4" stroke="#E3EBFF"/>
+</g>
+<g id="Vector_7">
+<path d="M103 117L121 92ZM146 117L161 96Z" fill="black"/>
+<path d="M103 117L121 92M146 117L161 96" stroke-width="6" stroke-linecap="round" stroke="#E3EBFF"/>
+</g>
+<path id="Vector_8" d="M105 152C108.866 152 112 148.866 112 145C112 141.134 108.866 138 105 138C101.134 138 98 141.134 98 145C98 148.866 101.134 152 105 152Z" fill="#FFF3C4"/>
+<path id="Vector_9" d="M164 152C167.866 152 171 148.866 171 145C171 141.134 167.866 138 164 138C160.134 138 157 141.134 157 145C157 148.866 160.134 152 164 152Z" fill="#FFF3C4"/>
+<path id="Vector_10" d="M146.5 150H122.5C120.567 150 119 151.567 119 153.5C119 155.433 120.567 157 122.5 157H146.5C148.433 157 150 155.433 150 153.5C150 151.567 148.433 150 146.5 150Z" fill="#2F47C2"/>
+<g id="Vector_11">
+<path d="M109 164H160Z" fill="black"/>
+<path d="M109 164H160" stroke-width="5" stroke-linecap="round" stroke="#C9D6FF"/>
+</g>
+</g>
+<g id="arrival-check">
+<path id="Vector_12" d="M197 90C213.569 90 227 76.5685 227 60C227 43.4315 213.569 30 197 30C180.431 30 167 43.4315 167 60C167 76.5685 180.431 90 197 90Z" fill="#FFF3C4"/>
+<path id="Vector_13" d="M192 85C208.569 85 222 71.5685 222 55C222 38.4315 208.569 25 192 25C175.431 25 162 38.4315 162 55C162 71.5685 175.431 85 192 85Z" fill="#FFD93D"/>
+<path id="Vector_14" d="M178 55L188 65L206 44" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke="white"/>
+</g>
+<g id="confetti">
+<g id="Vector_15">
+<path d="M62 80V92ZM56 86H68Z" fill="black"/>
+<path d="M62 80V92M56 86H68" stroke-width="4" stroke-linecap="round" stroke="#FFD93D"/>
+</g>
+<path id="Vector_16" d="M217 150C219.761 150 222 147.761 222 145C222 142.239 219.761 140 217 140C214.239 140 212 142.239 212 145C212 147.761 214.239 150 217 150Z" fill="#C9D6FF"/>
+<g id="Vector_17">
+<path d="M64 145L72 151Z" fill="black"/>
+<path d="M64 145L72 151" stroke-width="4" stroke-linecap="round" stroke="#5673F9"/>
+</g>
+<path id="Vector_18" d="M113 35C115.209 35 117 33.2091 117 31C117 28.7909 115.209 27 113 27C110.791 27 109 28.7909 109 31C109 33.2091 110.791 35 113 35Z" fill="#C9D6FF"/>
+</g>
+</g>
+</svg>

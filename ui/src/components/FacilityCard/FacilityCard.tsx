@@ -20,6 +20,8 @@ interface FacilityCardProps {
   actionLabel?: string;
   /** 주요 버튼 아이콘. 기본은 pin, null이면 아이콘 없이 글자만 둔다. */
   actionIcon?: IconName | null;
+  /** false면 주요 버튼 없이 정보만 보여준다(W10 도착 화면). */
+  showAction?: boolean;
   onAction?: () => void;
   className?: string;
 }
@@ -35,6 +37,7 @@ export default function FacilityCard({
   needsCheck = false,
   actionLabel = '여기로 안내',
   actionIcon = 'pin',
+  showAction = true,
   onAction,
   className,
 }: FacilityCardProps) {
@@ -61,9 +64,11 @@ export default function FacilityCard({
           </li>
         ))}
       </ul>
-      <Button icon={actionIcon ?? undefined} fullWidth onClick={onAction}>
-        {actionLabel}
-      </Button>
+      {showAction && (
+        <Button icon={actionIcon ?? undefined} fullWidth onClick={onAction}>
+          {actionLabel}
+        </Button>
+      )}
     </section>
   );
 }
