@@ -1,34 +1,27 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import AppBar from '@/components/AppBar/AppBar';
 import JourneyMilestones from '@/components/JourneyMilestones/JourneyMilestones';
 import RouteError from '@/components/RouteError/RouteError';
 import RouteSummary from '@/components/RouteSummary/RouteSummary';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import StationMap from '@/components/StationMap/StationMap';
-import { JOURNEY_KEYS, ROUTE_FLOOR_LABEL, ROUTE_MAP_CAPTION } from '@/lib/station/data';
-import getJourneyMapLayers from '@/lib/station/mapLayers';
-import useJourney from '@/lib/station/useJourney';
+import { ROUTE_FLOOR_LABEL, ROUTE_MAP_CAPTION } from '@/lib/station/data';
+import useRouteViewModel from '@/view-models/useRouteViewModel';
 
 /** W06 · 경로 미리보기 */
 export default function RouteScreen() {
-  const router = useRouter();
-  const journey = useJourney();
-  const { destination, route, steps, milestones, destinationLabel, start, status, href } = journey;
+  const vm = useRouteViewModel();
+  const { destination, steps, milestones, destinationLabel, start } = vm.journey;
 
-  if (status !== 'ok' || !destination || !route) {
-    return <RouteError journey={journey} returnPath="/route" />;
+  if (!vm.canGuide || !destination) {
+    return <RouteError journey={vm.journey} returnPath="/route" />;
   }
 
   return (
     <>
-      <AppBar
-        title={`${destinationLabel}까지 경로 확인`}
-        backHref={href(journey.platformNumber ? '/platform' : '/search', {}, JOURNEY_KEYS)}
-      />
-      <StationMap fill {...getJourneyMapLayers(journey)} caption={ROUTE_MAP_CAPTION} />
+      <AppBar title={`${destinationLabel}까지 경로 확인`} backHref={vm.backHref} />
+      <StationMap fill {...vm.mapLayers} caption={ROUTE_MAP_CAPTION} />
       <ScreenBody variant="panel">
         <JourneyMilestones milestones={milestones.milestones} current={0} className="mt-4" />
         <RouteSummary
@@ -39,7 +32,7 @@ export default function RouteScreen() {
           distance={`${ROUTE_FLOOR_LABEL} · 거리·시간 확인 예정`}
           stepCount={steps.length}
           floor={ROUTE_FLOOR_LABEL}
-          onAction={() => router.push(href('/guide', { step: 0 }, JOURNEY_KEYS))}
+          onAction={vm.startGuide}
           className="mt-4"
         />
         {destination.isApproximate && (
