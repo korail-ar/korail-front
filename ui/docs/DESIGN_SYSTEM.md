@@ -44,26 +44,29 @@ Figma 설명대로 임시 그림이며, 역 안내 픽토그램이 정해지면 
 
 ## 컴포넌트
 
-| 컴포넌트                                                        | 경로                      | 메모                                            |
-| --------------------------------------------------------------- | ------------------------- | ----------------------------------------------- |
-| Icon                                                            | `components/Icon`         |                                                 |
-| Button (primary · secondary · text)                             | `components/Button`       | Pressed = `:active`, Disabled = `disabled`      |
-| IconButton                                                      | `components/IconButton`   | `label`(화면 낭독용 이름) 필수                  |
-| CategoryChip                                                    | `components/CategoryChip` | 선택 시 아이콘이 체크로, `aria-pressed`         |
-| Tag (neutral · info · start · warn)                             | `components/Tag`          |                                                 |
-| NumberBadge (exit · platform · car)                             | `components/NumberBadge`  | 화면 낭독기에는 "타는 곳 5"처럼 읽힘            |
-| SearchField                                                     | `components/SearchField`  | Focus = `:focus-within`, `floating`은 지도 위용 |
-| ResultItem                                                      | `components/ResultItem`   | 줄 전체가 버튼                                  |
-| MapMarker (7종)                                                 | `components/MapMarker`    |                                                 |
-| MapLabel (facility · strong · start)                            | `components/MapLabel`     |                                                 |
-| RouteLine                                                       | `components/RouteLine`    | 지도 `<svg>` 안에 넣는 `<g>`. 좌표 배열을 받음  |
-| ZoomControl · RecenterControl · FloorControl                    | `components/MapControl`   |                                                 |
-| FacilityCard                                                    | `components/FacilityCard` | 정보 줄 최대 3개                                |
-| RouteSummary                                                    | `components/RouteSummary` |                                                 |
-| StepItem (done · current · next)                                | `components/StepItem`     | `<ol>` 안에 둠, current는 `aria-current="step"` |
-| StepBar                                                         | `components/StepBar`      | `role="status"`                                 |
-| BottomSheet                                                     | `components/BottomSheet`  | 손잡이로 접기/펴기                              |
-| StateMessage (loading · empty · needs-check · no-route · error) | `components/StateMessage` | 기본 문구 내장, 오류만 빨강                     |
+| 컴포넌트                                                        | 경로                           | 메모                                            |
+| --------------------------------------------------------------- | ------------------------------ | ----------------------------------------------- |
+| Icon                                                            | `components/Icon`              |                                                 |
+| Button (primary · secondary · text)                             | `components/Button`            | Pressed = `:active`, Disabled = `disabled`      |
+| IconButton                                                      | `components/IconButton`        | `label`(화면 낭독용 이름) 필수                  |
+| CategoryChip                                                    | `components/CategoryChip`      | 선택 시 아이콘이 체크로, `aria-pressed`         |
+| Tag (neutral · info · start · warn)                             | `components/Tag`               |                                                 |
+| NumberBadge (exit · platform · car)                             | `components/NumberBadge`       | 화면 낭독기에는 "타는 곳 5"처럼 읽힘            |
+| SearchField                                                     | `components/SearchField`       | Focus = `:focus-within`, `floating`은 지도 위용 |
+| ResultItem                                                      | `components/ResultItem`        | 줄 전체가 버튼                                  |
+| MapMarker (7종)                                                 | `components/MapMarker`         |                                                 |
+| MapLabel (facility · strong · start)                            | `components/MapLabel`          |                                                 |
+| RouteLine                                                       | `components/RouteLine`         | 지도 `<svg>` 안에 넣는 `<g>`. 좌표 배열을 받음  |
+| ZoomControl · RecenterControl · FloorControl                    | `components/MapControl`        |                                                 |
+| FacilityCard                                                    | `components/FacilityCard`      | 정보 줄 최대 3개                                |
+| RouteSummary                                                    | `components/RouteSummary`      |                                                 |
+| StepItem (done · current · next)                                | `components/StepItem`          | `<ol>` 안에 둠, current는 `aria-current="step"` |
+| StepBar                                                         | `components/StepBar`           | `role="status"`                                 |
+| BottomSheet                                                     | `components/BottomSheet`       | 손잡이로 접기/펴기                              |
+| StateMessage (loading · empty · needs-check · no-route · error) | `components/StateMessage`      | 기본 문구 내장, 오류만 빨강                     |
+| RouteEndpoint (start · end)                                     | `components/RouteEndpoint`     | 경로 출발(노랑)·도착(파랑) 원형 점(2026-11-25)  |
+| JourneyMilestones                                               | `components/JourneyMilestones` | QR 출발 → 경유 → 도착 여정 표시(2026-11-25)     |
+| StationMap · StationMap3D                                       | `components/StationMap*`       | 2D 지도(경로·표시) · 층을 쌓은 3D 지도          |
 
 ## Figma와 다르게 구현했거나 디자이너 확인이 필요한 것
 
@@ -93,3 +96,7 @@ Figma 설명대로 임시 그림이며, 역 안내 픽토그램이 정해지면 
     W01 하단 패널 제목은 시안이 24px이지만 `screen-title`(26px)로 맞췄습니다. 글자 스타일로 등록할지 확인이 필요합니다.
 11. **StepItem·FacilityCard(2026-11-24 반영):** StepItem은 줄 배경(완료 회색 · 지금 파랑 · 다음 흰색)이 생겼고,
     FacilityCard 정보 줄은 15px(`body`)로 커졌습니다. 주요 버튼 아이콘은 `actionIcon`으로 끌 수 있습니다(W10).
+12. **2026-11-25 추가:** 경로 출발 점·여정 출발 점 색 `route-start`(`sunflower-300` #FFD93D), 도착 `route-end`, 아직 안 간 지점
+    `milestone-upcoming`(`blue-100`), 화면 큰 제목 `headline`(24/34 w700, 로딩·도착·오류 화면). 지도의 목적지 핀(MapMarker destination)은
+    경로 화면에서 Route/Endpoint로 바뀌었지만 컴포넌트는 남겨 두었습니다. 도착 화면 FacilityCard는 버튼 없이(`showAction={false}`) 씁니다.
+    일러스트(QR 스캔 · 경로 탐색 · 도착 완료 · 경고 삼각형)는 Figma 원본 SVG를 `public/illustrations/`에 두었습니다.

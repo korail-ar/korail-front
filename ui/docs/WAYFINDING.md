@@ -8,18 +8,19 @@ Figma "Korail-Project" 공동작업 파일 중앙부의 W01~W11 화면을 구현
 화면 사이에는 출발 위치(`start`)·목적지(`to`, place id)·타는 곳(`platform`)·단계(`step`)를 주소에 담아 넘깁니다.
 QR 안내판은 `/?start=<id>` 주소를 담으면 됩니다(`START_POINTS`, `src/lib/station/data.ts`).
 
-| Figma                       | 주소                             | 파일                                     |
-| --------------------------- | -------------------------------- | ---------------------------------------- |
-| W01 지도 중심 메인(QR 출발) | `/`                              | `src/app/HomeScreen.tsx`                 |
-| W04 검색 결과               | `/search?q=&category=`           | `src/app/search/SearchScreen.tsx`        |
-| W05 승강장 번호 선택        | `/platform`                      | `src/app/platform/PlatformScreen.tsx`    |
-| W06 경로 미리보기           | `/route?to=`                     | `src/app/route/RouteScreen.tsx`          |
-| W07 지도 길안내             | `/guide?to=&step=`               | `src/app/guide/GuideScreen.tsx`          |
-| W08 랜드마크 단계 안내      | `/guide/steps?to=&step=`         | `src/app/guide/steps/StepListScreen.tsx` |
-| W09 층 이동(승강장 분기)    | `/guide?…&platform=` 마지막 단계 | `GuideScreen.tsx`의 `FloorChangeView`    |
-| W10 도착 · 시설 정보        | `/arrive?to=`                    | `src/app/arrive/ArriveScreen.tsx`        |
-| W11 오류 · 출발지 재선택    | 경로를 못 만들 때 각 화면 대신   | `src/components/RouteError`              |
-| (시안 없음) 출발 위치 선택  | `/start?next=`                   | `src/app/start/StartScreen.tsx`          |
+| Figma                          | 주소                             | 파일                                     |
+| ------------------------------ | -------------------------------- | ---------------------------------------- |
+| 진입 로딩(282:2088 · 282:2125) | `/?start=`로 처음 들어올 때      | `src/app/EntryLoading.tsx`               |
+| W01 지도 중심 메인(QR 출발)    | `/`                              | `src/app/HomeScreen.tsx`                 |
+| W04 검색 결과                  | `/search?q=&category=`           | `src/app/search/SearchScreen.tsx`        |
+| W05 승강장 번호 선택           | `/platform`                      | `src/app/platform/PlatformScreen.tsx`    |
+| W06 경로 미리보기              | `/route?to=`                     | `src/app/route/RouteScreen.tsx`          |
+| W07 지도 길안내                | `/guide?to=&step=`               | `src/app/guide/GuideScreen.tsx`          |
+| W08 랜드마크 단계 안내         | `/guide/steps?to=&step=`         | `src/app/guide/steps/StepListScreen.tsx` |
+| W09 층 이동(승강장 분기)       | `/guide?…&platform=` 마지막 단계 | `GuideScreen.tsx`의 `FloorChangeView`    |
+| W10 도착 · 시설 정보           | `/arrive?to=`                    | `src/app/arrive/ArriveScreen.tsx`        |
+| W11 오류 · 출발지 재선택       | 경로를 못 만들 때 각 화면 대신   | `src/components/RouteError`              |
+| (시안 없음) 출발 위치 선택     | `/start?next=`                   | `src/app/start/StartScreen.tsx`          |
 
 화면 높이: 앱은 화면 높이에 고정(`h-dvh`)되어 페이지 전체는 스크롤되지 않습니다. 지도가 있는 화면은 지도가 남는 높이를 채우고
 (`StationMap fill`, 최소 160px) 화면이 낮으면 지도가 먼저 줄어듭니다. 그래도 넘치면 본문(`ScreenBody`) 안에서만 스크롤되고,
@@ -62,10 +63,19 @@ QR 안내판은 `/?start=<id>` 주소를 담으면 됩니다(`START_POINTS`, `sr
 
 디자인 쪽:
 
-1. **W01 3D 지도:** 시안의 3D 도식(Figma 이미지)은 쓰지 않고 2D 지도(`web-3F-map`)로 넣었습니다(디자인팀 전달 사항).
-   "2D 보기" 전환 버튼과 "현위치" 빨간 핀은 넣지 않았습니다. 출발 위치는 QR 마커와 이름표로 보여줍니다.
+1. **W01 3D 지도(2026-11-25 변경):** 홈은 3D 층별 지도로 시작하고 "2D 보기"로 기존 2D 지도와 바꿉니다.
+   3D는 코드 프로토타입(Figma 250:621)의 끌어서 돌리기·층 고르기를 따르되, 바닥판은 가짜 방 대신 실제 층별 지도(`web-1F~4F`)를 씁니다.
+   W01의 정지된 3D 도식 이미지는 출발 위치가 바뀌면 맞지 않아 쓰지 않았습니다.
+   프로토타입의 "현재 위치" 문구 · 빨간 점 · 하드코딩 색 · 도움말(?) 버튼은 디자인 시스템 규칙(QR 출발점 표기, 빨강은 오류 전용)과
+   W01 시안에 맞춰 넣지 않았고, 출발 위치는 노란 경로 출발 점 + "QR 출발점" 이름표로 보여줍니다.
 2. **정류장 바로가기:** 지금은 "지하철·도시철도" 별칭이 붙은 시설(서광장 1번 출구 방향)을 보여줍니다.
    연계교통 기능을 넣지 않으면 `QUICK_FILTERS`에서 지우면 됩니다.
 3. **W05 타는 곳 번호:** 시안은 1~8번이지만 지도에 11·12번 홈까지 있어 1~12번을 보여줍니다.
-4. **W10 시설 정보:** 운영 시간 등 시설 정보 데이터가 없어 분류와 출발 위치에서 걸리는 시간을 보여줍니다.
-5. **출발 위치 선택 화면:** 시안이 없어 기존 컴포넌트(ResultItem)로 만들었습니다. QR 설치 자리도 예시 4곳입니다.
+4. **W10 시설 정보:** 운영 시간 등 시설 정보 데이터가 없어 분류 설명과 "운영 정보는 현장에서 확인해 주세요"를 보여줍니다.
+5. **진입 로딩(2026-11-25):** QR로 들어올 때(`/?start=`)만 "QR 정보 확인 → 실내 지도 준비"를 보여주고(각 1.2초·최소 0.9초),
+   같은 탭에서 같은 QR로 다시 들어오면 건너뜁니다. 실제 QR 확인 API가 생기면 단계 전환을 그 응답에 맞추면 됩니다.
+6. **W06 거리·시간:** 시안대로 "N단계 안내 · 거리·시간 확인 예정"만 보여줍니다(추정 거리·시간은 검색 결과에만 남아 있음).
+7. **W08 버튼:** 시안대로 전체 단계 화면의 주요 버튼은 "○○ 도착 확인"이며 바로 도착 화면으로 갑니다.
+8. **W09 층 이동:** 시안의 "성심당 방향 · 3F → 2F" 예시는 2층 목적지용입니다. 지금 층 이동은 승강장 경로에만 있어
+   "N번 승강장 방향 · 3F → 승강장"으로 보여줍니다.
+9. **출발 위치 선택 화면:** 시안이 없어 기존 컴포넌트(ResultItem)로 만들었습니다. QR 설치 자리도 예시 4곳입니다.
