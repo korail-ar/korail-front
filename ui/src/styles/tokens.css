@@ -55,13 +55,21 @@
   --color-gray-800: #2b2b2b;
   --color-gray-900: #171717;
 
+  /* 화면 글자색(Figma ink-900 · ink-600). 2026-11-24 W01~W11 화면부터 쓰인다. */
+  --color-ink-900: #22314a;
+  --color-ink-600: #6b7280;
+
+  /* 안내 시작 위치(QR) 표시 전용 노랑. 300은 경로 출발 점·여정 출발 점(2026-11-25 Route/Endpoint). */
+  --color-sunflower-100: #fff3c4;
+  --color-sunflower-300: #ffd93d;
+
   /* ---------- Semantic ---------- */
   --color-bg: var(--color-gray-50);
   --color-surface: var(--color-white);
   --color-surface-sunken: var(--color-gray-100);
 
-  --color-ink: var(--color-gray-900);
-  --color-ink-sub: var(--color-gray-700);
+  --color-ink: var(--color-ink-900);
+  --color-ink-sub: var(--color-ink-600);
   --color-ink-mute: var(--color-gray-500);
   --color-ink-disabled: var(--color-gray-400);
   --color-on-color: var(--color-white);
@@ -81,11 +89,15 @@
 
   --color-route: var(--color-blue-500);
   --color-route-transfer: var(--color-blue-300);
-  /* 목적지·안내 시작 위치 색은 컴포넌트에 연결된 변수 값. 레퍼런스 v2와 다르다(docs/DESIGN_SYSTEM.md 참고). */
-  --color-dest: #0d7a6b;
-  --color-start: #f2b705;
-  --color-start-ink: #b8860b;
-  --color-start-soft: #fff8e1;
+  /* 경로 출발·도착 원형 점과 여정 표시(Figma Route/Endpoint · Route/Journey milestones) */
+  --color-route-start: var(--color-sunflower-300);
+  --color-route-end: var(--color-blue-500);
+  --color-milestone-upcoming: var(--color-blue-100);
+  /* 목적지·안내 시작 위치 색. 2026-11-24 Figma 변수 기준(dest #2F47C2, 시작 위치 sunflower-100). */
+  --color-dest: var(--color-blue-700);
+  --color-start: var(--color-sunflower-100);
+  --color-start-ink: var(--color-ink-900);
+  --color-start-soft: var(--color-sunflower-100);
 
   --color-success: var(--color-mint-300);
   --color-success-bg: var(--color-mint-50);
@@ -104,6 +116,8 @@
   --color-map-wall: var(--color-gray-200);
   --color-map-zone: var(--color-blue-50);
   --color-map-zone-line: var(--color-blue-100);
+  --color-map-label-strong: var(--color-gray-900);
+  --color-floor-marker: var(--color-mint-50);
   --color-marker: var(--color-gray-700);
   --color-marker-line: var(--color-gray-400);
 
@@ -139,6 +153,27 @@
   --text-map-label: 12px;
   --text-map-label--line-height: 16px;
   --text-map-label--font-weight: 700;
+
+  /* 화면 와이어프레임(W01~W11)에서 반복되는 크기. Figma 글자 스타일로는 등록되어 있지 않다. */
+  --text-headline: 24px;
+  --text-headline--line-height: 34px;
+  --text-headline--font-weight: 700;
+  --text-screen-title: 26px;
+  --text-screen-title--line-height: 39px;
+  --text-screen-title--font-weight: 700;
+  --text-subtitle: 20px;
+  --text-subtitle--line-height: 30px;
+  --text-subtitle--font-weight: 700;
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 21px;
+  --text-body-sm--font-weight: 400;
+  --text-note: 12px;
+  --text-note--line-height: 18px;
+  --text-note--font-weight: 400;
+  /* 지도 위 작은 이름표·각주(경로 안내 B·C안, 2026-11-25) */
+  --text-micro: 11px;
+  --text-micro--line-height: 16px;
+  --text-micro--font-weight: 400;
 
   /* ---------- Spacing ----------
    * Tailwind 기본 --spacing(4px)을 그대로 쓴다: space-1=p-1(4px), 2=8, 3=12, 4=16, 5=20, 6=24, 8=32.

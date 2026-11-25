@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import SearchField from './SearchField';
+import SearchFieldLink from './SearchFieldLink';
 
 const meta = {
   title: 'Components/SearchField',
@@ -47,4 +48,9 @@ function ControlledSearchField() {
 /** 값이 있으면 지우기 버튼이 나온다. */
 export const WithValue: Story = {
   render: () => <ControlledSearchField />,
+};
+
+/** 홈 패널(W01)처럼 검색 화면으로 넘어가는 링크. 모양은 기본 검색창과 같다. */
+export const AsLink: StoryObj<typeof SearchFieldLink> = {
+  render: () => <SearchFieldLink href="/search" placeholder="목적지나 시설 이름을 검색하세요" />,
 };

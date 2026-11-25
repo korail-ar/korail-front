@@ -14,7 +14,8 @@
     "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:station": "node scripts/build-station-data.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

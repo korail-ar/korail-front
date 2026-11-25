@@ -6,3 +6,7 @@ storybook-static/
 package-lock.json
 next-env.d.ts
 *.ico
+
+# 원본 데이터 복사본은 그대로 두고, 생성 데이터는 스크립트 출력 그대로 둔다.
+src/data/station/source/
+src/data/station/*.generated.json

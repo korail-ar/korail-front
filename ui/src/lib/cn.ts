@@ -13,6 +13,12 @@ const TEXT_TOKENS = [
   'label',
   'caption',
   'map-label',
+  'headline',
+  'screen-title',
+  'subtitle',
+  'body-sm',
+  'note',
+  'micro',
 ];
 const SHADOW_TOKENS = ['float', 'sheet'];
 

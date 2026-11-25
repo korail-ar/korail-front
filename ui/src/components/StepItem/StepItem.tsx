@@ -13,6 +13,13 @@ interface StepItemProps {
   className?: string;
 }
 
+// Figma StepItem(2026-11-24): 줄 배경으로도 상태를 구분한다.
+const ROW_CLASS_NAMES: Record<StepState, string> = {
+  done: 'bg-surface-sunken',
+  current: 'bg-brand-soft',
+  next: 'bg-surface',
+};
+
 const ICON_WRAP_CLASS_NAMES: Record<StepState, string> = {
   done: 'bg-bg text-ink-mute',
   current: 'bg-brand text-on-color',
@@ -29,7 +36,7 @@ export default function StepItem({ state, icon, text, sub, className }: StepItem
   return (
     <li
       aria-current={isCurrent ? 'step' : undefined}
-      className={cn('flex items-center gap-3 py-2.5', className)}
+      className={cn('flex items-center gap-3 p-2.5', ROW_CLASS_NAMES[state], className)}
     >
       <span
         className={cn(

@@ -58,7 +58,7 @@ export default function MapMarker({ type, icon = 'pin', step, className }: MapMa
             className,
           )}
         >
-          <span className="flex size-8 items-center justify-center rounded-sm border-3 border-on-color bg-start text-on-color">
+          <span className="flex size-8 items-center justify-center rounded-sm border-3 border-on-color bg-start text-start-ink">
             <Icon name="qr" size={16} />
           </span>
         </span>
@@ -68,7 +68,7 @@ export default function MapMarker({ type, icon = 'pin', step, className }: MapMa
         <span
           aria-hidden
           className={cn(
-            'inline-flex size-8 items-center justify-center rounded-sm border-2 border-on-color bg-ink text-on-color',
+            'inline-flex size-8 items-center justify-center rounded-sm border-2 border-on-color bg-floor-marker text-ink',
             className,
           )}
         >

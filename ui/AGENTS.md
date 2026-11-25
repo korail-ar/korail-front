@@ -35,7 +35,10 @@
 - `src/components/<Name>/`: 재사용 컴포넌트. `Name.tsx`, `Name.stories.tsx`, `Name.test.tsx`를 같은 폴더에 둡니다.
 - `src/styles/tokens.css`: 디자인 토큰(Figma 기준). 화면을 만들 때는 새 값을 만들기 전에 토큰과 기존 컴포넌트부터 찾습니다.
 - `src/design-system/`: Storybook 전용 문서 페이지(토큰 레퍼런스, Figma 컴포넌트 시트)
-- `src/lib/`: 유틸(`cn` 등)
+- `src/lib/`: 유틸(`cn` 등). `src/lib/station/`은 대전역 길찾기 로직(경로·단계·검색)
+- `src/data/station/`: 3층 그래프. `source/`는 원본 복사본, `station3f.generated.json`은 `npm run build:station`으로 만든 지도 좌표 데이터
+- `scripts/`: 데이터 생성 스크립트(`build-station-data.mjs`)
+- `public/maps/`: 디자인팀 2D 층별 지도(`web-1F~4F-map.svg`)
 - `public/icons/`: Figma 원본 아이콘 SVG(`Icon` 컴포넌트가 사용)
 - `public/`: 정적 파일(Storybook `staticDirs`도 이 폴더를 씁니다)
 
@@ -50,6 +53,7 @@
 | `npm run format` / `npm run format:check` | Prettier                                           |
 | `npm run typecheck`                       | 라우트 타입 생성(`next typegen`) 후 `tsc --noEmit` |
 | `npm test` / `npm run test:watch`         | Vitest                                             |
+| `npm run build:station`                   | 3층 그래프 → 지도 좌표 데이터 다시 만들기          |
 
 설정할 때 지킬 것(셋업에 반영됨, 설정을 바꿀 때도 지킵니다):
 
@@ -63,12 +67,15 @@
 
 ## 3. 브랜치와 커밋
 
-- **`frontend` 브랜치를 프론트엔드의 main으로 씁니다** (`main`에서 분기).
-  - 큰 작업은 `frontend`에서 브랜치를 따서(예: `fe/search-ui`) 작업한 뒤 `frontend`로 합칩니다.
-    `frontend` 브랜치가 있으면 git 규칙상 `frontend/...` 이름의 브랜치는 만들 수 없으므로 `fe/` 접두어를 씁니다.
+- **작업 브랜치는 `main`에서 따고, PR도 `main`으로 올립니다** (2026-11-25부터. 예전 `frontend` 브랜치는 쓰지 않습니다).
+  - 브랜치 이름은 `ui/` 접두어를 씁니다(예: `ui/search-screen`). `ui`라는 이름의 브랜치를 만들면
+    git 규칙상 `ui/...` 브랜치를 만들 수 없으니 만들지 않습니다.
   - `main`에 직접 커밋·푸시하지 않습니다.
+- **PR 단위:** 기능 추가 없이 디자인 반영만 하는 작업은 PR을 잘게 나누지 않고 한 PR에 모아 올립니다.
+  PR을 다른 PR 브랜치 위에 쌓지 않습니다.
+- **PR 본문:** 기능 요약 위주로 짧게 씁니다. 자세한 설명은 `docs/`에 두고 링크만 겁니다.
 - `ui/`는 저장소의 하위 폴더일 뿐이며, 안에 별도 git 저장소(`git init`)를 만들지 않습니다.
-- 백엔드 작업자의 `main` 변경을 받아올 때는 `main`을 `frontend`로 merge 합니다. 루트 파일에서 충돌이 나면
+- 작업 중 백엔드 작업자의 `main` 변경을 받아올 때는 `main`을 작업 브랜치로 merge 합니다. 루트 파일에서 충돌이 나면
   `main`(백엔드) 쪽 내용을 그대로 받고, 루트 파일을 직접 고쳐서 해결하지 않습니다.
 - 커밋 메시지는 저장소의 기존 형식(Conventional Commits)을 따릅니다. 예: `feat(ui): ...`, `fix(ui): ...`, `chore(ui): ...`
   커밋에는 `ui/` 안의 변경만 들어가야 합니다. 커밋 전에 `git status`로 바깥 파일 변경이 없는지 확인합니다.

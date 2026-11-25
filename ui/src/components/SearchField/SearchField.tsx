@@ -13,6 +13,14 @@ type SearchFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'si
   onClear?: () => void;
 };
 
+/** 검색창 상자 모양(입력 전 기본 상태). SearchFieldLink도 같은 모양을 쓴다. */
+export function searchFieldBoxClassNames(floating = false): string {
+  return cn(
+    'group flex h-13 w-full items-center gap-3 rounded-md bg-surface px-4',
+    floating ? 'shadow-float' : 'border-[1.5px] border-line-strong',
+  );
+}
+
 /** 목적지 검색 입력창. 포커스되면 테두리가 파랗게 바뀌고, 값이 있으면 지우기 버튼이 나온다. */
 export default function SearchField({
   label = '목적지 검색',
@@ -34,10 +42,10 @@ export default function SearchField({
   return (
     <div
       className={cn(
-        'group flex h-13 w-full items-center gap-3 rounded-md bg-surface px-4',
+        searchFieldBoxClassNames(floating),
         floating
-          ? 'shadow-float focus-within:outline-2 focus-within:outline-brand'
-          : 'border-[1.5px] border-line-strong focus-within:border-2 focus-within:border-brand',
+          ? 'focus-within:outline-2 focus-within:outline-brand'
+          : 'focus-within:border-2 focus-within:border-brand',
         className,
       )}
     >

@@ -18,6 +18,10 @@ interface FacilityCardProps {
   /** 현장 확인 전 정보면 '정보 확인 필요' 태그를 붙인다. */
   needsCheck?: boolean;
   actionLabel?: string;
+  /** 주요 버튼 아이콘. 기본은 pin, null이면 아이콘 없이 글자만 둔다. */
+  actionIcon?: IconName | null;
+  /** false면 주요 버튼 없이 정보만 보여준다(W10 도착 화면). */
+  showAction?: boolean;
   onAction?: () => void;
   className?: string;
 }
@@ -32,6 +36,8 @@ export default function FacilityCard({
   rows,
   needsCheck = false,
   actionLabel = '여기로 안내',
+  actionIcon = 'pin',
+  showAction = true,
   onAction,
   className,
 }: FacilityCardProps) {
@@ -52,15 +58,17 @@ export default function FacilityCard({
       </div>
       <ul className="flex flex-col gap-2">
         {rows.slice(0, MAX_ROWS).map((row) => (
-          <li key={row.id} className="flex items-center gap-2 text-caption text-ink-sub">
+          <li key={row.id} className="flex items-center gap-2 text-body text-ink-sub">
             <Icon name={row.icon} size={16} />
             {row.text}
           </li>
         ))}
       </ul>
-      <Button icon="pin" fullWidth onClick={onAction}>
-        {actionLabel}
-      </Button>
+      {showAction && (
+        <Button icon={actionIcon ?? undefined} fullWidth onClick={onAction}>
+          {actionLabel}
+        </Button>
+      )}
     </section>
   );
 }

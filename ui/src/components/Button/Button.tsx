@@ -30,6 +30,19 @@ const VARIANT_CLASS_NAMES: Record<ButtonVariant, string> = {
   ),
 };
 
+/**
+ * 버튼 모양 클래스. 다른 화면으로 가는 동작은 <a>(next/link)여야 하므로 링크에도 같은 모양을 입힐 때 쓴다.
+ */
+export function buttonClassNames(variant: ButtonVariant = 'primary', fullWidth = false): string {
+  return cn(
+    'inline-flex items-center justify-center gap-2 rounded-md text-button whitespace-nowrap',
+    'transition-colors disabled:cursor-not-allowed',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+    VARIANT_CLASS_NAMES[variant],
+    fullWidth && 'w-full',
+  );
+}
+
 /** 다음 행동을 실행하는 버튼. Primary는 한 화면에 하나만, 하단에 둔다. */
 export default function Button({
   variant = 'primary',
@@ -44,14 +57,7 @@ export default function Button({
     <button
       // eslint-disable-next-line react/button-has-type -- 기본값 'button'을 두고 호출부에서 바꿀 수 있게 한다.
       type={type}
-      className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-md text-button whitespace-nowrap',
-        'transition-colors disabled:cursor-not-allowed',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
-        VARIANT_CLASS_NAMES[variant],
-        fullWidth && 'w-full',
-        className,
-      )}
+      className={cn(buttonClassNames(variant, fullWidth), className)}
       {...rest}
     >
       {icon && <Icon name={icon} size={20} />}
