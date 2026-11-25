@@ -1,17 +1,39 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import AppBar from '@/components/AppBar/AppBar';
 import ResultItem from '@/components/ResultItem/ResultItem';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import { START_POINTS } from '@/lib/station/data';
-import useStartViewModel from '@/view-models/useStartViewModel';
+import useJourney, { buildHref } from '@/lib/station/useJourney';
+
+/** 같은 앱 안의 경로만 받는다(다른 사이트로 보내는 주소를 막는다). */
+function safeNextPath(value: string | null): string {
+  return value && value.startsWith('/') && !value.startsWith('//') ? value : '/';
+}
 
 export default function StartScreen() {
-  const vm = useStartViewModel();
+  const router = useRouter();
+  const { params, start } = useJourney();
+  const next = safeNextPath(params.get('next'));
+  const [nextPath, nextQuery = ''] = next.split('?');
+
+  const handleSelect = (id: string) => {
+    router.push(
+      buildHref(nextPath, new URLSearchParams(nextQuery), { start: id }, [
+        'to',
+        'platform',
+        'q',
+        'category',
+        'step',
+      ]),
+    );
+  };
 
   return (
     <>
-      <AppBar title="출발 위치 선택" backHref={vm.backHref} />
+      <AppBar title="출발 위치 선택" backHref={next} />
       <ScreenBody>
         <h2 className="mt-3 text-screen-title text-ink">지금 어디에 계세요?</h2>
         <p className="mt-2 text-body-sm text-ink-sub">
@@ -23,9 +45,9 @@ export default function StartScreen() {
               <ResultItem
                 icon="qr"
                 name={point.name}
-                meta={point.id === vm.startId ? '지금 출발 위치' : 'QR 안내판'}
-                aria-current={point.id === vm.startId ? 'location' : undefined}
-                onClick={() => vm.selectStart(point.id)}
+                meta={point.id === start.id ? '지금 출발 위치' : 'QR 안내판'}
+                aria-current={point.id === start.id ? 'location' : undefined}
+                onClick={() => handleSelect(point.id)}
               />
             </li>
           ))}
