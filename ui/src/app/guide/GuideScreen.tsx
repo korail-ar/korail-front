@@ -4,11 +4,12 @@ import Link from 'next/link';
 
 import AppBar from '@/components/AppBar/AppBar';
 import { buttonClassNames } from '@/components/Button/Button';
+import JourneyMilestones from '@/components/JourneyMilestones/JourneyMilestones';
 import RouteError from '@/components/RouteError/RouteError';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import StationMap from '@/components/StationMap/StationMap';
 import StepBar from '@/components/StepBar/StepBar';
 import Tag from '@/components/Tag/Tag';
-import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { JOURNEY_KEYS, ROUTE_MAP_CAPTION } from '@/lib/station/data';
 import withJosa from '@/lib/station/josa';
@@ -19,10 +20,11 @@ import getNextStep from './nextStep';
 
 /** W09 · 층 이동이 필요할 때(승강장 경로의 마지막 단계) */
 function FloorChangeView({ journey }: { journey: Journey }) {
-  const { steps, stepIndex, platformNumber, href } = journey;
+  const { steps, stepIndex, destination, destinationLabel, href } = journey;
   const step = steps[stepIndex];
   const layers = getJourneyMapLayers(journey);
   const next = getNextStep(journey, '/guide');
+  const connector = destination?.name ?? '승강장 연결통로';
 
   return (
     <>
@@ -33,30 +35,25 @@ function FloorChangeView({ journey }: { journey: Journey }) {
       <StationMap
         fill
         route={layers.route}
-        isTransferRoute
         start={layers.start}
-        floorPoint={
-          layers.destination && {
-            point: layers.destination.point,
-            label: `${platformNumber}번 승강장 연결 지점`,
-            icon: 'stairs',
-          }
-        }
+        floorPoint={layers.destination && { point: layers.destination.point, label: connector }}
         focus={step.points.length > 1 ? step.points : layers.route}
         caption={ROUTE_MAP_CAPTION}
       />
       <ScreenBody variant="panel">
         <Tag
-          label="승강장 경로 · 층 이동"
+          label={`${destinationLabel} 방향 · 3F → 승강장`}
           variant="info"
-          className="mt-5 self-start bg-transparent px-0"
+          className="mt-5 self-start bg-transparent"
         />
-        <h2 className="mt-4 text-title text-ink">{`${platformNumber}번 승강장으로 내려가야 해요`}</h2>
+        <h2 className="mt-4 text-title text-ink">
+          {`${withJosa(destinationLabel, '으로')} 내려가야 해요`}
+        </h2>
         <p className="mt-3 text-body whitespace-pre-line text-ink-sub">
-          {'가까운 계단·에스컬레이터나 승강기를 이용해\n승강장으로 내려가 주세요.'}
+          {`${connector}의 계단·에스컬레이터나 승강기로\n승강장에 내려가 주세요.`}
         </p>
         <p className="mt-4 rounded-md border border-line bg-surface px-3 py-3 text-note whitespace-pre-line text-ink-sub">
-          {'타는 곳 안내 표지판을 먼저 확인해 주세요.\n이동을 마친 뒤 아래 버튼을 눌러 주세요.'}
+          {'타는 곳 표지판을 확인한 뒤 계속해 주세요.\n승강기 C: 재확인 필요 · 경로 제외'}
         </p>
         <Link href={next.href} className={cn(buttonClassNames('primary', true), 'mt-6')}>
           이동 후 계속하기
@@ -66,9 +63,11 @@ function FloorChangeView({ journey }: { journey: Journey }) {
   );
 }
 
+/** W07 · 지도 길안내 */
 export default function GuideScreen() {
   const journey = useJourney();
-  const { destination, route, steps, stepIndex, status, href } = journey;
+  const { destination, destinationLabel, route, steps, stepIndex, milestones, status, href } =
+    journey;
 
   if (status !== 'ok' || !destination || !route || steps.length === 0) {
     return <RouteError journey={journey} returnPath="/route" />;
@@ -88,7 +87,7 @@ export default function GuideScreen() {
 
   return (
     <>
-      <AppBar title={`${withJosa(destination.name, '으로')} 가는 중`} backHref={backHref} />
+      <AppBar title={`${withJosa(destinationLabel, '으로')} 가는 중`} backHref={backHref} />
       <StationMap
         fill
         {...layers}
@@ -97,17 +96,19 @@ export default function GuideScreen() {
         caption={ROUTE_MAP_CAPTION}
       />
       <ScreenBody variant="panel">
-        <StepBar icon={step.icon} text={step.text} sub={step.sub} className="mt-4.5" />
-        <p className="mt-6 text-caption font-bold text-brand-press">
-          {`${stepIndex + 1} / ${steps.length}단계`}
-        </p>
-        <p className="mt-3 text-body text-ink-sub">{step.detail}</p>
-        <Link href={next.href} className={cn(buttonClassNames('primary', true), 'mt-7')}>
+        <JourneyMilestones
+          milestones={milestones.milestones}
+          current={milestones.currentFor(stepIndex)}
+          className="mt-3.5"
+        />
+        <StepBar icon={step.icon} text={step.text} sub={step.sub} className="mt-3" />
+        <p className="mt-5 text-body text-ink-sub">{step.detail}</p>
+        <Link href={next.href} className={cn(buttonClassNames('primary', true), 'mt-5')}>
           {next.label}
         </Link>
         <Link
           href={href('/guide/steps', { step: stepIndex }, JOURNEY_KEYS)}
-          className={cn(buttonClassNames('text', true), 'mt-2')}
+          className={cn(buttonClassNames('text', true), 'mt-1')}
         >
           전체 단계 보기
         </Link>

@@ -1,4 +1,4 @@
-import { CATEGORY_INFO, findNode } from './data';
+import { findNode } from './data';
 import type { MapPoint } from './types';
 import type { Journey } from './useJourney';
 
@@ -13,11 +13,7 @@ export default function getJourneyMapLayers({ start, destination, route }: Journ
     start: startPoint ? { point: startPoint, label: start.name } : undefined,
     destination:
       destination && destinationPoint
-        ? {
-            point: destinationPoint,
-            label: destination.name,
-            icon: CATEGORY_INFO[destination.category].icon,
-          }
+        ? { point: destinationPoint, label: destination.name }
         : undefined,
   };
 }

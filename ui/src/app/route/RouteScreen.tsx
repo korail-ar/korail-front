@@ -1,43 +1,42 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import AppBar from '@/components/AppBar/AppBar';
-import { buttonClassNames } from '@/components/Button/Button';
+import JourneyMilestones from '@/components/JourneyMilestones/JourneyMilestones';
 import RouteError from '@/components/RouteError/RouteError';
 import RouteSummary from '@/components/RouteSummary/RouteSummary';
-import StationMap from '@/components/StationMap/StationMap';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
-import cn from '@/lib/cn';
+import StationMap from '@/components/StationMap/StationMap';
 import { JOURNEY_KEYS, ROUTE_FLOOR_LABEL, ROUTE_MAP_CAPTION } from '@/lib/station/data';
 import getJourneyMapLayers from '@/lib/station/mapLayers';
-import { roundMeters } from '@/lib/station/route';
 import useJourney from '@/lib/station/useJourney';
 
+/** W06 · 경로 미리보기 */
 export default function RouteScreen() {
   const router = useRouter();
   const journey = useJourney();
-  const { destination, route, steps, platformNumber, start, status, href } = journey;
+  const { destination, route, steps, milestones, destinationLabel, start, status, href } = journey;
 
   if (status !== 'ok' || !destination || !route) {
     return <RouteError journey={journey} returnPath="/route" />;
   }
 
-  const sameFloor = platformNumber ? '승강장은 층 이동' : '같은 층';
-
   return (
     <>
-      <AppBar title="경로 확인" backHref={href(platformNumber ? '/platform' : '/search')} />
+      <AppBar
+        title={`${destinationLabel}까지 경로 확인`}
+        backHref={href(journey.platformNumber ? '/platform' : '/search', {}, JOURNEY_KEYS)}
+      />
       <StationMap fill {...getJourneyMapLayers(journey)} caption={ROUTE_MAP_CAPTION} />
       <ScreenBody variant="panel">
+        <JourneyMilestones milestones={milestones.milestones} current={0} className="mt-4" />
         <RouteSummary
           from={start.name}
-          to={
-            platformNumber ? `${platformNumber}번 승강장 (${destination.name})` : destination.name
-          }
-          time={`약 ${route.minutes}분`}
-          distance={`약 ${roundMeters(route.meters)}m · ${sameFloor}`}
+          to={destinationLabel}
+          // 거리·시간은 현장 확인 전이라 단계 수만 보여준다(Figma W06 · 2026-11-25).
+          time={`${steps.length}단계 안내`}
+          distance={`${ROUTE_FLOOR_LABEL} · 거리·시간 확인 예정`}
           stepCount={steps.length}
           floor={ROUTE_FLOOR_LABEL}
           onAction={() => router.push(href('/guide', { step: 0 }, JOURNEY_KEYS))}
@@ -48,9 +47,6 @@ export default function RouteScreen() {
             시설 입구 정보가 없어 가장 가까운 통로까지 안내해요.
           </p>
         )}
-        <Link href={href('/search')} className={cn(buttonClassNames('text', true), 'mt-4')}>
-          다른 목적지 찾기
-        </Link>
       </ScreenBody>
     </>
   );

@@ -45,16 +45,15 @@ export const Route: Story = {
   args: {
     route: route.points,
     start,
-    destination: { point: end, label: ticketOffice.name, icon: 'ticket' },
+    destination: { point: end, label: ticketOffice.name },
   },
 };
 
-/** W09 층 이동: 점선 경로와 층 이동 지점 */
+/** W09 층 이동: 경로 끝 층 이동 지점(민트 이름표) */
 export const FloorChange: Story = {
   args: {
     route: route.points,
-    isTransferRoute: true,
     start,
-    floorPoint: { point: end, label: '5번 승강장 연결 지점', icon: 'stairs' },
+    floorPoint: { point: end, label: '승강장 연결통로 3 (5·6번 승강장)' },
   },
 };

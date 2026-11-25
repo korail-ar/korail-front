@@ -106,15 +106,19 @@ export function buildSteps(
     const endLandmark = isLastLeg ? destination : findLandmark(end, destination.id);
     const towards = endLandmark ? `${endLandmark.name} 방향` : '';
 
+    const passedLandmark = endLandmark && endLandmark.id !== destination.id ? endLandmark : null;
+
     if (leg.turn === null) {
+      const text = endLandmark ? `${endLandmark.name} 방향으로 이동` : '앞으로 이동';
       const target = endLandmark?.name ?? '앞';
       return {
         kind: 'walk',
         icon: 'arrow-up',
-        text: `${withJosa(target, '으로')} 직진`,
+        text,
         sub: `약 ${meters}m`,
         detail: `${startName}에서 ${withJosa(target, '으로')} 약 ${meters}m 걸어가세요.`,
         points: leg.points,
+        landmark: passedLandmark?.name,
       };
     }
 
@@ -128,6 +132,7 @@ export function buildSteps(
       sub: [`약 ${meters}m`, towards].filter(Boolean).join(' · '),
       detail: `${where || '갈림길에서 '}${direction}으로 돌아 약 ${meters}m 걸어가세요.`,
       points: leg.points,
+      landmark: turnLandmark?.name ?? passedLandmark?.name,
     };
   });
 
@@ -151,10 +156,51 @@ export function buildSteps(
     {
       kind: 'arrive',
       icon: 'pin',
-      text: `${destination.name}에 도착`,
-      sub: '표지판을 확인해 주세요',
+      text: `${destination.name} 표지판 확인`,
+      sub: '현장 표지판으로 도착을 확인해 주세요',
       detail: `${withJosa(destination.name, '이')} 보이면 안내를 마칩니다.`,
       points: [destinationPoint],
     },
   ];
+}
+
+export interface Journey3Point {
+  milestones: { id: string; label: string; role: string }[];
+  /** 안내 단계 순서 → 여정 표시에서 지금인 지점 */
+  currentFor: (stepIndex: number) => number;
+}
+
+/**
+ * 여정 표시(QR 출발 → 경유 랜드마크 → 도착). 경유는 걷는 단계에서 보이는 시설 중 가운데 것으로 고르고,
+ * 그 시설을 지날 때까지는 경유가, 그 뒤로는 도착이 "지금"이 된다(Figma W07·W08).
+ */
+export function buildJourneyMilestones(
+  steps: readonly GuideStep[],
+  startName: string,
+  destinationName: string,
+): Journey3Point {
+  const landmarks = steps.flatMap((step, index) =>
+    step.kind === 'walk' && step.landmark ? [{ name: step.landmark, index }] : [],
+  );
+  const via = landmarks.length > 0 ? landmarks[Math.floor((landmarks.length - 1) / 2)] : null;
+  const viaLastStep = via
+    ? Math.max(...landmarks.filter((item) => item.name === via.name).map((item) => item.index))
+    : -1;
+
+  const milestones = [
+    { id: 'start', label: startName, role: '출발' },
+    ...(via ? [{ id: 'via', label: via.name, role: '경유' }] : []),
+    { id: 'end', label: destinationName, role: '도착' },
+  ];
+  const last = milestones.length - 1;
+
+  return {
+    milestones,
+    currentFor: (stepIndex) => {
+      if (steps[stepIndex]?.kind !== 'walk' || !via) {
+        return last;
+      }
+      return stepIndex <= viaLastStep ? 1 : last;
+    },
+  };
 }

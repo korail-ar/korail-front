@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 import { DEFAULT_START, findPlace, findPlatform, findStartPoint } from './data';
 import { findRoute } from './route';
-import { buildSteps } from './steps';
+import { buildJourneyMilestones, buildSteps, type Journey3Point } from './steps';
 import type { GuideStep, Route, StartPoint, StationPlace } from './types';
 
 export type JourneyParam = 'start' | 'to' | 'platform' | 'step' | 'q' | 'category' | 'next';
@@ -51,6 +51,10 @@ export interface Journey {
   route: Route | null;
   steps: GuideStep[];
   stepIndex: number;
+  /** 여정 표시(QR 출발 → 경유 → 도착) */
+  milestones: Journey3Point;
+  /** 화면에 쓰는 목적지 이름. 타는 곳 경로는 'N번 승강장' */
+  destinationLabel: string;
   status: JourneyStatus;
   href: (
     path: string,
@@ -85,6 +89,11 @@ export default function useJourney(): Journey {
         ? buildSteps(route, { startName: start.name, destination, platformNumber })
         : [];
 
+    const destinationLabel = platformNumber
+      ? `${platformNumber}번 승강장`
+      : (destination?.name ?? '');
+    const milestones = buildJourneyMilestones(steps, start.name, destinationLabel);
+
     let status: JourneyStatus = 'ok';
     if (!destination) {
       status = 'no-destination';
@@ -100,6 +109,8 @@ export default function useJourney(): Journey {
       route,
       steps,
       stepIndex: getStepIndex(params.get('step'), steps.length),
+      milestones,
+      destinationLabel,
       status,
       href: (path, overrides, keep) => buildHref(path, params, overrides, keep),
     };

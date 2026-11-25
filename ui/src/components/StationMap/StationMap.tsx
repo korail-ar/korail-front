@@ -7,15 +7,16 @@ import {
   useState,
   type KeyboardEvent,
   type PointerEvent,
+  type ReactNode,
   type WheelEvent,
 } from 'react';
 
-import type { IconName } from '@/components/Icon/Icon';
 import FloorControl from '@/components/MapControl/FloorControl';
 import RecenterControl from '@/components/MapControl/RecenterControl';
 import ZoomControl from '@/components/MapControl/ZoomControl';
 import MapLabel from '@/components/MapLabel/MapLabel';
 import MapMarker from '@/components/MapMarker/MapMarker';
+import RouteEndpoint from '@/components/RouteEndpoint/RouteEndpoint';
 import RouteLine from '@/components/RouteLine/RouteLine';
 import cn from '@/lib/cn';
 import {
@@ -48,9 +49,9 @@ interface StationMapProps {
   /** 층이 바뀌는 구간은 점선으로 그린다(W09). */
   isTransferRoute?: boolean;
   start?: LabeledPoint;
-  destination?: LabeledPoint & { icon: IconName };
+  destination?: LabeledPoint;
   /** 층 이동 지점(W09) */
-  floorPoint?: LabeledPoint & { icon: IconName };
+  floorPoint?: LabeledPoint;
   /** 지금 단계가 시작되는 지점(W07) */
   stepPoint?: { point: MapPoint; step: number };
   /** 처음 보여줄 범위(없으면 route → start 순). 다시 맞추기 버튼도 이 범위로 돌아간다. */
@@ -61,6 +62,8 @@ interface StationMapProps {
   showFloorControl?: boolean;
   showZoomControl?: boolean;
   recenterPlacement?: 'below-zoom' | 'bottom-right' | 'none';
+  /** 지도 위에 띄울 화면 전용 요소(예: 홈의 3D 보기 버튼). 위치는 넘기는 쪽에서 정한다. */
+  overlay?: ReactNode;
 }
 
 interface View {
@@ -77,8 +80,6 @@ const ZOOM_EPSILON = 0.0001;
 // 한 점만 맞출 때(시작 위치만 있을 때) 주변이 이만큼(지도 단위) 보이게 한다.
 const SINGLE_POINT_SPAN = 360;
 const KEYBOARD_PAN_PX = 40;
-// 목적지 핀(46×60)의 끝이 실제 위치다.
-const PIN_TIP = { x: 23, y: 57 };
 
 function boundsOf(points: readonly MapPoint[]) {
   const xs = points.map(([x]) => x);
@@ -153,6 +154,7 @@ export default function StationMap({
   showFloorControl = true,
   showZoomControl = true,
   recenterPlacement = 'below-zoom',
+  overlay,
 }: StationMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
@@ -357,26 +359,23 @@ export default function StationMap({
             {isRouteFloor && (
               <div aria-hidden className="pointer-events-none absolute inset-0">
                 {start && (
+                  // 출발: 노란 원형 점, 이름은 점 아래(Figma Route/Endpoint · W06)
                   <span
-                    className="absolute flex -translate-x-1/2 -translate-y-[18px] flex-col items-center gap-1"
+                    className="absolute flex -translate-x-1/2 -translate-y-3 flex-col items-center gap-1"
                     style={toScreen(start.point)}
                   >
-                    <MapMarker type="start" />
+                    <RouteEndpoint type="start" />
                     <MapLabel label={start.label} variant="start" />
                   </span>
                 )}
                 {floorPoint && (
+                  // 층 이동 지점: 경로 끝 파란 점 + 민트 이름표를 점 오른쪽에(W09)
                   <span
-                    className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+                    className="absolute flex -translate-x-3 -translate-y-1/2 items-center gap-1.5"
                     style={toScreen(floorPoint.point)}
                   >
-                    {/* 지도 가장자리에서 잘리지 않도록 이름은 마커 위 가운데에 둔다. */}
-                    <MapLabel
-                      label={floorPoint.label}
-                      variant="floor"
-                      className="absolute bottom-full mb-1"
-                    />
-                    <MapMarker type="floor" icon={floorPoint.icon} />
+                    <RouteEndpoint type="end" />
+                    <MapLabel label={floorPoint.label} variant="floor" />
                   </span>
                 )}
                 {stepPoint && (
@@ -388,15 +387,13 @@ export default function StationMap({
                   </span>
                 )}
                 {destination && (
+                  // 도착: 파란 원형 점, 이름은 점 오른쪽(W06~W08)
                   <span
-                    className="absolute flex flex-col items-center"
-                    style={{
-                      ...toScreen(destination.point),
-                      transform: `translate(-${PIN_TIP.x}px, calc(-${PIN_TIP.y}px - 24px))`,
-                    }}
+                    className="absolute flex -translate-x-3 -translate-y-1/2 items-center gap-1.5"
+                    style={toScreen(destination.point)}
                   >
-                    <MapLabel label={destination.label} variant="strong" className="mb-1" />
-                    <MapMarker type="destination" icon={destination.icon} />
+                    <RouteEndpoint type="end" />
+                    <MapLabel label={destination.label} variant="strong" />
                   </span>
                 )}
               </div>
@@ -428,8 +425,10 @@ export default function StationMap({
       {recenterPlacement === 'bottom-right' && (
         <RecenterControl onRecenter={recenter} className="absolute right-4 bottom-4" />
       )}
+      {overlay}
       {(caption || !isRouteFloor) && (
-        <p className="pointer-events-none absolute bottom-2 left-5 text-note text-ink-mute">
+        // 지도 아래 흰 띠 위의 안내문(Figma "지도 안내문 배경" 28px)
+        <p className="pointer-events-none absolute inset-x-0 bottom-0 flex h-7 items-center bg-surface px-5 text-note text-ink-sub">
           {isRouteFloor ? caption : `${floorLabel} 지도 · 경로 안내는 3층만 준비되어 있어요`}
         </p>
       )}

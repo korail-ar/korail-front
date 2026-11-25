@@ -59,6 +59,8 @@ export interface StationData {
 export interface CategoryInfo {
   label: string;
   icon: IconName;
+  /** 도착 화면(W10) 시설 카드의 첫 줄 */
+  description?: string;
 }
 
 export interface StartPoint {
@@ -87,4 +89,6 @@ export interface GuideStep {
   detail: string;
   /** 이 단계에서 걷는 구간(지도 위 강조용) */
   points: MapPoint[];
+  /** 이 단계에서 보이는 시설(여정 표시의 경유 지점 후보). 목적지는 넣지 않는다. */
+  landmark?: string;
 }

@@ -29,20 +29,28 @@ export const FLOOR_LABELS: Record<MapFloor, string> = {
 export const ROUTE_FLOOR: MapFloor = '3F';
 export const ROUTE_FLOOR_LABEL = '3층';
 /** 경로 지도 아래 설명. 경로·위치는 도면에서 추정한 값이라 늘 밝혀 둔다. */
-export const ROUTE_MAP_CAPTION = '3층 · 경로는 현장 확인 전 추정이에요';
+export const ROUTE_MAP_CAPTION = '3층 · 확정 평면도 / 경로는 현장 확인 전 추정';
 /** 화면 간 이동에서 경로 정보를 유지할 주소 항목 */
 export const JOURNEY_KEYS = ['start', 'to', 'platform'] as const;
 
 export const CATEGORY_INFO: Record<PlaceCategory, CategoryInfo> = {
-  shop: { label: '매장', icon: 'shop' },
-  elevator: { label: '엘리베이터', icon: 'elevator' },
-  restroom: { label: '화장실', icon: 'toilet' },
-  facility: { label: '편의시설', icon: 'info' },
-  platform_access: { label: '승강장 연결통로', icon: 'train' },
-  vertical_transport: { label: '계단·에스컬레이터', icon: 'stairs' },
-  entrance: { label: '출입구', icon: 'car' },
-  ticketing: { label: '승차권', icon: 'ticket' },
-  parking: { label: '주차장', icon: 'car' },
+  shop: { label: '매장', icon: 'shop', description: '역 안 매장' },
+  elevator: { label: '엘리베이터', icon: 'elevator', description: '층을 오가는 승강기' },
+  restroom: { label: '화장실', icon: 'toilet', description: '역 안 화장실' },
+  facility: { label: '편의시설', icon: 'info', description: '이용객 편의시설' },
+  platform_access: {
+    label: '승강장 연결통로',
+    icon: 'train',
+    description: '타는 곳으로 내려가는 연결통로',
+  },
+  vertical_transport: {
+    label: '계단·에스컬레이터',
+    icon: 'stairs',
+    description: '층을 오가는 계단·에스컬레이터',
+  },
+  entrance: { label: '출입구', icon: 'car', description: '역 출입구' },
+  ticketing: { label: '승차권', icon: 'ticket', description: '승차권 구매·변경·환불 문의' },
+  parking: { label: '주차장', icon: 'car', description: '역 주차장' },
 };
 
 export type QuickFilterId = 'transit' | 'exit' | 'restroom';

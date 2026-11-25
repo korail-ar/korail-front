@@ -43,11 +43,16 @@ const JOSA_PAIRS: Record<Josa, [withJong: string, withoutJong: string]> = {
   은: ['은', '는'],
 };
 
-/** 단어 뒤에 받침에 맞는 조사를 붙인다. 예: withJosa('매표소', '으로') → '매표소로' */
-export default function withJosa(word: string, josa: Josa): string {
+/** 단어 받침에 맞는 조사만 돌려준다. 단어를 따옴표로 감쌀 때 쓴다. 예: pickJosa('매표소', '을') → '를' */
+export function pickJosa(word: string, josa: Josa): string {
   const jong = lastJong(word);
   const [withJong, withoutJong] = JOSA_PAIRS[josa];
   // '으로'는 ㄹ 받침 뒤에서도 '로'를 쓴다(예: 출구 → 출구로, 홀 → 홀로).
   const hasJong = josa === '으로' ? jong !== 0 && jong !== JONG_RIEUL : jong !== 0;
-  return `${word}${hasJong ? withJong : withoutJong}`;
+  return hasJong ? withJong : withoutJong;
+}
+
+/** 단어 뒤에 받침에 맞는 조사를 붙인다. 예: withJosa('매표소', '으로') → '매표소로' */
+export default function withJosa(word: string, josa: Josa): string {
+  return `${word}${pickJosa(word, josa)}`;
 }
