@@ -10,9 +10,8 @@ import StationMap from '@/components/StationMap/StationMap';
 import StepItem, { type StepState } from '@/components/StepItem/StepItem';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
-import { JOURNEY_KEYS, ROUTE_MAP_CAPTION } from '@/lib/station/data';
-import getJourneyMapLayers from '@/lib/station/mapLayers';
-import useJourney from '@/lib/station/useJourney';
+import { ROUTE_MAP_CAPTION } from '@/lib/station/data';
+import useGuideViewModel from '@/view-models/useGuideViewModel';
 
 function stateOf(index: number, current: number): StepState {
   if (index < current) {
@@ -22,24 +21,21 @@ function stateOf(index: number, current: number): StepState {
 }
 
 export default function StepListScreen() {
-  const journey = useJourney();
-  const { destination, destinationLabel, route, steps, stepIndex, milestones, status, href } =
-    journey;
+  const vm = useGuideViewModel();
+  const { destinationLabel, steps, stepIndex, milestones } = vm.journey;
 
-  if (status !== 'ok' || !destination || !route || steps.length === 0) {
-    return <RouteError journey={journey} returnPath="/route" />;
+  if (!vm.canGuide || !vm.step) {
+    return <RouteError journey={vm.journey} returnPath="/route" />;
   }
-
-  const step = steps[stepIndex];
 
   return (
     <>
-      <AppBar title="도보 단계 안내" backHref={href('/guide', { step: stepIndex }, JOURNEY_KEYS)} />
+      <AppBar title="도보 단계 안내" backHref={vm.guideHref} />
       <StationMap
         fill
-        {...getJourneyMapLayers(journey)}
-        stepPoint={stepIndex > 0 ? { point: step.points[0], step: stepIndex + 1 } : undefined}
-        focus={step.points.length > 1 ? step.points : undefined}
+        {...vm.mapLayers}
+        stepPoint={vm.stepPoint}
+        focus={vm.focus}
         caption={ROUTE_MAP_CAPTION}
       />
       <ScreenBody variant="panel">
@@ -63,10 +59,7 @@ export default function StepListScreen() {
           ))}
         </ol>
         {/* 전체 단계를 본 뒤에는 바로 도착을 확인한다(Figma W08 · 2026-11-25). */}
-        <Link
-          href={href('/arrive', {}, JOURNEY_KEYS)}
-          className={cn(buttonClassNames('primary', true), 'mt-6')}
-        >
+        <Link href={vm.arriveHref} className={cn(buttonClassNames('primary', true), 'mt-6')}>
           {`${destinationLabel} 도착 확인`}
         </Link>
       </ScreenBody>
