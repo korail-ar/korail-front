@@ -72,6 +72,8 @@ interface View {
 const DEFAULT_INSETS: Insets = { top: 56, right: 72, bottom: 40, left: 72 };
 const ZOOM_STEP = 1.4;
 const MAX_ZOOM = 2;
+// 부동소수점 오차로 축소 버튼이 한계에서 켜져 있는 일을 막는다.
+const ZOOM_EPSILON = 0.0001;
 // 한 점만 맞출 때(시작 위치만 있을 때) 주변이 이만큼(지도 단위) 보이게 한다.
 const SINGLE_POINT_SPAN = 360;
 const KEYBOARD_PAN_PX = 40;
@@ -89,21 +91,43 @@ function boundsOf(points: readonly MapPoint[]) {
   };
 }
 
-function fitView(
-  points: readonly MapPoint[],
-  size: { width: number; height: number },
-  insets: Insets,
-  minZoom: number,
-): View {
+interface Size {
+  width: number;
+  height: number;
+}
+type Bounds = readonly [x: number, y: number, width: number, height: number];
+
+/** 지도가 지도 상자를 빈틈없이 덮는 가장 작은 배율(cover). 이보다 작아지면 지도 밖이 보인다. */
+function coverZoom(size: Size, [, , width, height]: Bounds): number {
+  return Math.max(size.width / width, size.height / height);
+}
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+/**
+ * 지도 밖이 보이지 않게 배율과 중심을 지도(viewBox) 안으로 맞춘다.
+ * 끌기·확대·다시 맞추기 등 보기를 바꾸는 모든 곳이 이 함수를 거친다.
+ */
+function clampView(view: View, size: Size, bounds: Bounds): View {
+  const [x, y, width, height] = bounds;
+  const minZoom = coverZoom(size, bounds);
+  const zoom = clamp(view.zoom, minZoom, Math.max(MAX_ZOOM, minZoom));
+  const halfWidth = size.width / 2 / zoom;
+  const halfHeight = size.height / 2 / zoom;
+  return {
+    zoom,
+    cx: clamp(view.cx, x + halfWidth, x + width - halfWidth),
+    cy: clamp(view.cy, y + halfHeight, y + height - halfHeight),
+  };
+}
+
+function fitView(points: readonly MapPoint[], size: Size, insets: Insets): View {
   const { minX, maxX, minY, maxY } = boundsOf(points);
   const spanX = Math.max(maxX - minX, SINGLE_POINT_SPAN);
   const spanY = Math.max(maxY - minY, SINGLE_POINT_SPAN);
   const innerWidth = Math.max(size.width - insets.left - insets.right, 1);
   const innerHeight = Math.max(size.height - insets.top - insets.bottom, 1);
-  const zoom = Math.min(
-    Math.max(Math.min(innerWidth / spanX, innerHeight / spanY), minZoom),
-    MAX_ZOOM,
-  );
+  const zoom = Math.min(innerWidth / spanX, innerHeight / spanY, MAX_ZOOM);
   // 여백이 한쪽으로 치우치면 그만큼 중심을 옮긴다.
   const offsetX = (insets.left - insets.right) / 2 / zoom;
   const offsetY = (insets.top - insets.bottom) / 2 / zoom;
@@ -136,9 +160,10 @@ export default function StationMap({
   const [view, setView] = useState<View | null>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
 
-  const [vbX, vbY, vbWidth, vbHeight] = MAP_VIEWBOXES[floor];
+  const bounds = MAP_VIEWBOXES[floor];
+  const [vbX, vbY, vbWidth, vbHeight] = bounds;
   const isRouteFloor = floor === ROUTE_FLOOR;
-  const minZoom = size ? Math.min(size.width / vbWidth, size.height / vbHeight) * 0.9 : 0;
+  const minZoom = size ? coverZoom(size, bounds) : 0;
 
   const focusPoints = focus ?? route ?? (start ? [start.point] : null);
   // 같은 범위면 다시 맞추지 않도록 값으로 비교한다(배열은 렌더마다 새로 만들어진다).
@@ -149,16 +174,15 @@ export default function StationMap({
     if (!size) {
       return null;
     }
+    const mapBounds: Bounds = [vbX, vbY, vbWidth, vbHeight];
     if (isRouteFloor && focusKey) {
       const insets = { ...DEFAULT_INSETS, ...JSON.parse(insetsKey) };
-      return fitView(JSON.parse(focusKey), size, insets, minZoom);
+      return clampView(fitView(JSON.parse(focusKey), size, insets), size, mapBounds);
     }
-    const whole: MapPoint[] = [
-      [vbX, vbY],
-      [vbX + vbWidth, vbY + vbHeight],
-    ];
-    return fitView(whole, size, { top: 8, right: 8, bottom: 8, left: 8 }, 0);
-  }, [size, focusKey, insetsKey, isRouteFloor, minZoom, vbX, vbY, vbWidth, vbHeight]);
+    // 경로가 없는 층은 지도 가운데를 가장 넓게(지도가 상자를 덮는 배율로) 보여준다.
+    const whole = { cx: vbX + vbWidth / 2, cy: vbY + vbHeight / 2, zoom: 0 };
+    return clampView(whole, size, mapBounds);
+  }, [size, focusKey, insetsKey, isRouteFloor, vbX, vbY, vbWidth, vbHeight]);
 
   const recenter = () => setView(computeFit());
 
@@ -187,25 +211,30 @@ export default function StationMap({
       if (!prev || !size) {
         return prev;
       }
-      const zoom = Math.min(Math.max(prev.zoom * factor, minZoom), MAX_ZOOM);
+      const zoom = clamp(prev.zoom * factor, minZoom, Math.max(MAX_ZOOM, minZoom));
       if (!anchor) {
-        return { ...prev, zoom };
+        return clampView({ ...prev, zoom }, size, bounds);
       }
       // anchor(화면 좌표) 아래의 지도 위치가 그대로 있도록 중심을 옮긴다.
       const mapX = prev.cx + (anchor.x - size.width / 2) / prev.zoom;
       const mapY = prev.cy + (anchor.y - size.height / 2) / prev.zoom;
-      return {
+      const next = {
         zoom,
         cx: mapX - (anchor.x - size.width / 2) / zoom,
         cy: mapY - (anchor.y - size.height / 2) / zoom,
       };
+      return clampView(next, size, bounds);
     });
   };
 
   const panBy = (dx: number, dy: number) => {
-    setView(
-      (prev) => prev && { ...prev, cx: prev.cx - dx / prev.zoom, cy: prev.cy - dy / prev.zoom },
-    );
+    setView((prev) => {
+      if (!prev || !size) {
+        return prev;
+      }
+      const next = { ...prev, cx: prev.cx - dx / prev.zoom, cy: prev.cy - dy / prev.zoom };
+      return clampView(next, size, bounds);
+    });
   };
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
@@ -390,8 +419,8 @@ export default function StationMap({
           <ZoomControl
             onZoomIn={() => zoomBy(ZOOM_STEP)}
             onZoomOut={() => zoomBy(1 / ZOOM_STEP)}
-            canZoomIn={!view || view.zoom < MAX_ZOOM}
-            canZoomOut={!view || view.zoom > minZoom}
+            canZoomIn={!view || view.zoom < Math.max(MAX_ZOOM, minZoom) - ZOOM_EPSILON}
+            canZoomOut={!view || view.zoom > minZoom + ZOOM_EPSILON}
           />
         )}
         {recenterPlacement === 'below-zoom' && <RecenterControl onRecenter={recenter} />}
