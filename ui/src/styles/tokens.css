@@ -59,8 +59,9 @@
   --color-ink-900: #22314a;
   --color-ink-600: #6b7280;
 
-  /* 안내 시작 위치(QR) 표시 전용 노랑. */
+  /* 안내 시작 위치(QR) 표시 전용 노랑. 300은 경로 출발 점·여정 출발 점(2026-11-25 Route/Endpoint). */
   --color-sunflower-100: #fff3c4;
+  --color-sunflower-300: #ffd93d;
 
   /* ---------- Semantic ---------- */
   --color-bg: var(--color-gray-50);
@@ -88,6 +89,10 @@
 
   --color-route: var(--color-blue-500);
   --color-route-transfer: var(--color-blue-300);
+  /* 경로 출발·도착 원형 점과 여정 표시(Figma Route/Endpoint · Route/Journey milestones) */
+  --color-route-start: var(--color-sunflower-300);
+  --color-route-end: var(--color-blue-500);
+  --color-milestone-upcoming: var(--color-blue-100);
   /* 목적지·안내 시작 위치 색. 2026-11-24 Figma 변수 기준(dest #2F47C2, 시작 위치 sunflower-100). */
   --color-dest: var(--color-blue-700);
   --color-start: var(--color-sunflower-100);
@@ -150,6 +155,9 @@
   --text-map-label--font-weight: 700;
 
   /* 화면 와이어프레임(W01~W11)에서 반복되는 크기. Figma 글자 스타일로는 등록되어 있지 않다. */
+  --text-headline: 24px;
+  --text-headline--line-height: 34px;
+  --text-headline--font-weight: 700;
   --text-screen-title: 26px;
   --text-screen-title--line-height: 39px;
   --text-screen-title--font-weight: 700;

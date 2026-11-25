@@ -76,7 +76,10 @@ export const PRIMITIVE_SCALES: PrimitiveScale[] = [
   {
     id: 'sunflower',
     title: 'Sunflower (안내 시작 위치 전용)',
-    steps: [{ step: '100', hex: '#FFF3C4' }],
+    steps: [
+      { step: '100', hex: '#FFF3C4' },
+      { step: '300', hex: '#FFD93D' },
+    ],
   },
 ];
 
@@ -101,6 +104,9 @@ export const SEMANTIC_COLORS = [
   'disabled-ink',
   'route',
   'route-transfer',
+  'route-start',
+  'route-end',
+  'milestone-upcoming',
   'dest',
   'start',
   'start-ink',
@@ -149,6 +155,12 @@ export const TYPE_SCALE: TypeToken[] = [
   { name: 'label', spec: '14/20 · w700', className: 'text-label', sample: '화장실' },
   { name: 'caption', spec: '13/18 · w400', className: 'text-caption', sample: '3층 · 동쪽 통로' },
   { name: 'map-label', spec: '12/16 · w700', className: 'text-map-label', sample: '보관함' },
+  {
+    name: 'headline',
+    spec: '24/34 · w700',
+    className: 'text-headline',
+    sample: '매표소에 도착했어요',
+  },
   {
     name: 'screen-title',
     spec: '26/39 · w700',
