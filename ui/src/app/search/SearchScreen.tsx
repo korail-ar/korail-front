@@ -9,6 +9,7 @@ import { buttonClassNames } from '@/components/Button/Button';
 import CategoryChip from '@/components/CategoryChip/CategoryChip';
 import Icon from '@/components/Icon/Icon';
 import ResultItem from '@/components/ResultItem/ResultItem';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import SearchField from '@/components/SearchField/SearchField';
 import StateMessage from '@/components/StateMessage/StateMessage';
 import Tag from '@/components/Tag/Tag';
@@ -71,7 +72,7 @@ export default function SearchScreen() {
   return (
     <>
       <AppBar title="대전역 실내 길찾기" />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody>
         <Link
           href={href('/start', { next: href('/search', { q: query, category }) })}
           aria-label={`출발 위치 ${start.name} · 바꾸기`}
@@ -103,12 +104,13 @@ export default function SearchScreen() {
         {hasSearched && results.length > 0 && (
           <section
             aria-label="검색 결과"
-            className="mt-3 flex flex-col gap-2 rounded-lg border border-line bg-surface p-4"
+            // 화면이 낮으면 결과 카드만 줄어들고(최소 160px) 목록이 카드 안에서 스크롤된다.
+            className="mt-3 flex min-h-40 flex-col gap-2 rounded-lg border border-line bg-surface p-4"
           >
             <p aria-live="polite" className="text-label text-ink">
               {filter ? `${filter.label} ${results.length}곳` : `검색 결과 ${results.length}곳`}
             </p>
-            <ul className="flex max-h-80 flex-col overflow-y-auto">
+            <ul className="flex min-h-0 flex-col overflow-y-auto">
               {results.map((place) => (
                 <li key={place.id}>
                   <ResultItem
@@ -143,7 +145,7 @@ export default function SearchScreen() {
             />
           ))}
         </div>
-      </div>
+      </ScreenBody>
     </>
   );
 }

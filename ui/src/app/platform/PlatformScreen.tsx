@@ -6,6 +6,7 @@ import { useState } from 'react';
 import AppBar from '@/components/AppBar/AppBar';
 import Button, { buttonClassNames } from '@/components/Button/Button';
 import NumberBadge from '@/components/NumberBadge/NumberBadge';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { PLATFORMS, findPlatform } from '@/lib/station/data';
 import useJourney from '@/lib/station/useJourney';
@@ -19,7 +20,7 @@ export default function PlatformScreen() {
   return (
     <>
       <AppBar title="승강장 번호 선택" backHref={href('/')} />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody>
         <h2 className="mt-3 text-screen-title text-ink">몇 번 승강장으로 가세요?</h2>
         <p className="mt-2 text-body-sm whitespace-pre-line text-ink-sub">
           {'전광판·코레일톡에서 확인한 번호를\n그대로 선택하세요. 호차 번호와는 달라요.'}
@@ -74,7 +75,7 @@ export default function PlatformScreen() {
             선택한 승강장으로 경로 확인
           </Button>
         )}
-      </div>
+      </ScreenBody>
     </>
   );
 }

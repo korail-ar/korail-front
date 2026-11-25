@@ -7,6 +7,7 @@ import AppBar from '@/components/AppBar/AppBar';
 import { buttonClassNames } from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import StateMessage from '@/components/StateMessage/StateMessage';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import type { Journey } from '@/lib/station/useJourney';
 
@@ -30,7 +31,7 @@ export default function RouteError({ journey, returnPath }: RouteErrorProps) {
   return (
     <>
       <AppBar title="문제가 발생했어요" backHref={href('/search')} />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody>
         <StateMessage
           type="error"
           title="경로를 찾을 수 없어요"
@@ -67,7 +68,7 @@ export default function RouteError({ journey, returnPath }: RouteErrorProps) {
         <p className="mt-8 text-caption whitespace-pre-line text-ink-mute">
           {'안내가 중단되면 주변 안내 표지판이나\n역무원의 도움을 이용해 주세요.'}
         </p>
-      </div>
+      </ScreenBody>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { buttonClassNames } from '@/components/Button/Button';
 import FacilityCard from '@/components/FacilityCard/FacilityCard';
 import Icon from '@/components/Icon/Icon';
 import RouteError from '@/components/RouteError/RouteError';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { CATEGORY_INFO, JOURNEY_KEYS, ROUTE_FLOOR_LABEL } from '@/lib/station/data';
 import { roundMeters } from '@/lib/station/route';
@@ -31,7 +32,7 @@ export default function ArriveScreen() {
         title="목적지에 도착했어요"
         backHref={href('/guide', { step: Math.max(steps.length - 1, 0) }, JOURNEY_KEYS)}
       />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody>
         <section
           aria-label="도착 확인"
           className="mt-4 flex flex-col rounded-lg border border-line bg-surface px-4 pt-7 pb-6"
@@ -67,7 +68,7 @@ export default function ArriveScreen() {
         <Link href={href('/')} className={cn(buttonClassNames('secondary', true), 'mt-14')}>
           길찾기 종료
         </Link>
-      </div>
+      </ScreenBody>
     </>
   );
 }

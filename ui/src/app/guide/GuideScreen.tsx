@@ -8,6 +8,7 @@ import RouteError from '@/components/RouteError/RouteError';
 import StationMap from '@/components/StationMap/StationMap';
 import StepBar from '@/components/StepBar/StepBar';
 import Tag from '@/components/Tag/Tag';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { JOURNEY_KEYS, ROUTE_MAP_CAPTION } from '@/lib/station/data';
 import withJosa from '@/lib/station/josa';
@@ -30,7 +31,7 @@ function FloorChangeView({ journey }: { journey: Journey }) {
         backHref={href('/guide', { step: Math.max(stepIndex - 1, 0) }, JOURNEY_KEYS)}
       />
       <StationMap
-        className="h-70"
+        fill
         route={layers.route}
         isTransferRoute
         start={layers.start}
@@ -44,7 +45,7 @@ function FloorChangeView({ journey }: { journey: Journey }) {
         focus={step.points.length > 1 ? step.points : layers.route}
         caption={ROUTE_MAP_CAPTION}
       />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody variant="panel">
         <Tag
           label="승강장 경로 · 층 이동"
           variant="info"
@@ -60,7 +61,7 @@ function FloorChangeView({ journey }: { journey: Journey }) {
         <Link href={next.href} className={cn(buttonClassNames('primary', true), 'mt-6')}>
           이동 후 계속하기
         </Link>
-      </div>
+      </ScreenBody>
     </>
   );
 }
@@ -89,13 +90,13 @@ export default function GuideScreen() {
     <>
       <AppBar title={`${withJosa(destination.name, '으로')} 가는 중`} backHref={backHref} />
       <StationMap
-        className="h-82"
+        fill
         {...layers}
         stepPoint={stepIndex > 0 ? { point: step.points[0], step: stepIndex + 1 } : undefined}
         focus={step.points.length > 1 ? step.points : undefined}
         caption={ROUTE_MAP_CAPTION}
       />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody variant="panel">
         <StepBar icon={step.icon} text={step.text} sub={step.sub} className="mt-4.5" />
         <p className="mt-6 text-caption font-bold text-brand-press">
           {`${stepIndex + 1} / ${steps.length}단계`}
@@ -110,7 +111,7 @@ export default function GuideScreen() {
         >
           전체 단계 보기
         </Link>
-      </div>
+      </ScreenBody>
     </>
   );
 }

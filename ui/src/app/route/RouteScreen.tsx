@@ -8,6 +8,7 @@ import { buttonClassNames } from '@/components/Button/Button';
 import RouteError from '@/components/RouteError/RouteError';
 import RouteSummary from '@/components/RouteSummary/RouteSummary';
 import StationMap from '@/components/StationMap/StationMap';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { JOURNEY_KEYS, ROUTE_FLOOR_LABEL, ROUTE_MAP_CAPTION } from '@/lib/station/data';
 import getJourneyMapLayers from '@/lib/station/mapLayers';
@@ -28,8 +29,8 @@ export default function RouteScreen() {
   return (
     <>
       <AppBar title="경로 확인" backHref={href(platformNumber ? '/platform' : '/search')} />
-      <StationMap className="h-70" {...getJourneyMapLayers(journey)} caption={ROUTE_MAP_CAPTION} />
-      <div className="flex flex-col px-5 pb-8">
+      <StationMap fill {...getJourneyMapLayers(journey)} caption={ROUTE_MAP_CAPTION} />
+      <ScreenBody variant="panel">
         <RouteSummary
           from={start.name}
           to={
@@ -50,7 +51,7 @@ export default function RouteScreen() {
         <Link href={href('/search')} className={cn(buttonClassNames('text', true), 'mt-4')}>
           다른 목적지 찾기
         </Link>
-      </div>
+      </ScreenBody>
     </>
   );
 }

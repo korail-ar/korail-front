@@ -24,9 +24,9 @@ export default function HomeScreen() {
   return (
     <>
       <AppBar title="대전역 길안내" />
-      <div className="relative flex flex-1 flex-col">
+      <div className="relative flex min-h-0 flex-1 flex-col">
         <StationMap
-          className="min-h-75 flex-1"
+          fill
           start={startPoint ? { point: startPoint, label: start.name } : undefined}
           focusInsets={{ top: START_CARD_INSET, bottom: 32, left: 24, right: 24 }}
           caption={`${ROUTE_FLOOR_LABEL} 지도`}
@@ -50,7 +50,7 @@ export default function HomeScreen() {
         <BottomSheet
           title="어디로 가시나요?"
           titleClassName="text-screen-title"
-          className="relative z-10 -mt-3 rounded-t-xl border border-b-0 border-line shadow-none"
+          className="relative z-10 -mt-3 min-h-0 overflow-y-auto rounded-t-xl border border-b-0 border-line shadow-none"
         >
           <SearchFieldLink href={href('/search')} placeholder="목적지나 시설 이름을 검색하세요" />
           <Link href={href('/platform')} className={buttonClassNames('secondary', true)}>

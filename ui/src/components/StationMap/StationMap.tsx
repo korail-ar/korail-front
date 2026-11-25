@@ -42,6 +42,8 @@ interface Insets {
 interface StationMapProps {
   /** 지도 높이 등 바깥 크기 */
   className?: string;
+  /** 화면에서 남는 높이를 모두 쓴다(최소 160px). 화면이 낮으면 지도가 먼저 줄어든다. */
+  fill?: boolean;
   route?: readonly MapPoint[];
   /** 층이 바뀌는 구간은 점선으로 그린다(W09). */
   isTransferRoute?: boolean;
@@ -114,6 +116,7 @@ function fitView(
  */
 export default function StationMap({
   className,
+  fill = false,
   route,
   isTransferRoute = false,
   start,
@@ -285,7 +288,13 @@ export default function StationMap({
   const isReady = view !== null && size !== null;
 
   return (
-    <div className={cn('relative overflow-hidden bg-surface', className)}>
+    <div
+      className={cn(
+        'relative overflow-hidden bg-surface',
+        fill && 'min-h-40 flex-1 basis-0',
+        className,
+      )}
+    >
       {/* 지도는 끌기·확대·방향키를 직접 처리하는 위젯(role=application)이라 포커스와 입력을 받는다. */}
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
@@ -372,7 +381,8 @@ export default function StationMap({
           floors={MAP_FLOORS}
           value={floor}
           onChange={(value) => setFloor(value as MapFloor)}
-          className="absolute top-3 left-3"
+          // 화면이 낮아 지도가 줄면(최소 160px) 층 버튼 4개(192px)가 넘치므로 지도 높이 안에서 스크롤되게 한다.
+          className="absolute top-3 left-3 max-h-[calc(100%-1.5rem)] overflow-y-auto [&>*]:shrink-0"
         />
       )}
       <div className="absolute top-3 right-3 flex flex-col gap-2">

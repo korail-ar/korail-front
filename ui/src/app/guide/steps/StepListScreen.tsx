@@ -7,6 +7,7 @@ import { buttonClassNames } from '@/components/Button/Button';
 import RouteError from '@/components/RouteError/RouteError';
 import StationMap from '@/components/StationMap/StationMap';
 import StepItem, { type StepState } from '@/components/StepItem/StepItem';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import cn from '@/lib/cn';
 import { JOURNEY_KEYS, ROUTE_MAP_CAPTION } from '@/lib/station/data';
 import getJourneyMapLayers from '@/lib/station/mapLayers';
@@ -36,13 +37,13 @@ export default function StepListScreen() {
     <>
       <AppBar title="도보 단계 안내" backHref={href('/guide', { step: stepIndex }, JOURNEY_KEYS)} />
       <StationMap
-        className="h-62"
+        fill
         {...getJourneyMapLayers(journey)}
         stepPoint={stepIndex > 0 ? { point: step.points[0], step: stepIndex + 1 } : undefined}
         focus={step.points.length > 1 ? step.points : undefined}
         caption={ROUTE_MAP_CAPTION}
       />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody variant="panel">
         <h2 className="mt-4.5 text-heading text-ink">주변 시설을 보며 이동하세요</h2>
         <ol aria-label="안내 단계" className="mt-4 flex flex-col gap-4">
           {steps.map((item, index) => (
@@ -60,7 +61,7 @@ export default function StepListScreen() {
         <Link href={next.href} className={cn(buttonClassNames('primary', true), 'mt-6')}>
           {next.label}
         </Link>
-      </div>
+      </ScreenBody>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import AppBar from '@/components/AppBar/AppBar';
 import ResultItem from '@/components/ResultItem/ResultItem';
+import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import { START_POINTS } from '@/lib/station/data';
 import useJourney, { buildHref } from '@/lib/station/useJourney';
 
@@ -33,7 +34,7 @@ export default function StartScreen() {
   return (
     <>
       <AppBar title="출발 위치 선택" backHref={next} />
-      <div className="flex flex-col px-5 pb-8">
+      <ScreenBody>
         <h2 className="mt-3 text-screen-title text-ink">지금 어디에 계세요?</h2>
         <p className="mt-2 text-body-sm text-ink-sub">
           가까운 QR 안내판에 적힌 위치를 골라 주세요.
@@ -51,7 +52,7 @@ export default function StartScreen() {
             </li>
           ))}
         </ul>
-      </div>
+      </ScreenBody>
     </>
   );
 }
