@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>대전역 3D 길찾기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a calm station wayfinding console, precise and quiet
+   IDEA: the station's own signage system: mint wall lines, navy pictogram tiles, platform blue
+   PICTURE: the stacked 3D floors fill the screen, everything else floats over it
+   COLOUR and TYPE: mint ground #E2F6F2, navy #22314A ink, platform blue #5673F9 accent; Noto Sans KR
+   LAYOUT: full-bleed map, left console (search, route, check), right floor rail; bottom sheet under 700px */
+:root{color-scheme:light dark;--bg:light-dark(#E2F6F2,#0e1a1b);--bg2:light-dark(#cdeee7,#132426);--panel:light-dark(rgba(255,255,255,.94),rgba(20,30,34,.94));--ink:light-dark(#22314A,#e8eef5);--mute:light-dark(#6B7079,#9aa6b2);--line:light-dark(#e3e7ec,#2a3a40);--mint:#3FC0AA;--blue:#5673F9;--navy:#22314A;--chip:light-dark(#f3f4f7,#22323a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(120% 90% at 60% 30%,var(--bg),var(--bg2));color:var(--ink);font:15px/1.5 'SUIT','Noto Sans KR',system-ui,sans-serif;overflow:hidden}
+#stage{position:fixed;inset:0}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none}
+#pins{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.pin{position:absolute;left:0;top:0;display:flex;align-items:center;gap:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;will-change:transform}
+.pin svg{width:26px;height:26px;flex:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.22))}
+.pin b{font-weight:700;font-size:12px;color:#22314A;background:rgba(255,255,255,.92);padding:2px 7px;border-radius:7px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pin.nolabel b{display:none}.pin.sel b{background:var(--blue);color:#fff}
+.pin.sel svg{transform:scale(1.25)}
+.ftag{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;font-weight:800;font-size:13px;color:#fff;background:var(--navy);padding:3px 9px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.area{position:absolute;left:0;top:0;font-size:12px;font-weight:600;color:#8C919A;pointer-events:none}
+.panel{position:fixed;background:var(--panel);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px rgba(20,40,60,.14)}
+#side{top:16px;left:16px;bottom:16px;width:330px;display:flex;flex-direction:column;overflow:hidden}
+#side header{padding:16px 18px 10px}
+h1{margin:0;font-size:22px;line-height:1.1;font-weight:800;letter-spacing:-.01em}
+.sub{margin:4px 0 0;color:var(--mute);font-size:13px}
+.body{overflow:auto;padding:0 18px 18px;flex:1}
+.sec{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.sec h2{font-size:14px;margin:0 0 8px;font-weight:800}
+input[type=search],select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-height:44px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#results{list-style:none;margin:8px 0 0;padding:0;max-height:230px;overflow:auto}
+#results li{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;cursor:pointer}
+#results li:hover,#results li.on{background:var(--chip)}
+#results .fl{font-size:11px;font-weight:800;color:#fff;background:var(--navy);border-radius:5px;padding:1px 5px;flex:none}
+#results .ct{margin-left:auto;font-size:12px;color:var(--mute);flex:none}
+.row{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;align-items:center;margin-bottom:8px}
+.row label{font-size:13px;font-weight:700;color:var(--mute)}
+.btn{font:inherit;font-weight:700;min-height:44px;border-radius:10px;border:0;padding:0 14px;cursor:pointer;background:var(--blue);color:#fff}
+.btn.ghost{background:var(--chip);color:var(--ink);border:1px solid var(--line)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}.btns .btn{flex:1}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:4px 0 10px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--blue)}
+#steps{margin:10px 0 0;padding:0;list-style:none;counter-reset:s}
+#steps li{position:relative;padding:6px 0 6px 32px;font-size:14px;counter-increment:s}
+#steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0 0}
+details summary{cursor:pointer;font-weight:800;font-size:14px;min-height:28px}
+.chkl{list-style:none;padding:0;margin:8px 0 0;font-size:13px}
+.chkl li{display:flex;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dashed var(--line)}
+.chkl .d{margin-left:auto;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ok{color:#179C84}.warn{color:#d98a00}.bad{color:#FF1717}
+#rail{top:16px;right:16px;padding:8px;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+#rail button{min-width:56px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--chip);color:var(--ink);font:inherit;font-weight:800;cursor:pointer}
+#rail button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+#rail .sep{height:1px;background:var(--line);margin:4px 0}
+#gapbox{font-size:11px;color:var(--mute);text-align:center}
+#gap{width:56px;accent-color:var(--blue)}
+#card{left:362px;bottom:16px;padding:12px 14px;min-width:240px;max-width:340px;display:none}
+#card.show{display:block}
+#card .t{font-weight:800;font-size:16px}#card .m{font-size:13px;color:var(--mute);margin:2px 0 10px}
+#hint{position:fixed;right:16px;bottom:16px;font-size:12px;color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+#err{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px;font-weight:700}
+@media(max-width:700px){
+ #side{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:46vh}
+ #side header{padding:12px 14px 6px}h1{font-size:18px}.body{padding:0 14px 14px}
+ #rail{top:8px;right:8px;flex-direction:row;flex-wrap:wrap;max-width:calc(100vw - 16px);padding:6px}
+ #rail .sep,#gapbox{display:none}#rail button{min-width:48px}
+ #card{left:8px;right:8px;bottom:calc(46vh + 16px);max-width:none}
+ #hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){.pin svg{transition:none}}
+
+/* Home map embed: keep the original 3D scene and floor controls readable beside app UI. */
+html.home-embed #side, html.home-embed #hint, html.home-embed #card { display: none !important; }
+html.home-embed #rail { top: 82px; right: 12px; padding: 5px; gap: 4px; }
+html.home-embed #rail button { min-width: 48px; min-height: 40px; font-size: 14px; }
+html.home-embed #rail .sep, html.home-embed #gapbox, html.home-embed #rail #top { display: none; }
+html.home-embed .pin b { font-size: 13px; color: #18263d; background: #fff; border: 1px solid #d9e1e8; }
+html.home-embed .area { color: #455363; font-size: 13px; }
+@media (max-width: 700px) {
+  html.home-embed #rail { top: 82px; right: 8px; left: auto; width: 58px; flex-direction: column; flex-wrap: nowrap; max-width: none; }
+  html.home-embed #rail button { min-width: 44px; min-height: 40px; }
+}
+</style></head><body><script>if(new URLSearchParams(location.search).has("homeEmbed"))document.documentElement.classList.add("home-embed")</script>
+<div id="stage"></div><div id="pins"></div>
+<aside id="side" class="panel" aria-label="길찾기">
+ <header><h1>대전역 3D 길찾기</h1><p class="sub">1층–4층 평면도를 같은 좌표계로 쌓은 지도</p></header>
+ <div class="body">
+  <input id="q" type="search" placeholder="매장, 출구, 화장실, 홈 검색" autocomplete="off" aria-label="장소 검색">
+  <ul id="results"></ul>
+  <div class="sec"><h2>길찾기</h2>
+   <div class="row"><label for="from">출발</label><select id="from"></select></div>
+   <div class="row"><label for="to">도착</label><select id="to"></select></div>
+   <label class="chk"><input type="checkbox" id="lift"> 승강기만 이용 (계단·에스컬레이터 제외)</label>
+   <div class="btns"><button class="btn" id="go">경로 보기</button><button class="btn ghost" id="swap" aria-label="출발 도착 바꾸기">⇅ 바꾸기</button><button class="btn ghost" id="clr">지우기</button></div>
+   <ol id="steps"></ol>
+   <p class="note">같은 층 안은 직선으로 이어 그렸어요. 벽을 피하는 실제 동선은 보행 네트워크 데이터가 생기면 바꿀 수 있어요.</p>
+  </div>
+  <div class="sec"><details id="chk"><summary>층간 정렬 점검</summary>
+   <p class="note">이름이 같은 승강기·계단·에스컬레이터를 층끼리 짝지어, 평면 위치가 얼마나 어긋나는지 보여줘요(SVG 좌표 단위, 격자 1칸 = 190).</p>
+   <ul class="chkl" id="chklist"></ul></details>
+   <label class="chk" style="margin-top:8px"><input type="checkbox" id="shafts" checked> 층 연결선 표시</label>
+  </div>
+ </div>
+</aside>
+<nav id="rail" class="panel" aria-label="층 선택">
+ <button data-f="all" class="on">전체</button><button data-f="4F">4F</button><button data-f="3F">3F</button><button data-f="2F">2F</button><button data-f="1F">1F</button>
+ <div class="sep"></div><div id="gapbox"><label for="gap">층 간격</label><br><input id="gap" type="range" min="40" max="320" value="150"></div>
+ <button id="reset" title="시점 초기화">⟲</button><button id="top" title="위에서 보기">2D</button>
+</nav>
+<div id="card" class="panel" role="dialog" aria-live="polite"><div class="t" id="ct"></div><div class="m" id="cm"></div>
+ <div class="btns"><button class="btn ghost" id="cfrom">출발로</button><button class="btn" id="cto">도착으로</button></div></div>
+<div id="hint">드래그 이동 · 우클릭/두 손가락 회전 · 휠 확대</div>
+<div id="err">3D 화면을 띄우지 못했어요. WebGL을 지원하는 브라우저에서 열어 주세요.</div>
+<script type="application/json" id="data">{"floors":{"1F":{"floor":[[[505.4,1660.6],[598.5,1660.6],[598.5,1605.5],[1174.2,1605.5],[1174.2,1924.7],[505.4,1924.7]],[[1026.0,210.9],[1248.3,210.9],[1248.3,419.9],[1026.0,419.9]]],"zones":[{"cat":"track","pts":[[494.0,494.0],[1330.0,494.0],[1330.0,1539.0],[494.0,1539.0]]},{"cat":"outdoor","pts":[[1174.2,1665.7],[1309.1,1665.7],[1309.1,1907.6],[1174.2,1907.6]]},{"cat":"outdoor","pts":[[445.1,1779.2],[505.4,1779.2],[505.4,1887.8],[445.1,1887.8]]}],"rooms":[{"id":"1F-S01","cat":"shop","name":"롯데리아","pts":[[767.6,1618.8],[935.6,1618.8],[935.6,1664.3999999999999],[767.6,1664.3999999999999]]},{"id":"1F-S01b","cat":"shop","name":"예산국수","pts":[[935.6,1618.8],[1058.1,1618.8],[1058.1,1664.3999999999999],[935.6,1664.3999999999999]]},{"id":"1F-S02","cat":"shop","name":"아트박스","pts":[[1128.6,1700.5],[1170.3999999999999,1700.5],[1170.3999999999999,1896.2],[1128.6,1896.2]]},{"id":"1F-S03","cat":"shop","name":"벌꿀분식","pts":[[1046.9,1706.2],[1077.3000000000002,1706.2],[1077.3000000000002,1784.1000000000001],[1046.9,1784.1000000000001]]},{"id":"1F-S04","cat":"shop","name":"앤티앤스","pts":[[849.3,1704.3],[927.1999999999999,1704.3],[927.1999999999999,1806.8999999999999],[849.3,1806.8999999999999]]},{"id":"1F-S06","cat":"service","name":"TMO","pts":[[514.0,1761.5],[615.6,1761.5],[615.6,1864.5],[653.0,1864.5],[653.0,1924.3],[514.0,1924.3]]},{"id":"1F-S07","cat":"toilet","name":"여자·남자 화장실","pts":[[661.0,1710.0],[756.2,1710.0],[756.2,1779.9],[661.0,1779.9]]},{"id":"1F-S10","cat":"shop","name":"섬섬옥수","pts":[[666.1,1864.5],[786.6,1864.5],[786.6,1921.5],[666.1,1921.5]]},{"id":"1F-V02","cat":"vertical","name":"계단","pts":[[972.8,1698.6],[1046.8999999999999,1698.6],[1046.8999999999999,1810.6999999999998],[972.8,1810.6999999999998]]},{"id":"1F-V02b","cat":"vertical","name":"계단","pts":[[932.3,1720.8],[967.6999999999999,1720.8],[967.6999999999999,1806.8999999999999],[932.3,1806.8999999999999]]},{"id":"1F-V02c","cat":"vertical","name":"계단","pts":[[1179.9,1687.6],[1255.9,1687.6],[1255.9,1858.1999999999998],[1179.9,1858.1999999999998]]},{"id":"1F-V04","cat":"vertical","name":"승강기 B (1·3층)","pts":[[1124.8,1618.8],[1151.3999999999999,1618.8],[1151.3999999999999,1642.3999999999999],[1124.8,1642.3999999999999]]},{"id":"1F-V05","cat":"vertical","name":"승강기 C","pts":[[1262.9,1669.0],[1289.5,1669.0],[1289.5,1692.3],[1262.9,1692.3]]},{"id":"1F-V06","cat":"vertical","name":"계단","pts":[[1132.4,218.5],[1174.2,218.5],[1174.2,307.8],[1132.4,307.8]]},{"id":"1F-V07","cat":"escalator","name":"에스컬레이터","pts":[[1075.4,218.5],[1115.3000000000002,218.5],[1115.3000000000002,307.8],[1075.4,307.8]]},{"id":"1F-V08","cat":"escalator","name":"에스컬레이터","pts":[[1191.3,218.5],[1235.0,218.5],[1235.0,307.8],[1191.3,307.8]]},{"id":"1F-V09","cat":"vertical","name":"승강기 A (1·3층)","pts":[[1038.3,312.2],[1064.0,312.2],[1064.0,338.2],[1038.3,338.2]]},{"id":"1F-V10","cat":"vertical","name":"계단 (1·2층)","pts":[[455.1,1801.2],[495.1,1801.2],[495.1,1865.8],[455.1,1865.8]]}],"doors":[],"markers":[{"id":"1F-P12","role":"exit","icon":"exit","name":"4번 출구 (서광장)","x":1006.0,"y":1936.1},{"id":"1F-P14","role":"exit","icon":"exit","name":"1번 출구 (동광장)","x":1134.5,"y":205.2},{"id":"1F-P08","role":"vertical","icon":"stairs","name":"계단","x":1004.0,"y":1729.0},{"id":"1F-P08b","role":"vertical","icon":"escalator","name":"에스컬레이터","x":1004.0,"y":1778.4},{"id":"1F-P20","role":"vertical","icon":"stairs","name":"계단","x":950.0,"y":1763.2},{"id":"1F-P22","role":"vertical","icon":"stairs","name":"계단","x":1202.7,"y":1738.5},{"id":"1F-P22b","role":"vertical","icon":"escalator","name":"에스컬레이터","x":1202.7,"y":1795.5},{"id":"1F-P06","role":"vertical","icon":"elevator","name":"승강기 B (1·3층)","x":1138.3,"y":1630.6},{"id":"1F-P07","role":"recheck","icon":"elevator","name":"승강기 C","x":1276.2,"y":1680.7},{"id":"1F-P10","role":"vertical","icon":"elevator","name":"승강기 A (1·3층)","x":1051.1,"y":325.1},{"id":"1F-P11","role":"vertical","icon":"stairs","name":"계단","x":1153.3,"y":245.1},{"id":"1F-P23","role":"vertical","icon":"escalator","name":"에스컬레이터","x":1095.3,"y":245.1},{"id":"1F-P24","role":"vertical","icon":"escalator","name":"에스컬레이터","x":1213.1,"y":245.1},{"id":"1F-P19","role":"facility","icon":"toilet","name":"여자·남자 화장실","x":690.6,"y":1745.0},{"id":"1F-P02","role":"shop","icon":"food","name":"롯데리아","x":817.0,"y":1641.6},{"id":"1F-P03","role":"shop","icon":"food","name":"예산국수","x":972.8,"y":1641.6},{"id":"1F-P04","role":"shop","icon":"food","name":"벌꿀분식","x":1062.1,"y":1745.2},{"id":"1F-P15","role":"shop","icon":"food","name":"앤티앤스","x":888.2,"y":1755.6},{"id":"1F-P17","role":"shop","icon":"bag","name":"아트박스","x":1149.5,"y":1814.5},{"id":"1F-P18","role":"facility","icon":"shield","name":"TMO","x":564.3,"y":1814.5},{"id":"1F-P01","role":"shop","icon":"bag","name":"섬섬옥수","x":703.0,"y":1892.4},{"id":"1F-P25","role":"vertical","icon":"stairs","name":"계단 (1·2층)","x":475.1,"y":1819.2},{"id":"1F-P26","role":"vertical","icon":"escalator","name":"에스컬레이터 (1·2층)","x":475.1,"y":1847.8}],"areas":[{"name":"외부","x":1273.1,"y":1890.5},{"name":"선로 구간","x":891.5,"y":1016.5},{"name":"외부","x":462.6,"y":1881.8}]},"2F":{"floor":[[[659.3,1580.8],[1143.8,1580.8],[1143.8,1636.9],[1124.8,1636.9],[1124.8,1673.2],[1162.8,1673.2],[1162.8,1770.8],[741.0,1770.8],[741.0,1867.7],[659.3,1867.7]]],"zones":[],"rooms":[{"id":"2F-S01","cat":"shop","name":"성심당 대전역점","pts":[[784.7,1686.3],[944.3,1686.3],[944.3,1727.9],[898.7,1727.9],[898.7,1770.8],[784.7,1770.8]]},{"id":"2F-S02","cat":"shop","name":"디저트39","pts":[[898.7,1727.9],[970.9000000000001,1727.9],[970.9000000000001,1770.8000000000002],[898.7,1770.8000000000002]]},{"id":"2F-S03","cat":"service","name":"물품보관함","pts":[[659.3,1690.6],[681.9,1690.6],[681.9,1746.1],[659.3,1746.1]]},{"id":"2F-V01","cat":"vertical","name":"에스컬레이터 (2·3층)","pts":[[674.5,1582.7],[718.2,1582.7],[718.2,1654.9],[674.5,1654.9]]},{"id":"2F-V03","cat":"vertical","name":"계단 (2·3층)","pts":[[948.1,1613.1],[974.7,1613.1],[974.7,1666.3],[948.1,1666.3]]},{"id":"2F-V04","cat":"vertical","name":"계단 (1·2층)","pts":[[984.2,1700.5],[999.4000000000001,1700.5],[999.4000000000001,1759.4],[984.2,1759.4]]},{"id":"2F-V05","cat":"vertical","name":"계단 (1·2층)","pts":[[695.4,1801.2],[735.3,1801.2],[735.3,1865.8],[695.4,1865.8]]}],"doors":[[785.49,1718.17,785.49,1737.57],[944.49,1694.27,944.49,1713.97]],"markers":[{"id":"2F-P11","role":"exit","icon":"exit","name":"5번 출구 (서광장)","x":704.3,"y":1888.3},{"id":"2F-P05","role":"vertical","icon":"escalator","name":"에스컬레이터 (2·3층)","x":693.3,"y":1609.3},{"id":"2F-P06","role":"vertical","icon":"stairs","name":"계단 (2·3층)","x":696.2,"y":1637.8},{"id":"2F-P07","role":"vertical","icon":"stairs","name":"계단 (2·3층)","x":961.4,"y":1638.6},{"id":"2F-P08","role":"vertical","icon":"stairs","name":"계단 (1·2층)","x":991.8,"y":1729.0},{"id":"2F-P09","role":"vertical","icon":"stairs","name":"계단 (1·2층)","x":715.4,"y":1820.2},{"id":"2F-P10","role":"vertical","icon":"escalator","name":"에스컬레이터 (1·2층)","x":715.4,"y":1848.7},{"id":"2F-P01","role":"shop","icon":"food","name":"성심당 대전역점","x":839.8,"y":1717.6},{"id":"2F-P02","role":"shop","icon":"cup","name":"디저트39","x":917.7,"y":1749.9},{"id":"2F-P03","role":"facility","icon":"locker","name":"물품보관함","x":670.7,"y":1718.4}],"areas":[]},"3F":{"floor":[[[1092.7,165.1],[1251.2,165.1],[1251.2,402.8],[1300.2,402.8],[1300.2,1815.3],[464.6,1815.3],[464.6,1677.7],[380.0,1677.7],[380.0,1651.5],[180.0,1651.5],[180.0,1607.0],[380.0,1607.0],[380.0,1433.9],[166.5,1433.9],[166.5,1397.1],[380.0,1397.1],[380.0,1259.7],[207.7,1259.7],[207.7,1224.0],[380.0,1224.0],[380.0,1097.8],[269.4,1097.8],[269.4,1060.8],[380.0,1060.8],[380.0,811.9],[269.4,811.9],[269.4,768.2],[380.0,768.2],[380.0,564.3],[222.3,564.3],[222.3,519.5],[472.7,519.5],[472.7,319.9],[1092.7,319.9]]],"zones":[{"cat":"parking","pts":[[1300.2,368.6],[1578.9,370.5],[1586.5,380.0],[1590.3,431.3],[1594.1,438.9],[1886.7,448.4],[1869.6,1680.5],[1618.1,1680.5],[1670.1,1711.9],[1691.0,1725.2],[1715.7,1763.2],[1736.6,1810.7],[1738.5,1837.3],[1672.0,1835.4],[1666.3,1805.0],[1647.3,1772.7],[1609.3,1748.0],[1550.4,1740.4],[1300.2,1738.5]]}],"rooms":[{"id":"3F-S02","cat":"toilet","name":"여자 화장실","pts":[[583.5,319.9],[699.8,319.9],[699.8,387.59999999999997],[583.5,387.59999999999997]]},{"id":"3F-S03","cat":"toilet","name":"남자 화장실","pts":[[699.8,319.9],[779.8,319.9],[779.8,387.59999999999997],[699.8,387.59999999999997]]},{"id":"3F-S04","cat":"shop","name":"레드아이","pts":[[806.6,319.9],[935.8,319.9],[935.8,401.29999999999995],[806.6,401.29999999999995]]},{"id":"3F-S05","cat":"shop","name":"삼진어묵","pts":[[935.8,319.9],[1021.6999999999999,319.9],[1021.6999999999999,401.29999999999995],[935.8,401.29999999999995]]},{"id":"3F-S06","cat":"shop","name":"스토리웨이","pts":[[554.3,457.9],[663.9,457.9],[663.9,527.1999999999999],[554.3,527.1999999999999]]},{"id":"3F-S07","cat":"shop","name":"코브라 독스","pts":[[663.9,457.9],[712.3,457.9],[712.3,527.1999999999999],[663.9,527.1999999999999]]},{"id":"3F-S01","cat":"service","name":"철도사법경찰대","pts":[[639.8,387.6],[712.3,387.6],[712.3,457.90000000000003],[639.8,457.90000000000003]]},{"id":"3F-V03","cat":"escalator","name":"에스컬레이터 (1·3층)","pts":[[1092.7,165.1],[1170.6000000000001,165.1],[1170.6000000000001,270.7],[1092.7,270.7]]},{"id":"3F-V04","cat":"vertical","name":"계단 (1·3층)","pts":[[1170.6,165.1],[1251.1999999999998,165.1],[1251.1999999999998,270.7],[1170.6,270.7]]},{"id":"3F-S08","cat":"shop","name":"중소기업 명품마루","pts":[[639.8,739.1],[742.1999999999999,739.1],[742.1999999999999,768.2],[639.8,768.2]]},{"id":"3F-V05","cat":"escalator","name":"에스컬레이터 (3·4층)","pts":[[729.6,780.3],[846.3000000000001,780.3],[846.3000000000001,808.5999999999999],[729.6,808.5999999999999]]},{"id":"3F-V06","cat":"vertical","name":"계단 (3·4층)","pts":[[772.4,817.9],[804.5,817.9],[804.5,872.1],[772.4,872.1]]},{"id":"3F-S09","cat":"service","name":"유실물센터","pts":[[574.0,819.6],[770.9,819.6],[770.9,1052.8],[574.0,1052.8]]},{"id":"3F-V07","cat":"escalator","name":"에스컬레이터","pts":[[574.0,1067.0],[712.3,1067.0],[712.3,1097.8],[574.0,1097.8]]},{"id":"3F-V08","cat":"escalator","name":"에스컬레이터","pts":[[574.0,1229.7],[712.3,1229.7],[712.3,1259.7],[574.0,1259.7]]},{"id":"3F-V09","cat":"escalator","name":"에스컬레이터","pts":[[574.0,1403.7],[712.3,1403.7],[712.3,1433.9],[574.0,1433.9]]},{"id":"3F-S10","cat":"shop","name":"마루노바 호두먹빵","pts":[[574.0,1097.8],[639.8,1097.8],[639.8,1136.2],[574.0,1136.2]]},{"id":"3F-S11","cat":"shop","name":"와플샵","pts":[[639.8,1104.8],[712.3,1104.8],[712.3,1136.2],[639.8,1136.2]]},{"id":"3F-S12","cat":"shop","name":"플라잉스콘","pts":[[712.3,1052.8],[799.4,1052.8],[799.4,1136.2],[712.3,1136.2]]},{"id":"3F-S13","cat":"service","name":"매표소","pts":[[712.3,1229.7],[785.6999999999999,1229.7],[785.6999999999999,1433.9],[712.3,1433.9]]},{"id":"3F-S14","cat":"shop","name":"신청도할매김밥&부산오뎅","pts":[[574.0,1282.3],[583.5,1282.3],[583.5,1385.8],[574.0,1385.8]]},{"id":"3F-S15","cat":"service","name":"수유실","pts":[[712.3,1442.1],[785.0999999999999,1442.1],[785.0999999999999,1621.6],[712.3,1621.6]]},{"id":"3F-S16","cat":"shop","name":"꽃집","pts":[[426.0,1156.1],[457.0,1156.1],[457.0,1209.8999999999999],[426.0,1209.8999999999999]]},{"id":"3F-S17","cat":"shop","name":"복순도가","pts":[[395.6,1295.6],[426.0,1295.6],[426.0,1385.8],[395.6,1385.8]]},{"id":"3F-S18","cat":"toilet","name":"여자 화장실","pts":[[473.1,1724.8],[712.3,1724.8],[712.3,1800.8],[473.1,1800.8]]},{"id":"3F-V12","cat":"vertical","name":"계단 (2·3층)","pts":[[896.8,1668.4],[962.5999999999999,1668.4],[962.5999999999999,1770.2],[896.8,1770.2]]},{"id":"3F-V13","cat":"vertical","name":"서광장·지하철 방향 (4번 출구)","pts":[[1045.8,1666.5],[1183.5,1666.5],[1183.5,1815.3],[1045.8,1815.3]]},{"id":"3F-S23","cat":"service","name":"KR스타트업 라운지","pts":[[1191.3,427.7],[1251.2,427.7],[1251.2,776.5],[1191.3,776.5]]},{"id":"3F-S24","cat":"service","name":"꿈돌이와 대전여행","pts":[[1191.3,831.2],[1251.2,831.2],[1251.2,897.6],[1191.3,897.6]]},{"id":"3F-S25","cat":"shop","name":"대전역약국","pts":[[1191.3,897.6],[1251.2,897.6],[1251.2,1025.6],[1191.3,1025.6]]},{"id":"3F-S26","cat":"shop","name":"팝업 매장","pts":[[1191.3,1060.8],[1251.2,1060.8],[1251.2,1397.1],[1191.3,1397.1]]},{"id":"3F-S27","cat":"shop","name":"에그박스","pts":[[1176.1,1452.5],[1238.8,1452.5],[1238.8,1482.6],[1176.1,1482.6]]},{"id":"3F-S28","cat":"shop","name":"카페 스토리웨이","pts":[[1176.1,1482.6],[1238.8,1482.6],[1238.8,1550.8],[1176.1,1550.8]]},{"id":"3F-S29","cat":"shop","name":"스토리웨이","pts":[[1176.1,1550.8],[1238.8,1550.8],[1238.8,1604.3999999999999],[1176.1,1604.3999999999999]]},{"id":"3F-T01","cat":"platform","name":"11–12번 홈","pts":[[222.3,519.5],[380.0,519.5],[380.0,564.3],[222.3,564.3]]},{"id":"3F-T02","cat":"platform","name":"9–10번 홈","pts":[[269.4,768.2],[380.0,768.2],[380.0,811.9000000000001],[269.4,811.9000000000001]]},{"id":"3F-T03","cat":"platform","name":"7–8번 홈","pts":[[269.4,1060.8],[380.0,1060.8],[380.0,1097.8],[269.4,1097.8]]},{"id":"3F-T04","cat":"platform","name":"5–6번 홈","pts":[[207.7,1224.0],[380.0,1224.0],[380.0,1259.7],[207.7,1259.7]]},{"id":"3F-T05","cat":"platform","name":"3–4번 홈","pts":[[166.5,1397.1],[380.0,1397.1],[380.0,1433.8999999999999],[166.5,1433.8999999999999]]},{"id":"3F-T06","cat":"platform","name":"미운행","pts":[[180.0,1607.0],[380.0,1607.0],[380.0,1651.5],[180.0,1651.5]]},{"id":"3F-V061","cat":"vertical","name":"승강기 D (3·4층)","pts":[[768.9,739.4],[798.3,739.4],[798.3,768.8],[768.9,768.8]]}],"doors":[],"markers":[{"id":"3F-P07","role":"exit","icon":"exit","name":"동광장 방향 (1번 출구)","x":1139.8,"y":292.4},{"id":"3F-P11","role":"exit","icon":"exit","name":"서광장·지하철 방향 (4번 출구)","x":1084.2,"y":1685.1},{"id":"3F-P49","role":"exit","icon":"exit","name":"3번 출구","x":1227.6,"y":799.3},{"id":"3F-P50","role":"exit","icon":"exit","name":"2번 출구","x":1226.9,"y":1042.7},{"id":"3F-P01","role":"train","icon":"train","name":"11–12번 홈","x":279.7,"y":541.9},{"id":"3F-P02","role":"train","icon":"train","name":"9–10번 홈","x":326.1,"y":788.9},{"id":"3F-P03","role":"train","icon":"train","name":"7–8번 홈","x":330.8,"y":1080.1},{"id":"3F-P04","role":"train","icon":"train","name":"5–6번 홈","x":266.4,"y":1242.4},{"id":"3F-P05","role":"train","icon":"train","name":"3–4번 홈","x":225.2,"y":1416.1},{"id":"3F-P06","role":"disabled","icon":"train","name":"미운행","x":239.2,"y":1629.4},{"id":"3F-E01","role":"train-lift","icon":"elevator","name":"승강장 승강기 (11–12번 홈)","x":414.2,"y":526.3},{"id":"3F-E02","role":"train-lift","icon":"elevator","name":"승강장 승강기 (9–10번 홈)","x":461.9,"y":774.0},{"id":"3F-E03","role":"train-lift","icon":"elevator","name":"승강장 승강기 (7–8번 홈)","x":466.9,"y":1065.9},{"id":"3F-E04","role":"train-lift","icon":"elevator","name":"승강장 승강기 (5–6번 홈)","x":398.5,"y":1228.3},{"id":"3F-E05","role":"train-lift","icon":"elevator","name":"승강장 승강기 (3–4번 홈)","x":367.5,"y":1401.8},{"id":"3F-P12","role":"vertical","icon":"escalator","name":"에스컬레이터 (1·3층)","x":1131.3,"y":219.1},{"id":"3F-P42","role":"vertical","icon":"stairs","name":"계단 (1·3층)","x":1213.2,"y":219.1},{"id":"3F-P40","role":"vertical","icon":"elevator","name":"승강기 A (1·3층)","x":1055.1,"y":330.0},{"id":"3F-P13","role":"vertical","icon":"elevator","name":"승강기 D (3·4층)","x":783.6,"y":754.1},{"id":"3F-P14","role":"vertical","icon":"stairs","name":"계단 (3·4층)","x":788.0,"y":844.7},{"id":"3F-P39","role":"vertical","icon":"escalator","name":"에스컬레이터 (3·4층)","x":761.5,"y":791.0},{"id":"3F-P43","role":"vertical","icon":"stairs","name":"계단 (3·4층)","x":535.8,"y":342.0},{"id":"3F-P16","role":"vertical","icon":"elevator","name":"승강기 B (1·3층)","x":1287.3,"y":1626.8},{"id":"3F-I07","role":"vertical","icon":"escalator","name":"에스컬레이터","x":665.2,"y":1088.7},{"id":"3F-I08","role":"vertical","icon":"escalator","name":"에스컬레이터","x":640.1,"y":1247.7},{"id":"3F-I09","role":"vertical","icon":"escalator","name":"에스컬레이터","x":638.8,"y":1421.4},{"id":"3F-I12","role":"vertical","icon":"stairs","name":"계단 (2·3층)","x":911.5,"y":1699.7},{"id":"3F-I13","role":"vertical","icon":"stairs","name":"계단 (1·3층)","x":1141.9,"y":1723.1},{"id":"3F-I14","role":"vertical","icon":"escalator","name":"에스컬레이터 (1·3층)","x":1141.9,"y":1751.0},{"id":"3F-E06","role":"disabled-sq","icon":"elevator","name":"미운행","x":408.5,"y":1615.0},{"id":"3F-W02","role":"facility","icon":"toilet","name":"여자 화장실","x":603.5,"y":361.9},{"id":"3F-W03","role":"facility","icon":"toilet","name":"남자 화장실","x":736.3,"y":361.2},{"id":"3F-W18","role":"facility","icon":"toilet","name":"여자 화장실","x":497.1,"y":1762.8},{"id":"3F-W19","role":"facility","icon":"toilet","name":"남자 화장실","x":675.5,"y":1778.0},{"id":"3F-P18","role":"ticket","icon":"info","name":"안내부스","x":459.3,"y":1142.8},{"id":"3F-P20","role":"ticket","icon":"ticket","name":"자동승차권 발매기","x":773.1,"y":953.8},{"id":"3F-P21","role":"ticket","icon":"ticket","name":"매표소","x":748.3,"y":1285.2},{"id":"3F-P45","role":"facility","icon":"locker","name":"물품보관함","x":673.2,"y":1220.0},{"id":"3F-P46","role":"facility","icon":"baby","name":"수유실","x":767.8,"y":1489.0},{"id":"3F-P27","role":"shop","icon":"bag","name":"디자인스킨","x":769.5,"y":1567.5},{"id":"3F-P47","role":"facility","icon":"seat","name":"고객대기실","x":979.3,"y":938.4},{"id":"3F-N04","role":"shop","icon":"cup","name":"레드아이","x":861.5,"y":351.3},{"id":"3F-N07","role":"shop","icon":"food","name":"코브라 독스","x":688.0,"y":499.9},{"id":"3F-N12","role":"shop","icon":"food","name":"플라잉스콘","x":759.1,"y":1095.9},{"id":"3F-N14","role":"shop","icon":"food","name":"신청도할매김밥&부산오뎅","x":577.8,"y":1334.2},{"id":"3F-N17","role":"shop","icon":"food","name":"복순도가","x":411.0,"y":1346.0},{"id":"3F-N24","role":"facility","icon":"star","name":"꿈돌이와 대전여행","x":1219.3,"y":864.3},{"id":"3F-N26","role":"shop","icon":"bag","name":"팝업 매장","x":1231.4,"y":1198.1},{"id":"3F-P32","role":"parking","icon":"parking","name":"선상주차장","x":1601.9,"y":1069.3},{"id":"3F-P33","role":"parking","icon":"parking","name":"차량 램프","x":1512.4,"y":1708.1},{"id":"3F-P36","role":"facility","icon":"search","name":"유실물센터","x":763.4,"y":1011.2},{"id":"3F-N05","role":"shop","icon":"food","name":"삼진어묵","x":978.9,"y":371.2},{"id":"3F-N06","role":"shop","icon":"cup","name":"스토리웨이","x":601.6,"y":505.4},{"id":"3F-N01","role":"facility","icon":"shield","name":"철도사법경찰대","x":678.3,"y":437.4},{"id":"3F-N08","role":"shop","icon":"bag","name":"중소기업 명품마루","x":692.4,"y":754.5},{"id":"3F-N10","role":"shop","icon":"food","name":"마루노바 호두먹빵","x":603.5,"y":1117.2},{"id":"3F-N11","role":"shop","icon":"food","name":"와플샵","x":673.2,"y":1120.2},{"id":"3F-N16","role":"shop","icon":"bag","name":"꽃집","x":444.1,"y":1186.9},{"id":"3F-N23","role":"facility","icon":"lounge","name":"KR스타트업 라운지","x":1217.4,"y":550.2},{"id":"3F-N25","role":"shop","icon":"cross","name":"대전역약국","x":1219.3,"y":961.6},{"id":"3F-N27","role":"shop","icon":"food","name":"에그박스","x":1206.7,"y":1467.0},{"id":"3F-N28","role":"shop","icon":"cup","name":"카페 스토리웨이","x":1206.3,"y":1516.2},{"id":"3F-N29","role":"shop","icon":"cup","name":"스토리웨이","x":1207.3,"y":1578.1}],"areas":[]},"4F":{"floor":[[[581.4,350.6],[710.6,350.6],[710.6,377.2],[822.7,377.2],[822.7,1090.6],[594.7,1090.6],[594.7,496.9],[581.4,496.9]]],"zones":[{"cat":"roof","pts":[[515.1,348.5],[577.4,348.5],[577.4,1090.6],[515.1,1090.6]]}],"rooms":[{"id":"4F-S01","cat":"toilet","name":"여자 화장실","pts":[[616.6,351.5],[680.6,351.5],[680.6,380.0],[616.6,380.0]]},{"id":"4F-S02","cat":"toilet","name":"남자 화장실","pts":[[634.4,383.3],[674.5,383.3],[674.5,428.90000000000003],[634.4,428.90000000000003]]},{"id":"4F-S03","cat":"shop","name":"수순두부","pts":[[628.9,462.7],[703.0,462.7],[703.0,592.8],[628.9,592.8]]},{"id":"4F-S04","cat":"shop","name":"탐앤탐스","pts":[[703.0,462.7],[777.1,462.7],[777.1,592.8],[703.0,592.8]]},{"id":"4F-S05","cat":"shop","name":"육거리 소문난 만두","pts":[[628.9,592.8],[703.0,592.8],[703.0,722.0],[628.9,722.0]]},{"id":"4F-S06","cat":"shop","name":"미미짬뽕","pts":[[703.0,592.8],[777.1,592.8],[777.1,722.0],[703.0,722.0]]},{"id":"4F-S07","cat":"shop","name":"던킨도넛","pts":[[619.4,860.7],[747.7,860.7],[747.7,917.0],[619.4,917.0]]},{"id":"4F-S08","cat":"shop","name":"정동하나미","pts":[[619.4,917.0],[747.7,917.0],[747.7,985.6],[619.4,985.6]]},{"id":"4F-S09","cat":"shop","name":"틈새라면","pts":[[619.4,985.6],[747.7,985.6],[747.7,1054.7],[619.4,1054.7]]},{"id":"4F-V01","cat":"vertical","name":"계단 (3·4층)","pts":[[680.6,353.1],[704.3000000000001,353.1],[704.3000000000001,419.8],[680.6,419.8]]},{"id":"4F-V02","cat":"escalator","name":"에스컬레이터 (3·4층)","pts":[[666.9,780.9],[765.6999999999999,780.9],[765.6999999999999,813.1999999999999],[666.9,813.1999999999999]]},{"id":"4F-V03","cat":"vertical","name":"승강기 D (3·4층)","pts":[[797.4,739.7],[821.6,739.7],[821.6,763.5],[797.4,763.5]]},{"id":"4F-V04","cat":"vertical","name":"계단 (3·4층)","pts":[[780.9,827.3],[807.1,827.3],[807.1,855.0],[780.9,855.0]]}],"doors":[],"markers":[{"id":"4F-P13","role":"vertical","icon":"stairs","name":"계단 (3·4층)","x":692.6,"y":399.0},{"id":"4F-P07","role":"vertical","icon":"elevator","name":"승강기 D (3·4층)","x":809.4,"y":751.5},{"id":"4F-P08","role":"vertical","icon":"escalator","name":"에스컬레이터 (3·4층)","x":703.0,"y":797.1},{"id":"4F-P09","role":"vertical","icon":"stairs","name":"계단 (3·4층)","x":794.2,"y":841.2},{"id":"4F-P01","role":"facility","icon":"toilet","name":"여자 화장실","x":649.8,"y":365.8},{"id":"4F-P02","role":"facility","icon":"toilet","name":"남자 화장실","x":654.6,"y":406.6},{"id":"4F-P03","role":"shop","icon":"food","name":"수순두부","x":666.0,"y":520.6},{"id":"4F-P04","role":"shop","icon":"cup","name":"탐앤탐스","x":740.1,"y":520.6},{"id":"4F-P05","role":"shop","icon":"food","name":"육거리 소문난 만두","x":657.4,"y":649.8},{"id":"4F-P06","role":"shop","icon":"food","name":"미미짬뽕","x":742.9,"y":649.8},{"id":"4F-P10","role":"shop","icon":"cup","name":"던킨도넛","x":646.0,"y":888.9},{"id":"4F-P11","role":"shop","icon":"food","name":"정동하나미","x":646.0,"y":951.2},{"id":"4F-P12","role":"shop","icon":"food","name":"틈새라면","x":646.0,"y":1020.1}],"areas":[{"name":"옥상","x":546.3,"y":711.3}]}},"icons":{"exit":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M12.5 4H6v16h6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linejoin=\"round\" /><path d=\"M10 12h10M16.2 8.2L20 12l-3.8 3.8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"stairs":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M3 20h4.5v-4.5H12V11h4.5V6.5H21\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"escalator":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M3 18.5h4.2l8.6-11h5.2\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><circle cx=\"14.5\" cy=\"4.2\" r=\"1.7\" fill=\"#fff\" /></g>","t":null},"elevator":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><rect x=\"6\" y=\"3\" width=\"12\" height=\"18\" rx=\"2\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" /><path d=\"M12 6.5l3 3.8H9z M12 17.5l-3-3.8h6z\" fill=\"#fff\" /></g>","t":null},"toilet":{"g":"","t":"WC"},"food":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M7 3v7a2 2 0 0 0 2 2v9M9 3v6M11 3v7a2 2 0 0 1-2 2\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M16.5 21V3c-2 1-3 4-3 7h3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"bag":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M5.5 8.5h13l-1 11.5h-11z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M9 8.5V7a3 3 0 0 1 6 0v1.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"shield":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"cup":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M5 9h11v5a4.5 4.5 0 0 1-4.5 4.5h-2A4.5 4.5 0 0 1 5 14z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M8 3.5v2.5M11.5 3.5v2.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"locker":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><rect x=\"5\" y=\"3.5\" width=\"14\" height=\"17\" rx=\"1.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M12 3.5v17M8.5 9v2M15.5 9v2\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"train":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><rect x=\"5\" y=\"3\" width=\"14\" height=\"14\" rx=\"3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" /><path d=\"M5.5 9.5h13\" stroke=\"#fff\" stroke-width=\"2\" /><path d=\"M8.5 21l2-3.5M15.5 21l-2-3.5\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" /></g>","t":null},"info":{"g":"","t":"i"},"ticket":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linejoin=\"round\" /><path d=\"M14 7.5v9\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-dasharray=\"1.6 1.6\" /></g>","t":null},"baby":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M9.5 3.5h5M10 3.5v3l-2 2.5V20h8V9l-2-2.5v-3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M8 13h8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"seat":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M7 4v9h10\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M7 13l-1 7M17 13v7M7 9h8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"star":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"parking":{"g":"","t":"P"},"search":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><circle cx=\"10.5\" cy=\"10.5\" r=\"5.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M15 15l5 5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"lounge":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><rect x=\"3.5\" y=\"6\" width=\"17\" height=\"11\" rx=\"1.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /><path d=\"M8 20h8M12 17v3\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" /></g>","t":null},"cross":{"g":"<g  transform=\"translate(-8 -8) scale(0.6667)\"><path d=\"M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5z\" fill=\"#fff\" /></g>","t":null}}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+{
+const DATA=JSON.parse(document.getElementById('data').textContent);
+const FL=['1F','2F','3F','4F'];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+if(!window.THREE){$('#err').style.display='grid';throw new Error('three missing')}
+const T=THREE;
+// --- extents (shared coordinate system) ---
+let mnX=1e9,mxX=-1e9,mnY=1e9,mxY=-1e9;
+const fb={};
+for(const f of FL){const b=[1e9,-1e9,1e9,-1e9];for(const poly of DATA.floors[f].floor)for(const[x,y]of poly){b[0]=Math.min(b[0],x);b[1]=Math.max(b[1],x);b[2]=Math.min(b[2],y);b[3]=Math.max(b[3],y)}fb[f]=b;mnX=Math.min(mnX,b[0]);mxX=Math.max(mxX,b[1]);mnY=Math.min(mnY,b[2]);mxY=Math.max(mxY,b[3])}
+const CX=(mnX+mxX)/2,CZ=(mnY+mxY)/2,SPAN=Math.max(mxX-mnX,mxY-mnY);
+let GAP=150;const fy=f=>FL.indexOf(f)*GAP;
+// --- renderer ---
+const stage=$('#stage');
+let renderer;try{renderer=new T.WebGLRenderer({antialias:true,alpha:true})}catch(e){$('#err').style.display='grid';throw e}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));stage.appendChild(renderer.domElement);
+const scene=new T.Scene();
+const cam=new T.PerspectiveCamera(38,1,5,20000);
+const ctl=new T.OrbitControls(cam,renderer.domElement);
+ctl.enableDamping=true;ctl.dampingFactor=.1;ctl.screenSpacePanning=false;ctl.maxPolarAngle=Math.PI*.47;ctl.minDistance=120;ctl.maxDistance=6000;
+ctl.mouseButtons={LEFT:T.MOUSE.PAN,MIDDLE:T.MOUSE.DOLLY,RIGHT:T.MOUSE.ROTATE};
+ctl.touches={ONE:T.TOUCH.PAN,TWO:T.TOUCH.DOLLY_ROTATE};
+scene.add(new T.HemisphereLight(0xffffff,0xb8d8d0,.85));
+const sun=new T.DirectionalLight(0xffffff,.55);sun.position.set(-600,1400,900);scene.add(sun);
+// --- helpers ---
+const shp=pts=>new T.Shape(pts.map(p=>new T.Vector2(p[0]-CX,-(p[1]-CZ))));
+const floorMats={};FL.forEach(f=>floorMats[f]=[]);
+function mat(f,M,o){const m=new M(o);m.transparent=true;m.userData.base=o.opacity??1;floorMats[f].push(m);return m}
+function slab(f,pts,depth,color,y0=0,line){
+  const g=new T.ExtrudeGeometry(shp(pts),{depth,bevelEnabled:false});g.rotateX(-Math.PI/2);g.translate(0,y0,0);
+  const mesh=new T.Mesh(g,mat(f,T.MeshLambertMaterial,{color}));
+  if(line){const e=new T.LineSegments(new T.EdgesGeometry(g,30),mat(f,T.LineBasicMaterial,{color:line}));mesh.add(e)}
+  return mesh}
+function hatchTex(){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.fillStyle='#EEF0F3';x.fillRect(0,0,64,64);x.strokeStyle='#D9DEE5';x.lineWidth=10;for(let i=-64;i<128;i+=32){x.beginPath();x.moveTo(i,0);x.lineTo(i+64,64);x.stroke()}const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(1/36,1/36);return t}
+const HATCH=hatchTex();
+const ROOM={shop:[0xFFF3C4,0xF2CF3A,16],service:[0xD8F3EC,0x7FD9C7,14],toilet:[0xE9F0FF,0xA9BDF7,14],vertical:[0xE4E7EC,0xA5ACB8,7],escalator:[0xE4E7EC,0x8C95A3,4],platform:[0xD9E3FF,0x8EA3FB,3]};
+const CATKO={shop:'매장',service:'편의시설',toilet:'화장실',vertical:'계단·승강기',escalator:'에스컬레이터',platform:'승강장'};
+// --- build floors ---
+const groups={},rooms=[];
+for(const f of FL){
+  const G=new T.Group();G.position.y=fy(f);scene.add(G);groups[f]=G;const F=DATA.floors[f];
+  for(const z of F.zones){
+    let m;
+    if(z.cat==='track'){const g=new T.ShapeGeometry(shp(z.pts));g.rotateX(-Math.PI/2);m=new T.Mesh(g,mat(f,T.MeshBasicMaterial,{map:HATCH,opacity:.9}))}
+    else{const c={parking:0xE9EBEF,roof:0xEDEFF2,outdoor:0xF7F9FB}[z.cat]||0xeeeeee;m=slab(f,z.pts,2,c,-2,0xB7BDC6)}
+    m.position.y=-1;G.add(m)}
+  for(const p of F.floor){G.add(slab(f,p,6,0xFFFFFF,-6,0xBFE9E0));
+    for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);if(L<1)continue;
+      const w=new T.Mesh(new T.BoxGeometry(L+3,18,3),mat(f,T.MeshLambertMaterial,{color:0x6FD3C1}));
+      w.position.set((a[0]+b[0])/2-CX,9,(a[1]+b[1])/2-CZ);w.rotation.y=-Math.atan2(dz,dx);G.add(w)}}
+  for(const r of F.rooms){const s=ROOM[r.cat]||ROOM.service;const m=slab(f,r.pts,s[2],s[0],0,s[1]);m.userData={room:r,f};G.add(m);rooms.push(m)}
+  for(const d of F.doors){const L=Math.hypot(d[2]-d[0],d[3]-d[1]);const m=new T.Mesh(new T.BoxGeometry(5,4,L),mat(f,T.MeshLambertMaterial,{color:0x3FC0AA}));m.position.set((d[0]+d[2])/2-CX,2,(d[1]+d[3])/2-CZ);G.add(m)}
+}
+// base grid
+const grid=new T.GridHelper(Math.ceil(SPAN*1.6/190)*190,Math.ceil(SPAN*1.6/190),0x9fd9cc,0xc5e9e1);grid.position.y=-14;grid.material.transparent=true;grid.material.opacity=.55;scene.add(grid);
+// --- vertical connectors: pair by name / type / nearest ---
+const VT=['stairs','escalator','elevator'];const VKO={stairs:'계단',escalator:'에스컬레이터',elevator:'승강기'};
+const vert=[];
+for(const f of FL)for(const m of DATA.floors[f].markers)if((m.role==='vertical'||m.role==='recheck')&&VT.includes(m.icon)){const s=/\(([\d·]+)층\)/.exec(m.name);vert.push({...m,f,n:+f[0],S:s?s[1].split('·').map(Number):null})}
+const cand=[];
+for(const a of vert){if(!a.S)continue;for(const g of a.S){if(g===a.n)continue;for(const b of vert){if(b.n!==g||b.icon!==a.icon)continue;const d=Math.hypot(b.x-a.x,b.y-a.y);
+  if(b.S?String(b.S)!==String(a.S):d>120)continue;const lo=a.n<b.n?a:b,hi=a.n<b.n?b:a;cand.push({a:lo,b:hi,d})}}}
+cand.sort((p,q)=>p.d-q.d);
+const used=new Set(),pairs=[];
+for(const c of cand){const k1=c.a.id+'>'+c.b.n,k2=c.b.id+'>'+c.a.n;if(used.has(k1)||used.has(k2))continue;used.add(k1);used.add(k2);pairs.push(c)}
+const unmatched=vert.filter(v=>v.S&&v.S.some(g=>g!==v.n&&!used.has(v.id+'>'+g)));
+const lvl=d=>d<=40?'ok':d<=120?'warn':'bad';
+$('#chklist').innerHTML=pairs.slice().sort((p,q)=>q.d-p.d).map(p=>`<li><span>${esc(p.a.f)}→${esc(p.b.f)} ${esc(p.a.name)}</span><span class="d ${lvl(p.d)}">${Math.round(p.d)}</span></li>`).join('')
+ +unmatched.map(v=>`<li><span>${esc(v.f)} ${esc(v.name)} — 다른 층에 짝 없음</span><span class="d bad">?</span></li>`).join('');
+if(pairs.some(p=>p.d>120)||unmatched.length)$('#chk').open=true;
+const shaftG=new T.Group();scene.add(shaftG);
+function buildShafts(){shaftG.clear();for(const p of pairs){const col={ok:0x179C84,warn:0xE0A000,bad:0xFF3B3B}[lvl(p.d)];
+  const g=new T.BufferGeometry().setFromPoints([new T.Vector3(p.a.x-CX,fy(p.a.f)+4,p.a.y-CZ),new T.Vector3(p.b.x-CX,fy(p.b.f)+4,p.b.y-CZ)]);
+  const l=new T.Line(g,new T.LineDashedMaterial({color:col,dashSize:10,gapSize:7,transparent:true,opacity:.9}));l.computeLineDistances();l.userData.p=p;shaftG.add(l)}}
+buildShafts();
+// --- POIs and pins ---
+const SQ=new Set(['exit','vertical','recheck','train-lift','disabled-sq']);
+const RC={exit:'#5673F9',vertical:'#22314A',recheck:'#FF1717','train-lift':'#5673F9',train:'#5673F9',shop:'#454545',facility:'#179C84',ticket:'#22314A',parking:'#6B7079',disabled:'#8C919A','disabled-sq':'#8C919A'};
+const PRI={exit:0,train:1,'train-lift':2,recheck:2,vertical:3,ticket:3,facility:4,parking:4,shop:5,disabled:6,'disabled-sq':6};
+const ROLEKO={exit:'출구',train:'승강장',vertical:'계단·승강기',recheck:'승강기(재확인 필요)','train-lift':'승강장 승강기',ticket:'안내·매표',facility:'편의시설',shop:'매장',parking:'주차',disabled:'미운행','disabled-sq':'미운행'};
+function iconSvg(m){const c=RC[m.role]||'#22314A',I=DATA.icons[m.icon]||{};const bg=SQ.has(m.role)?`<rect x="-13" y="-13" width="26" height="26" rx="7" fill="${c}" stroke="#fff" stroke-width="2"/>`:`<circle r="13" fill="${c}" stroke="#fff" stroke-width="2"/>`;
+  const fg=I.t?`<text x="0" y="${I.t==='WC'?3.2:4.7}" font-size="${I.t==='WC'?9:13}" text-anchor="middle" font-weight="700" fill="#fff" font-family="Noto Sans KR,sans-serif">${esc(I.t)}</text>`:(I.g||'');
+  return `<svg viewBox="-15 -15 30 30" aria-hidden="true">${bg}${fg}</svg>`}
+const pois=[];const pinsEl=$('#pins');
+for(const f of FL){const F=DATA.floors[f];const seen=new Set();
+  for(const m of F.markers){const p={id:m.id,f,name:m.name,role:m.role,icon:m.icon,x:m.x,y:m.y,pri:PRI[m.role]??5};seen.add(m.name);pois.push(p)}
+  for(const r of F.rooms){if(seen.has(r.name)||!r.name)continue;const xs=r.pts.map(q=>q[0]),ys=r.pts.map(q=>q[1]);
+    pois.push({id:r.id,f,name:r.name,role:r.cat==='platform'?'train':r.cat==='shop'?'shop':'facility',icon:r.cat==='platform'?'train':r.cat==='shop'?'bag':'star',x:(Math.min(...xs)+Math.max(...xs))/2,y:(Math.min(...ys)+Math.max(...ys))/2,pri:6,noPin:r.cat==='vertical'||r.cat==='escalator'})}}
+for(const p of pois){if(p.noPin)continue;const el=document.createElement('div');el.className='pin';el.innerHTML=iconSvg(p)+`<b>${esc(p.name)}</b>`;el.addEventListener('click',e=>{e.stopPropagation();select(p,false)});pinsEl.appendChild(el);p.el=el}
+const ftags={};for(const f of FL){const el=document.createElement('div');el.className='ftag';el.textContent=f;el.onclick=()=>setFloor(f);pinsEl.appendChild(el);ftags[f]=el}
+const areas=[];for(const f of FL)for(const a of DATA.floors[f].areas){const el=document.createElement('div');el.className='area';el.textContent=a.name;pinsEl.appendChild(el);areas.push({...a,f,el})}
+// --- floor visibility ---
+let cur='all';
+function applyVis(){for(const f of FL){const i=FL.indexOf(f),c=cur==='all'?-1:FL.indexOf(cur);
+  const op=cur==='all'?1:i===c?1:i<c?.13:0;groups[f].visible=op>0;
+  for(const m of floorMats[f]){m.opacity=m.userData.base*op;m.depthWrite=op>.5}}
+  shaftG.visible=$('#shafts').checked&&cur==='all';
+  document.querySelectorAll('#rail [data-f]').forEach(b=>b.classList.toggle('on',b.dataset.f===cur))}
+const vis=f=>cur==='all'||f===cur;
+// --- camera ---
+let anim=null;
+function fly(tgt,dist,polar=0.95,az=null){const from={t:ctl.target.clone(),p:cam.position.clone()};const sph=new T.Spherical().setFromVector3(cam.position.clone().sub(ctl.target));
+  const to=new T.Spherical(dist,polar,az??sph.theta);const tp=tgt.clone().add(new T.Vector3().setFromSpherical(to));
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ctl.target.copy(tgt);cam.position.copy(tp);return}
+  anim={from,tt:tgt.clone(),tp,t0:performance.now(),dur:700}}
+function fitFloor(f){const b=fb[f];const c=new T.Vector3((b[0]+b[1])/2-CX,fy(f),(b[2]+b[3])/2-CZ);fly(c,Math.max(b[1]-b[0],b[3]-b[2])*1.45+250,.75)}
+function home(){fly(new T.Vector3(0,GAP*1.5,0),SPAN*1.55,1.0,-0.35)}
+function setFloor(f){cur=f;applyVis();if(f==='all')home();else fitFloor(f);if(sel&&!vis(sel.f))hideCard()}
+document.querySelectorAll('#rail [data-f]').forEach(b=>b.onclick=()=>setFloor(b.dataset.f));
+$('#reset').onclick=()=>cur==='all'?home():fitFloor(cur);
+$('#top').onclick=()=>{const s=new T.Spherical().setFromVector3(cam.position.clone().sub(ctl.target));fly(ctl.target.clone(),s.radius,0.02,0)};
+$('#gap').oninput=e=>{GAP=+e.target.value;for(const f of FL)groups[f].position.y=fy(f);buildShafts();applyVis();if(route)drawRoute(route)};
+$('#shafts').onchange=applyVis;
+// --- selection & card ---
+let sel=null;
+function select(p,flyTo=true){if(sel&&sel.el)sel.el.classList.remove('sel');sel=p;if(p.el)p.el.classList.add('sel');
+  $('#ct').textContent=p.name;$('#cm').textContent=`${p.f} · ${ROLEKO[p.role]||'장소'}`;$('#card').classList.add('show');
+  if(flyTo){if(cur!=='all'&&cur!==p.f){cur=p.f;applyVis()}else if(cur==='all'){cur=p.f;applyVis()}fly(new T.Vector3(p.x-CX,fy(p.f),p.y-CZ),520,.8)}}
+function hideCard(){$('#card').classList.remove('show');if(sel&&sel.el)sel.el.classList.remove('sel');sel=null}
+$('#cfrom').onclick=()=>{if(sel){$('#from').value=pois.indexOf(sel);runRoute()}};
+$('#cto').onclick=()=>{if(sel){$('#to').value=pois.indexOf(sel);runRoute()}};
+// click on rooms
+const ray=new T.Raycaster(),ndc=new T.Vector2();let down=null;
+renderer.domElement.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+renderer.domElement.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;const r=renderer.domElement.getBoundingClientRect();
+  ndc.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ndc,cam);
+  const hit=ray.intersectObjects(rooms.filter(m=>vis(m.userData.f)),false)[0];
+  if(!hit)return hideCard();const {room,f}=hit.object.userData;const p=pois.find(q=>q.f===f&&q.name===room.name)||pois.find(q=>q.id===room.id);if(p)select(p,false)});
+// --- search ---
+const sortedPois=pois.filter(p=>p.role!=='disabled'&&p.role!=='disabled-sq').sort((a,b)=>a.f.localeCompare(b.f)||a.pri-b.pri||a.name.localeCompare(b.name,'ko'));
+function renderResults(){const q=$('#q').value.trim().toLowerCase();
+  const list=sortedPois.filter(p=>!q||(p.name+' '+p.f+' '+(ROLEKO[p.role]||'')).toLowerCase().includes(q)).slice(0,60);
+  $('#results').innerHTML=list.length?list.map(p=>`<li data-i="${pois.indexOf(p)}"><span class="fl">${esc(p.f)}</span><span>${esc(p.name)}</span><span class="ct">${esc(ROLEKO[p.role]||'')}</span></li>`).join(''):'<li>검색 결과가 없어요</li>'}
+$('#q').oninput=renderResults;$('#results').onclick=e=>{const li=e.target.closest('li[data-i]');if(li)select(pois[+li.dataset.i])};renderResults();
+const opts=sortedPois.map(p=>`<option value="${pois.indexOf(p)}">${esc(p.f)} · ${esc(p.name)}</option>`).join('');
+$('#from').innerHTML='<option value="">출발지 선택</option>'+opts;$('#to').innerHTML='<option value="">도착지 선택</option>'+opts;
+// --- routing (Dijkstra over endpoints + connector ends) ---
+const VC={elevator:60,escalator:90,stairs:120};
+function solve(A,B,liftOnly){
+  const N=[A,B];const E=[];
+  for(const p of pairs){if(liftOnly&&p.a.icon!=='elevator')continue;const i=N.length;N.push({f:p.a.f,x:p.a.x,y:p.a.y,c:p.a},{f:p.b.f,x:p.b.x,y:p.b.y,c:p.b});E.push([i,i+1,VC[p.a.icon]*Math.abs(p.b.n-p.a.n)+Math.hypot(p.b.x-p.a.x,p.b.y-p.a.y)*.3,p])}
+  const adj=N.map(()=>[]);for(const[i,j,w,p]of E){adj[i].push([j,w,p]);adj[j].push([i,w,p])}
+  for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++)if(N[i].f===N[j].f){const w=Math.hypot(N[i].x-N[j].x,N[i].y-N[j].y);adj[i].push([j,w]);adj[j].push([i,w])}
+  const dist=N.map(()=>1/0),prev=N.map(()=>-1),done=N.map(()=>false);dist[0]=0;
+  for(;;){let u=-1;for(let i=0;i<N.length;i++)if(!done[i]&&(u<0||dist[i]<dist[u]))u=i;if(u<0||dist[u]===1/0)break;done[u]=true;if(u===1)break;for(const[v,w]of adj[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;prev[v]=u}}
+  if(dist[1]===1/0)return null;const path=[];for(let u=1;u>=0;u=prev[u])path.unshift(N[u]);return path}
+const routeG=new T.Group();scene.add(routeG);let route=null,walker=null,curve=null;
+function seg(a,b,r,color){const d=b.clone().sub(a),L=d.length();const m=new T.Mesh(new T.CylinderGeometry(r,r,L,10),new T.MeshBasicMaterial({color}));m.position.copy(a).add(d.multiplyScalar(.5));m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),b.clone().sub(a).normalize());return m}
+function drawRoute(path){routeG.clear();const P=path.map(n=>new T.Vector3(n.x-CX,fy(n.f)+10,n.y-CZ));
+  for(let i=0;i<P.length-1;i++)if(P[i].distanceTo(P[i+1])>.5)routeG.add(seg(P[i],P[i+1],path[i].f===path[i+1].f?3.2:2.4,path[i].f===path[i+1].f?0x5673F9:0xFF7A1A));
+  for(const[i,c]of[[0,0x179C84],[P.length-1,0xFF3B3B]]){const s=new T.Mesh(new T.CylinderGeometry(9,9,26,20),new T.MeshBasicMaterial({color:c}));s.position.copy(P[i]).add(new T.Vector3(0,13,0));routeG.add(s)}
+  walker=new T.Mesh(new T.SphereGeometry(7,16,12),new T.MeshBasicMaterial({color:0xffffff}));routeG.add(walker);
+  const pts=[];for(let i=0;i<P.length-1;i++){pts.push(P[i]);}pts.push(P[P.length-1]);curve=new T.CurvePath();for(let i=0;i<pts.length-1;i++)if(pts[i].distanceTo(pts[i+1])>.5)curve.add(new T.LineCurve3(pts[i],pts[i+1]))}
+function runRoute(){const a=pois[$('#from').value],b=pois[$('#to').value];const st=$('#steps');
+  if(!a||!b){st.innerHTML='<li>출발지와 도착지를 골라 주세요.</li>';return}
+  const path=solve(a,b,$('#lift').checked);
+  if(!path){routeG.clear();route=null;st.innerHTML='<li>이 조건으로 갈 수 있는 경로를 찾지 못했어요. “승강기만 이용”을 끄고 다시 해 보세요.</li>';return}
+  route=path;drawRoute(path);
+  const steps=[`${a.f} ${a.name}에서 출발`];
+  for(let i=1;i<path.length-1;i+=2){const c=path[i],d=path[i+1];steps.push(`${c.f} ${c.c.name}${c.c.role==='recheck'?'(재확인 필요)':''} 이용 → ${d.f}`)}
+  steps.push(`${b.f} ${b.name} 도착`);st.innerHTML=steps.map(s=>`<li>${esc(s)}</li>`).join('');
+  cur='all';applyVis();const box=new T.Box3();routeG.children.forEach(m=>box.expandByObject(m));const c=box.getCenter(new T.Vector3()),s=box.getSize(new T.Vector3());
+  fly(c,Math.max(s.x,s.z,s.y*2)*1.3+400,.85);hideCard()}
+$('#go').onclick=runRoute;$('#lift').onchange=()=>route&&runRoute();
+$('#swap').onclick=()=>{const t=$('#from').value;$('#from').value=$('#to').value;$('#to').value=t;if(route)runRoute()};
+$('#clr').onclick=()=>{routeG.clear();route=null;curve=null;$('#steps').innerHTML=''};
+// --- overlay projection with collision culling ---
+const v=new T.Vector3();
+function place(el,x,y,z){v.set(x,y,z).project(cam);if(v.z>1||v.z<-1){el.style.display='none';return null}
+  const W=innerWidth,H=innerHeight;const sx=(v.x+1)/2*W,sy=(1-v.y)/2*H;if(sx<-60||sx>W+60||sy<-30||sy>H+30){el.style.display='none';return null}return[sx,sy]}
+function overlay(){
+  const boxes=[];const hit=(r)=>boxes.some(b=>r[0]<b[2]&&r[2]>b[0]&&r[1]<b[3]&&r[3]>b[1]);
+  const dist=cam.position.distanceTo(ctl.target);const showText=cur!=='all'||dist<900;
+  for(const f of FL){const b=fb[f],el=ftags[f];if(!groups[f].visible||(cur!=='all'&&f!==cur)){el.style.display='none';continue}
+    const s=place(el,b[0]-CX,fy(f),b[2]-CZ);if(s){el.style.display='';el.style.transform=`translate(${s[0]-14}px,${s[1]-28}px)`;boxes.push([s[0]-16,s[1]-30,s[0]+26,s[1]-4])}}
+  const list=pois.filter(p=>p.el).sort((a,b)=>(b===sel)-(a===sel)||a.pri-b.pri);
+  for(const p of list){const el=p.el;if(!vis(p.f)){el.style.display='none';continue}
+    const s=place(el,p.x-CX,fy(p.f)+20,p.y-CZ);if(!s)continue;
+    if(!p.w){el.style.display='';el.classList.remove('nolabel');p.w=el.offsetWidth||120}
+    const full=[s[0]-13,s[1]-13,s[0]-13+p.w,s[1]+13],ic=[s[0]-13,s[1]-13,s[0]+13,s[1]+13];
+    let mode=(showText||p===sel)&&!hit(full)?2:!hit(ic)?1:0;if(p===sel)mode=2;
+    if(!mode){el.style.display='none';continue}el.style.display='';el.classList.toggle('nolabel',mode===1);boxes.push(mode===2?full:ic);
+    el.style.transform=`translate(${s[0]-13}px,${s[1]-13}px)`;el.style.zIndex=mode===2?2:1}
+  for(const a of areas){if(!vis(a.f)||!showText){a.el.style.display='none';continue}const s=place(a.el,a.x-CX,fy(a.f)+2,a.y-CZ);if(s){a.el.style.display='';a.el.style.transform=`translate(${s[0]}px,${s[1]}px)`}}}
+// --- loop ---
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(stage);resize();
+const ease=t=>t<.5?2*t*t:1-(-2*t+2)**2/2;
+function loop(now){requestAnimationFrame(loop);
+  if(anim){const k=Math.min(1,(now-anim.t0)/anim.dur),e=ease(k);ctl.target.lerpVectors(anim.from.t,anim.tt,e);cam.position.lerpVectors(anim.from.p,anim.tp,e);if(k>=1)anim=null}
+  ctl.update();if(walker&&curve&&curve.curves.length){const L=curve.getLength();const t=(now/1000*180%L)/L;walker.position.copy(curve.getPointAt(t))}
+  renderer.render(scene,cam);overlay()}
+ctl.addEventListener('start',()=>anim=null);
+cam.position.set(0,SPAN,SPAN);ctl.target.set(0,GAP*1.5,0);applyVis();
+anim=null;{const s=new T.Spherical(SPAN*1.55,1.0,-0.35);ctl.target.set(0,GAP*1.5,0);cam.position.copy(ctl.target).add(new T.Vector3().setFromSpherical(s))}
+requestAnimationFrame(loop);
+}
+</script>
+</body></html>

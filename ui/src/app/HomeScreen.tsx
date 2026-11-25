@@ -8,7 +8,6 @@ import Button, { buttonClassNames } from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
 import SearchFieldLink from '@/components/SearchField/SearchFieldLink';
 import StationMap from '@/components/StationMap/StationMap';
-import StationMap3D from '@/components/StationMap3D/StationMap3D';
 import { QUICK_FILTERS } from '@/lib/station/data';
 import useHomeViewModel from '@/view-models/useHomeViewModel';
 
@@ -35,11 +34,16 @@ export default function HomeScreen() {
       <AppBar title="대전역 길안내" />
       <div className="relative flex min-h-0 flex-1 flex-col">
         {vm.view === '3d' ? (
-          <StationMap3D
-            className="min-h-40 flex-1 basis-0"
-            start={vm.startMarker}
-            toolbarStart={viewToggle}
-          />
+          <div className="relative min-h-40 flex-1 basis-0 overflow-hidden bg-[#e2f6f2]">
+            <iframe
+              src="/3d-reference.html?homeEmbed=1"
+              title="대전역 3D 층별 지도"
+              className="absolute inset-0 h-full w-full border-0"
+            />
+            <div className="absolute bottom-4 left-5 z-10 rounded-lg bg-white/95 shadow-md">
+              {viewToggle}
+            </div>
+          </div>
         ) : (
           <StationMap
             fill
