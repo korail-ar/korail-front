@@ -180,6 +180,7 @@ export const TYPE_SCALE: TypeToken[] = [
     sample: '전광판에서 확인한 번호를 선택하세요.',
   },
   { name: 'note', spec: '12/18 · w400', className: 'text-note', sample: 'QR 출발점 기준이에요' },
+  { name: 'micro', spec: '11/16 · w400', className: 'text-micro', sample: '3F · 맞이방' },
 ];
 
 export const SPACING = [

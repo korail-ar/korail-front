@@ -170,6 +170,10 @@
   --text-note: 12px;
   --text-note--line-height: 18px;
   --text-note--font-weight: 400;
+  /* 지도 위 작은 이름표·각주(경로 안내 B·C안, 2026-11-25) */
+  --text-micro: 11px;
+  --text-micro--line-height: 16px;
+  --text-micro--font-weight: 400;
 
   /* ---------- Spacing ----------
    * Tailwind 기본 --spacing(4px)을 그대로 쓴다: space-1=p-1(4px), 2=8, 3=12, 4=16, 5=20, 6=24, 8=32.

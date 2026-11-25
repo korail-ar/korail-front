@@ -18,6 +18,7 @@ const TEXT_TOKENS = [
   'subtitle',
   'body-sm',
   'note',
+  'micro',
 ];
 const SHADOW_TOKENS = ['float', 'sheet'];
 
