@@ -11,6 +11,7 @@ import Icon from '@/components/Icon/Icon';
 import ResultItem from '@/components/ResultItem/ResultItem';
 import SearchField from '@/components/SearchField/SearchField';
 import StateMessage from '@/components/StateMessage/StateMessage';
+import Tag from '@/components/Tag/Tag';
 import cn from '@/lib/cn';
 import {
   CATEGORY_INFO,
@@ -73,10 +74,15 @@ export default function SearchScreen() {
       <div className="flex flex-col px-5 pb-8">
         <Link
           href={href('/start', { next: href('/search', { q: query, category }) })}
-          className="mt-2 inline-flex min-h-6 items-center gap-1 self-start rounded-xs border border-line bg-surface px-2 text-map-label text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          aria-label={`출발 위치 ${start.name} · 바꾸기`}
+          className="mt-2 self-start rounded-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
         >
-          <Icon name="qr" size={14} />
-          {`출발: ${start.name}`}
+          {/* Figma W04: Tag/Start 인스턴스에 흰 바탕·테두리를 덮어씀 */}
+          <Tag
+            label={`출발: ${start.name}`}
+            variant="start"
+            className="border border-line bg-surface"
+          />
         </Link>
         <h2 className="mt-5 text-screen-title text-ink">어디로 가시나요?</h2>
         <div className="mt-4 flex items-center gap-3">

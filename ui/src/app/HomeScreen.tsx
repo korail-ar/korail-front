@@ -6,8 +6,8 @@ import AppBar from '@/components/AppBar/AppBar';
 import BottomSheet from '@/components/BottomSheet/BottomSheet';
 import { buttonClassNames } from '@/components/Button/Button';
 import Icon from '@/components/Icon/Icon';
+import SearchFieldLink from '@/components/SearchField/SearchFieldLink';
 import StationMap from '@/components/StationMap/StationMap';
-import cn from '@/lib/cn';
 import { QUICK_FILTERS, ROUTE_FLOOR_LABEL, findNode } from '@/lib/station/data';
 import useJourney from '@/lib/station/useJourney';
 
@@ -52,17 +52,7 @@ export default function HomeScreen() {
           titleClassName="text-screen-title"
           className="relative z-10 -mt-3 rounded-t-xl border border-b-0 border-line shadow-none"
         >
-          <Link
-            href={href('/search')}
-            className={cn(
-              'flex h-13 w-full items-center gap-3 rounded-md border-[1.5px] border-line-strong bg-surface px-4',
-              'text-body text-ink-mute transition-colors active:bg-surface-sunken',
-              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
-            )}
-          >
-            <Icon name="search" size={20} />
-            목적지나 시설 이름을 검색하세요
-          </Link>
+          <SearchFieldLink href={href('/search')} placeholder="목적지나 시설 이름을 검색하세요" />
           <Link href={href('/platform')} className={buttonClassNames('secondary', true)}>
             <Icon name="train" size={20} />
             타는 곳 번호로 찾기

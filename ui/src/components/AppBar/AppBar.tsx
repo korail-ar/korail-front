@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import Icon from '@/components/Icon/Icon';
+import { ICON_BUTTON_CLASS_NAMES } from '@/components/IconButton/IconButton';
 import cn from '@/lib/cn';
 
 interface AppBarProps {
@@ -10,20 +11,12 @@ interface AppBarProps {
   className?: string;
 }
 
-/** 화면 맨 위 제목 줄(높이 60px). 뒤로는 IconButton과 같은 모양의 링크다. */
+/** 화면 맨 위 제목 줄(높이 60px). 뒤로는 화면 이동이라 IconButton 모양을 입힌 링크로 둔다. */
 export default function AppBar({ title, backHref, className }: AppBarProps) {
   return (
     <header className={cn('flex h-15 shrink-0 items-center gap-3 px-4', className)}>
       {backHref && (
-        <Link
-          href={backHref}
-          aria-label="뒤로"
-          className={cn(
-            'inline-flex size-tap-min shrink-0 items-center justify-center rounded-md border border-line',
-            'bg-surface text-ink transition-colors active:bg-surface-sunken',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
-          )}
-        >
+        <Link href={backHref} aria-label="뒤로" className={ICON_BUTTON_CLASS_NAMES}>
           <Icon name="chev-left" size={24} />
         </Link>
       )}
