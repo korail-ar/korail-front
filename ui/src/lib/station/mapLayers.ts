@@ -1,11 +1,10 @@
-import { findNode } from './data';
+import { findRouteNode } from './route';
 import type { MapPoint } from './types';
 import type { Journey } from './useJourney';
 
 /** 경로 화면들(W06~W09)이 공통으로 지도에 올리는 출발 위치·목적지·경로선. */
 export default function getJourneyMapLayers({ start, destination, route }: Journey) {
-  const startNode = findNode(start.nodeId);
-  const startPoint: MapPoint | null = startNode ? [startNode.x, startNode.y] : null;
+  const startPoint: MapPoint | null = findRouteNode(start.nodeId);
   const destinationPoint = route?.points[route.points.length - 1] ?? null;
 
   return {

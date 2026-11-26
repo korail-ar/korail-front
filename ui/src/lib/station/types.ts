@@ -1,4 +1,5 @@
 import type { IconName } from '@/components/Icon/Icon';
+import type { NavigationRoute } from './navigation';
 
 export type MapPoint = readonly [x: number, y: number];
 
@@ -74,6 +75,7 @@ export interface Route {
   points: MapPoint[];
   meters: number;
   minutes: number;
+  navigation?: NavigationRoute;
 }
 
 export type StepKind = 'walk' | 'floor' | 'arrive';

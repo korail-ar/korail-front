@@ -1,6 +1,7 @@
 import { STATION } from './data';
 import withJosa from './josa';
 import { roundMeters, toMeters } from './route';
+import type { ManeuverType } from './instructions';
 import type { GuideStep, MapPoint, Route, StationPlace } from './types';
 
 // 이 각도보다 크게 꺾이면 새 단계로 나눈다.
@@ -36,8 +37,14 @@ interface Leg {
   turn: 'left' | 'right' | null;
 }
 
+function directionFor(type: ManeuverType): Leg['turn'] {
+  if (type === 'TURN_LEFT' || type === 'SLIGHT_LEFT') return 'left';
+  if (type === 'TURN_RIGHT' || type === 'SLIGHT_RIGHT') return 'right';
+  return null;
+}
+
 export function splitLegs(points: readonly MapPoint[]): Leg[] {
-  const minLegUnits = MIN_LEG_METERS / STATION.metersPerUnit;
+  const minLegUnits = MIN_LEG_METERS / toMeters(1);
   const legs: Leg[] = [];
   let current: Leg = { points: [points[0]], turn: null };
 
@@ -65,7 +72,7 @@ export function splitLegs(points: readonly MapPoint[]): Leg[] {
 
 /** 지도에 이름이 보이는 시설 중 point에서 가장 가까운 것. */
 function findLandmark(point: MapPoint, excludeId?: number): StationPlace | undefined {
-  const radius = LANDMARK_RADIUS_METERS / STATION.metersPerUnit;
+  const radius = LANDMARK_RADIUS_METERS / toMeters(1);
   let best: StationPlace | undefined;
   let bestDistance = radius;
   STATION.places.forEach((place) => {
@@ -98,7 +105,13 @@ export function buildSteps(
   route: Route,
   { startName, destination, platformNumber }: BuildStepsOptions,
 ): GuideStep[] {
-  const legs = splitLegs(route.points);
+  const plannedLegs: Leg[] | undefined = route.navigation?.floorSegments.length === 1
+    ? route.navigation.instructions.filter((instruction) => instruction.geometry.length > 1)
+      .map((instruction): Leg => ({
+        points: instruction.geometry,
+        turn: directionFor(instruction.type),
+      })) : undefined;
+  const legs = route.meters === 0 ? [] : (plannedLegs ?? splitLegs(route.points));
   const walkSteps = legs.map((leg, index): GuideStep => {
     const meters = roundMeters(toMeters(pathLength(leg.points)));
     const end = leg.points[leg.points.length - 1];

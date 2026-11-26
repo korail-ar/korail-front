@@ -15,7 +15,10 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:station": "node scripts/build-station-data.mjs"
+    "build:station": "node scripts/build-station-data.mjs",
+    "build:navigation": "python scripts/build-spatial-data.py && python scripts/build-navigation-data.py && python scripts/build-local-links.py",
+    "audit:navigation": "python scripts/audit-route-quality.py && python scripts/navigation-regression.py",
+    "test:navigation": "vitest run --environment node src/lib/station"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -1,23 +1,25 @@
-import { STATION, findNode } from './data';
-import type { MapPoint, Route, StationData } from './types';
+import calculatedRoutes from '@/data/navigation/graph.generated.json';
+
+import { findNavigationRoute, navigationNode } from './navigation';
+import type { MapPoint, Route } from './types';
 
 // 짐을 든 역 이용객 기준 걷는 속도(m/분). 시간은 항상 "약"을 붙여 보여준다.
-const WALKING_METERS_PER_MINUTE = 60;
+const WALKING_METERS_PER_MINUTE = (calculatedRoutes.method.walkingSpeedKmh * 1000) / 60;
 
 type Adjacency = Map<string, { to: string; length: number }[]>;
+const floorGraph = calculatedRoutes.floors['3F'];
 
-function buildAdjacency(data: StationData): Adjacency {
-  const adjacency: Adjacency = new Map(data.nodes.map((node) => [node.id, []]));
-  data.edges.forEach(({ source, target, length }) => {
-    adjacency.get(source)?.push({ to: target, length });
-    adjacency.get(target)?.push({ to: source, length });
-  });
-  return adjacency;
+const ADJACENCY: Adjacency = new Map(floorGraph.nodes.map((node) => [node.id, []]));
+floorGraph.edges.filter((edge) => edge.routingEnabled).forEach((edge) => {
+  ADJACENCY.get(edge.source)?.push({ to: edge.target, length: edge.distanceM });
+  ADJACENCY.get(edge.target)?.push({ to: edge.source, length: edge.distanceM });
+});
+
+export function findRouteNode(id: string): MapPoint | null {
+  return navigationNode(`3F:${id}`)?.point ?? null;
 }
 
-const ADJACENCY = buildAdjacency(STATION);
-
-/** 다익스트라. 노드가 77개뿐이라 우선순위 큐 없이 매번 가장 가까운 노드를 고른다. */
+/** 실제 보행 거리를 최소화한다. 노드가 77개라 우선순위 큐 없이 탐색한다. */
 export function findShortestPath(
   fromId: string,
   toId: string,
@@ -63,7 +65,7 @@ export function findShortestPath(
 }
 
 export function toMeters(length: number): number {
-  return length * STATION.metersPerUnit;
+  return length * calculatedRoutes.method.mapScale.metersPerSvgUnit;
 }
 
 export function toMinutes(meters: number): number {
@@ -77,14 +79,13 @@ export function roundMeters(meters: number): number {
 }
 
 export function findRoute(fromNodeId: string, toNodeId: string): Route | null {
-  const path = findShortestPath(fromNodeId, toNodeId);
-  if (!path) {
-    return null;
-  }
-  const points = path.nodeIds.map((id): MapPoint => {
-    const node = findNode(id);
-    return [node?.x ?? 0, node?.y ?? 0];
-  });
-  const meters = toMeters(path.length);
-  return { nodeIds: path.nodeIds, points, meters, minutes: toMinutes(meters) };
+  const path = findNavigationRoute(`3F:${fromNodeId}`, `3F:${toNodeId}`);
+  if (!path?.validation.isValid) return null;
+  const floor = path.floorSegments[0];
+  if (!floor || floor.kind !== 'floor') return null;
+  const meters = path.metrics.distanceMeters;
+  return {
+    nodeIds: path.originalNodeIds.map((id) => id.split(':')[1]),
+    points: floor.points, meters, minutes: toMinutes(meters), navigation: path,
+  };
 }
