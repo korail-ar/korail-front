@@ -1,0 +1,998 @@
+{
+  "schemaVersion": 1,
+  "station": "대전역",
+  "floor": 2,
+  "mapImage": {
+    "fileName": "web-2F-map.svg",
+    "width": 586.0,
+    "height": 402.0,
+    "coordinateUnit": "svg",
+    "origin": "svg-viewbox"
+  },
+  "referencePdf": null,
+  "status": "draft",
+  "weightUnit": "svg_unit",
+  "nodes": [
+    {
+      "id": "H01",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 939.1,
+      "y": 1604.1,
+      "type": "corridor"
+    },
+    {
+      "id": "H02",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 983.7,
+      "y": 1604.1,
+      "type": "corridor"
+    },
+    {
+      "id": "H03",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 1115.8,
+      "y": 1627.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H04",
+      "name": "성심당 대전역점 부근 통로",
+      "floor": 2,
+      "x": 668.0,
+      "y": 1661.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H05",
+      "name": "성심당 대전역점 부근 통로",
+      "floor": 2,
+      "x": 727.2,
+      "y": 1663.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H06",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 939.1,
+      "y": 1675.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H07",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 983.7,
+      "y": 1675.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H08",
+      "name": "성심당 대전역점 부근 통로",
+      "floor": 2,
+      "x": 775.7,
+      "y": 1677.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H09",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 953.3,
+      "y": 1677.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H10",
+      "name": "성심당 대전역점 부근 통로",
+      "floor": 2,
+      "x": 690.9,
+      "y": 1681.6,
+      "type": "corridor"
+    },
+    {
+      "id": "H11",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 1115.8,
+      "y": 1682.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H12",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 1008.4,
+      "y": 1691.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H13",
+      "name": "디저트39 부근 통로",
+      "floor": 2,
+      "x": 977.4,
+      "y": 1721.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H14",
+      "name": "5번 출구 부근 통로",
+      "floor": 2,
+      "x": 690.9,
+      "y": 1755.1,
+      "type": "corridor"
+    },
+    {
+      "id": "H15",
+      "name": "성심당 대전역점 부근 통로",
+      "floor": 2,
+      "x": 732.0,
+      "y": 1761.8,
+      "type": "corridor"
+    },
+    {
+      "id": "H16",
+      "name": "5번 출구 부근 통로",
+      "floor": 2,
+      "x": 686.4,
+      "y": 1792.2,
+      "type": "corridor"
+    },
+    {
+      "id": "P01",
+      "name": "5번 출구 (서광장) 접근점",
+      "floor": 2,
+      "x": 687.0,
+      "y": 1859.0,
+      "type": "approach",
+      "placeId": 1
+    },
+    {
+      "id": "P02",
+      "name": "에스컬레이터 (2·3층) 접근점",
+      "floor": 2,
+      "x": 693.0,
+      "y": 1663.0,
+      "type": "approach",
+      "placeId": 2
+    },
+    {
+      "id": "P03",
+      "name": "계단 (2·3층, 성심당 대전역점 쪽) 접근점",
+      "floor": 2,
+      "x": 697.0,
+      "y": 1663.0,
+      "type": "approach",
+      "placeId": 3
+    },
+    {
+      "id": "P04",
+      "name": "계단 (2·3층, 디저트39 쪽) 접근점",
+      "floor": 2,
+      "x": 961.0,
+      "y": 1605.0,
+      "type": "approach",
+      "placeId": 4
+    },
+    {
+      "id": "P05",
+      "name": "계단 (1·2층, 디저트39 쪽) 접근점",
+      "floor": 2,
+      "x": 983.0,
+      "y": 1693.0,
+      "type": "approach",
+      "placeId": 5
+    },
+    {
+      "id": "P06",
+      "name": "계단 (1·2층, 5번 출구 쪽) 접근점",
+      "floor": 2,
+      "x": 715.0,
+      "y": 1793.0,
+      "type": "approach",
+      "placeId": 6
+    },
+    {
+      "id": "P07",
+      "name": "에스컬레이터 (1·2층) 접근점",
+      "floor": 2,
+      "x": 715.0,
+      "y": 1793.0,
+      "type": "approach",
+      "placeId": 7
+    },
+    {
+      "id": "P08",
+      "name": "성심당 대전역점 접근점",
+      "floor": 2,
+      "x": 775.0,
+      "y": 1727.0,
+      "type": "approach",
+      "placeId": 8
+    },
+    {
+      "id": "P09",
+      "name": "디저트39 접근점",
+      "floor": 2,
+      "x": 955.0,
+      "y": 1719.0,
+      "type": "approach",
+      "placeId": 9
+    },
+    {
+      "id": "P10",
+      "name": "물품보관함 접근점",
+      "floor": 2,
+      "x": 691.0,
+      "y": 1719.0,
+      "type": "approach",
+      "placeId": 10
+    }
+  ],
+  "edges": [
+    {
+      "id": "E001",
+      "source": "H01",
+      "target": "H06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 71.2
+    },
+    {
+      "id": "E002",
+      "source": "H01",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 179.0
+    },
+    {
+      "id": "E003",
+      "source": "H01",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 21.9
+    },
+    {
+      "id": "E004",
+      "source": "H02",
+      "target": "H03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 134.2
+    },
+    {
+      "id": "E005",
+      "source": "H02",
+      "target": "H07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 71.2
+    },
+    {
+      "id": "E006",
+      "source": "H02",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 153.5
+    },
+    {
+      "id": "E007",
+      "source": "H02",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 90.8
+    },
+    {
+      "id": "E008",
+      "source": "H02",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 22.7
+    },
+    {
+      "id": "E009",
+      "source": "H03",
+      "target": "H07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 140.3
+    },
+    {
+      "id": "E010",
+      "source": "H03",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.3
+    },
+    {
+      "id": "E011",
+      "source": "H03",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 124.8
+    },
+    {
+      "id": "E012",
+      "source": "H04",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 30.5
+    },
+    {
+      "id": "E013",
+      "source": "H04",
+      "target": "P02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.1
+    },
+    {
+      "id": "E014",
+      "source": "H05",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.3
+    },
+    {
+      "id": "E015",
+      "source": "H05",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 40.4
+    },
+    {
+      "id": "E016",
+      "source": "H05",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 98.0
+    },
+    {
+      "id": "E017",
+      "source": "H05",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 30.2
+    },
+    {
+      "id": "E018",
+      "source": "H05",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 79.2
+    },
+    {
+      "id": "E019",
+      "source": "H05",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 65.9
+    },
+    {
+      "id": "E020",
+      "source": "H06",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 163.4
+    },
+    {
+      "id": "E021",
+      "source": "H06",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 14.3
+    },
+    {
+      "id": "E022",
+      "source": "H07",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 30.5
+    },
+    {
+      "id": "E023",
+      "source": "H07",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 29.5
+    },
+    {
+      "id": "E024",
+      "source": "H07",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 17.7
+    },
+    {
+      "id": "E025",
+      "source": "H08",
+      "target": "H14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 115.1
+    },
+    {
+      "id": "E026",
+      "source": "H08",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 95.1
+    },
+    {
+      "id": "E027",
+      "source": "H08",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 49.7
+    },
+    {
+      "id": "E028",
+      "source": "H08",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 94.4
+    },
+    {
+      "id": "E029",
+      "source": "H09",
+      "target": "H13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.3
+    },
+    {
+      "id": "E030",
+      "source": "H09",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 33.6
+    },
+    {
+      "id": "E031",
+      "source": "H09",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.7
+    },
+    {
+      "id": "E032",
+      "source": "H10",
+      "target": "P02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 18.7
+    },
+    {
+      "id": "E033",
+      "source": "H10",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 19.6
+    },
+    {
+      "id": "E034",
+      "source": "H10",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 95.6
+    },
+    {
+      "id": "E035",
+      "source": "H10",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 37.4
+    },
+    {
+      "id": "E036",
+      "source": "H11",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 107.8
+    },
+    {
+      "id": "E037",
+      "source": "H12",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.4
+    },
+    {
+      "id": "E038",
+      "source": "H13",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 22.5
+    },
+    {
+      "id": "E039",
+      "source": "H14",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.6
+    },
+    {
+      "id": "E040",
+      "source": "H14",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 37.4
+    },
+    {
+      "id": "E041",
+      "source": "H14",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 44.9
+    },
+    {
+      "id": "E042",
+      "source": "H14",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 88.7
+    },
+    {
+      "id": "E043",
+      "source": "H14",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 36.1
+    },
+    {
+      "id": "E044",
+      "source": "H15",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.8
+    },
+    {
+      "id": "E045",
+      "source": "H15",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 35.5
+    },
+    {
+      "id": "E046",
+      "source": "H15",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.3
+    },
+    {
+      "id": "E047",
+      "source": "H15",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 59.3
+    },
+    {
+      "id": "E048",
+      "source": "H16",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 66.8
+    },
+    {
+      "id": "E049",
+      "source": "H16",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.6
+    },
+    {
+      "id": "E050",
+      "source": "P02",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 4.0
+    },
+    {
+      "id": "E051",
+      "source": "P03",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 100.9
+    },
+    {
+      "id": "E052",
+      "source": "P05",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 38.2
+    },
+    {
+      "id": "E053",
+      "source": "P06",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 0.0
+    },
+    {
+      "id": "E054",
+      "source": "P08",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 84.4
+    }
+  ],
+  "places": [
+    {
+      "id": 1,
+      "name": "5번 출구 (서광장)",
+      "floor": 2,
+      "category": "entrance",
+      "aliases": [
+        "5번 출구",
+        "서광장"
+      ],
+      "x": 704.3,
+      "y": 1888.3,
+      "lat": 36.3321887,
+      "lng": 127.4335083,
+      "nodeId": "P01",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P11"
+    },
+    {
+      "id": 2,
+      "name": "에스컬레이터 (2·3층)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 693.3,
+      "y": 1609.3,
+      "lat": 36.3323002,
+      "lng": 127.4338181,
+      "nodeId": "P02",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P05"
+    },
+    {
+      "id": 3,
+      "name": "계단 (2·3층, 성심당 대전역점 쪽)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (2·3층)",
+        "계단"
+      ],
+      "x": 696.2,
+      "y": 1637.8,
+      "lat": 36.3322875,
+      "lng": 127.4337869,
+      "nodeId": "P03",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "2F-P06"
+    },
+    {
+      "id": 4,
+      "name": "계단 (2·3층, 디저트39 쪽)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (2·3층)",
+        "계단"
+      ],
+      "x": 961.4,
+      "y": 1638.6,
+      "lat": 36.3320876,
+      "lng": 127.4338566,
+      "nodeId": "P04",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "2F-P07"
+    },
+    {
+      "id": 5,
+      "name": "계단 (1·2층, 디저트39 쪽)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (1·2층)",
+        "계단"
+      ],
+      "x": 991.8,
+      "y": 1729.0,
+      "lat": 36.3320312,
+      "lng": 127.4337634,
+      "nodeId": "P05",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "2F-P08"
+    },
+    {
+      "id": 6,
+      "name": "계단 (1·2층, 5번 출구 쪽)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (1·2층)",
+        "계단"
+      ],
+      "x": 715.4,
+      "y": 1820.2,
+      "lat": 36.3322055,
+      "lng": 127.4335876,
+      "nodeId": "P06",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "2F-P09"
+    },
+    {
+      "id": 7,
+      "name": "에스컬레이터 (1·2층)",
+      "floor": 2,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 715.4,
+      "y": 1848.7,
+      "lat": 36.332195,
+      "lng": 127.4335557,
+      "nodeId": "P07",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P10"
+    },
+    {
+      "id": 8,
+      "name": "성심당 대전역점",
+      "floor": 2,
+      "category": "shop",
+      "aliases": [
+        "성심당"
+      ],
+      "x": 839.8,
+      "y": 1717.6,
+      "lat": 36.3321498,
+      "lng": 127.4337357,
+      "nodeId": "P08",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P01"
+    },
+    {
+      "id": 9,
+      "name": "디저트39",
+      "floor": 2,
+      "category": "shop",
+      "aliases": [
+        "DESSERT39",
+        "디저트 39"
+      ],
+      "x": 917.7,
+      "y": 1749.9,
+      "lat": 36.3320793,
+      "lng": 127.4337203,
+      "nodeId": "P09",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P02"
+    },
+    {
+      "id": 10,
+      "name": "물품보관함",
+      "floor": 2,
+      "category": "facility",
+      "aliases": [],
+      "x": 670.7,
+      "y": 1718.4,
+      "lat": 36.3322768,
+      "lng": 127.4336898,
+      "nodeId": "P10",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "2F-P03"
+    }
+  ],
+  "notes": [
+    "디자인팀 2D 지도(web-2F-map.svg)에서 자동 추출한 2층 보행 그래프 초안입니다. x·y 는 SVG 좌표(1~4층 공통 좌표계, 격자 1칸 = 190)라 층끼리 그대로 겹쳐 쓸 수 있습니다.",
+    "걷는 곳 = 층 바닥 + 실외 구역 - 방. 벽·방에서 5 이상 떨어진 곳만 지나가게 했습니다. 통로 노드(H)는 방 모서리 바깥·바닥 안쪽 모서리, 접근 노드(P)는 시설 마커에서 가장 가까운 지나갈 수 있는 점이며 실제 출입문 위치는 현장 확인이 필요합니다.",
+    "간선은 서로 보이는 노드끼리 이은 뒤, 다른 노드를 거쳐도 거리가 8% 이내로 같은 긴 간선을 지웠습니다. weight 는 SVG 좌표 길이로, 실거리는 [좌표] 메모의 축척(m/단위)을 곱해 구합니다.",
+    "nodeId 가 null 인 시설은 검색 전용입니다(운행 재확인·미운행 표시 또는 걷는 곳에서 멀리 떨어짐). 층간 이동(계단·에스컬레이터·승강기 연결)은 포함하지 않았습니다.",
+    "[좌표] 취합본(WGS84). 1~4층 공통 SVG 좌표계에서 기준점 총 63개(교차 확인 2, 카카오 19, 네이버 1, 3층 41)로 아핀 변환, RMSE 7.7 m, 축척 0.0967 m/SVG단위. 카카오 단독/네이버 단독 결과 간 차이 평균 35.0 m, 최대 76.9 m. '3층' 기준점은 3층 취합본 위경도(자체도 추정값)를 옮겨 쓴 것입니다. 현장 검증 전 추정값."
+  ],
+  "extraction": {
+    "provider": "merged",
+    "sources": [
+      "kakao",
+      "naver",
+      "3f"
+    ],
+    "rmseM": 7.68,
+    "affine": {
+      "svgToMeters": [
+        0.023874189,
+        -0.100503799,
+        101.971388872,
+        -0.083234324,
+        -0.040923732,
+        112.530442516
+      ],
+      "originLatLng": [
+        36.3324,
+        127.4343
+      ],
+      "metersPerUnit": 0.09666,
+      "formula": "east = a*x + b*y + c, north = d*x + e*y + f (m, originLatLng 기준)"
+    },
+    "controlPoints": [
+      "3층#1 동측 계단·에스컬레이터 [3층]",
+      "3층#2 엘리베이터(2번 출구·동광장) [3층]",
+      "3층#3 출입구(방풍실 4) [3층]",
+      "3층#4 레드아이 [3층]",
+      "3층#5 화장실(북측 1) [3층]",
+      "3층#6 화장실(북측 2) [3층]",
+      "3층#7 엘리베이터(지도 상단 승강장 연결통로) [3층]",
+      "3층#8 승강장 연결통로(지도 상단) [3층]",
+      "3층#9 직영편의점(북) [3층]",
+      "3층#10 KR스타트업 라운지(공단) [3층]",
+      "3층#12 출입구(방풍실 3) [3층]",
+      "3층#13 직영명품마루 [3층]",
+      "3층#14 꿈돌이와대전여행 [3층]",
+      "3층#15 엘리베이터(지도 위에서 두 번째 승강장 연결통로) [3층]",
+      "3층#16 선상주차장(347대) [3층]",
+      "3층#18 승강장 연결통로(지도 위에서 두 번째) [3층]",
+      "3층#20 대전역약국 [3층]",
+      "3층#22 자동발매기실 [3층]",
+      "3층#25 플라잉스콘 [3층]",
+      "3층#26 마루노바 [3층]",
+      "3층#27 엘리베이터(지도 위에서 세 번째 승강장 연결통로) [3층]",
+      "3층#29 승강장 연결통로(지도 위에서 세 번째) [3층]",
+      "3층#30 도심속작은자연 flos [3층]",
+      "3층#31 엘리베이터(5·6번 승강장) [3층]",
+      "3층#32 매표소(매표실) [3층]",
+      "3층#34 승강장 연결통로 3 (5·6번 승강장) [3층]",
+      "3층#35 신청도할매김밥 [3층]",
+      "3층#37 복순도가 [3층]",
+      "3층#38 카페스토리웨이 [3층]",
+      "3층#40 디자인스킨 [3층]",
+      "3층#41 직영편의점(남) [3층]",
+      "3층#42 엘리베이터(3·4번 승강장) [3층]",
+      "3층#43 엘리베이터(1번 출구·서광장 A) [3층]",
+      "3층#44 승강장 연결통로 2 (3·4번 승강장) [3층]",
+      "3층#46 여객화장실(남)1 [3층]",
+      "3층#47 1번 출구 방향(서광장·지하철 타는 곳) [3층]",
+      "3층#48 화장실(지도 하단) [3층]",
+      "3층#51 1층행 에스컬레이터(서측) [3층]",
+      "3층#54 와플샵 [3층]",
+      "3층#55 코브라독스 [3층]",
+      "3층#57 에그박스 [3층]",
+      "1F-P01 섬섬옥수 (불일치) [카카오]",
+      "1F-P02 롯데리아 (카카오만) [카카오]",
+      "1F-P03 예산국수 (카카오만) [카카오]",
+      "1F-P04 벌꿀분식 (불일치) [카카오]",
+      "1F-P17 아트박스 (불일치) [네이버]",
+      "2F-P01 성심당 대전역점 (일치) [카카오+네이버]",
+      "2F-P02 디저트39 (일치) [카카오+네이버]",
+      "3F-N04 레드아이 (불일치) [카카오]",
+      "3F-N07 코브라 독스 (카카오만) [카카오]",
+      "3F-N08 중소기업 명품마루 (카카오만) [카카오]",
+      "3F-N11 와플샵 (불일치) [카카오]",
+      "3F-N12 플라잉스콘 (카카오만) [카카오]",
+      "3F-N14 신청도할매김밥&부산오뎅 (카카오만) [카카오]",
+      "3F-N17 복순도가 (불일치) [카카오]",
+      "3F-N25 대전역약국 (불일치) [카카오]",
+      "3F-N27 에그박스 (불일치) [카카오]",
+      "3F-P36 유실물센터 (불일치) [카카오]",
+      "4F-P03 수순두부 (불일치) [카카오]",
+      "4F-P04 탐앤탐스 (카카오만) [카카오]",
+      "4F-P06 미미짬뽕 (카카오만) [카카오]",
+      "4F-P11 정동하나미 (불일치) [카카오]",
+      "4F-P12 틈새라면 (불일치) [카카오]"
+    ],
+    "matches": [
+      {
+        "placeId": 8,
+        "svgId": "2F-P01",
+        "name": "성심당 대전역점",
+        "candidates": [
+          {
+            "poi": "성심당 대전역점",
+            "lat": 36.332217306511836,
+            "lng": 127.4337196562067
+          },
+          {
+            "poi": "성심당 대전역점",
+            "lat": 36.3321587,
+            "lng": 127.4335969
+          }
+        ]
+      },
+      {
+        "placeId": 9,
+        "svgId": "2F-P02",
+        "name": "디저트39",
+        "candidates": [
+          {
+            "poi": "디저트39 대전역점",
+            "lat": 36.33210911503542,
+            "lng": 127.43373353554995
+          },
+          {
+            "poi": "디저트39 대전역점",
+            "lat": 36.3320057,
+            "lng": 127.4336584
+          }
+        ]
+      }
+    ]
+  }
+}

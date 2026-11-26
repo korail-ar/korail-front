@@ -1,0 +1,1176 @@
+{
+  "schemaVersion": 1,
+  "station": "대전역",
+  "floor": 4,
+  "mapImage": {
+    "fileName": "web-4F-map.svg",
+    "width": 495.0,
+    "height": 822.0,
+    "coordinateUnit": "svg",
+    "origin": "svg-viewbox"
+  },
+  "referencePdf": null,
+  "status": "draft",
+  "weightUnit": "svg_unit",
+  "nodes": [
+    {
+      "id": "H01",
+      "name": "수순두부 부근 통로",
+      "floor": 4,
+      "x": 607.6,
+      "y": 389.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H02",
+      "name": "수순두부 부근 통로",
+      "floor": 4,
+      "x": 625.4,
+      "y": 437.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H03",
+      "name": "수순두부 부근 통로",
+      "floor": 4,
+      "x": 683.5,
+      "y": 437.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H04",
+      "name": "수순두부 부근 통로",
+      "floor": 4,
+      "x": 619.9,
+      "y": 453.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H05",
+      "name": "탐앤탐스 부근 통로",
+      "floor": 4,
+      "x": 786.1,
+      "y": 453.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H06",
+      "name": "수순두부 부근 통로",
+      "floor": 4,
+      "x": 603.7,
+      "y": 487.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H07",
+      "name": "육거리 소문난 만두 부근 통로",
+      "floor": 4,
+      "x": 619.9,
+      "y": 731.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H08",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 786.1,
+      "y": 731.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H09",
+      "name": "던킨도넛 부근 통로",
+      "floor": 4,
+      "x": 657.9,
+      "y": 771.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H10",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 774.7,
+      "y": 771.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H11",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 788.4,
+      "y": 772.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H12",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 816.1,
+      "y": 818.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H13",
+      "name": "던킨도넛 부근 통로",
+      "floor": 4,
+      "x": 657.9,
+      "y": 822.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H14",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 774.7,
+      "y": 822.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H15",
+      "name": "던킨도넛 부근 통로",
+      "floor": 4,
+      "x": 610.4,
+      "y": 851.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H16",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 756.7,
+      "y": 851.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H17",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 771.9,
+      "y": 864.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H18",
+      "name": "승강기 D 부근 통로",
+      "floor": 4,
+      "x": 816.1,
+      "y": 864.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H19",
+      "name": "틈새라면 부근 통로",
+      "floor": 4,
+      "x": 610.4,
+      "y": 1063.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H20",
+      "name": "틈새라면 부근 통로",
+      "floor": 4,
+      "x": 756.7,
+      "y": 1063.7,
+      "type": "corridor"
+    },
+    {
+      "id": "P01",
+      "name": "계단 (3·4층, 수순두부 쪽) 접근점",
+      "floor": 4,
+      "x": 692.0,
+      "y": 429.0,
+      "type": "approach",
+      "placeId": 1
+    },
+    {
+      "id": "P02",
+      "name": "승강기 D (3·4층) 접근점",
+      "floor": 4,
+      "x": 810.0,
+      "y": 731.0,
+      "type": "approach",
+      "placeId": 2
+    },
+    {
+      "id": "P03",
+      "name": "에스컬레이터 (3·4층) 접근점",
+      "floor": 4,
+      "x": 658.0,
+      "y": 797.0,
+      "type": "approach",
+      "placeId": 3
+    },
+    {
+      "id": "P04",
+      "name": "계단 (3·4층, 던킨도넛 쪽) 접근점",
+      "floor": 4,
+      "x": 794.0,
+      "y": 863.0,
+      "type": "approach",
+      "placeId": 4
+    },
+    {
+      "id": "P05",
+      "name": "여자 화장실 접근점",
+      "floor": 4,
+      "x": 626.0,
+      "y": 389.0,
+      "type": "approach",
+      "placeId": 5
+    },
+    {
+      "id": "P06",
+      "name": "남자 화장실 접근점",
+      "floor": 4,
+      "x": 626.0,
+      "y": 407.0,
+      "type": "approach",
+      "placeId": 6
+    },
+    {
+      "id": "P07",
+      "name": "수순두부 접근점",
+      "floor": 4,
+      "x": 620.0,
+      "y": 521.0,
+      "type": "approach",
+      "placeId": 7
+    },
+    {
+      "id": "P08",
+      "name": "탐앤탐스 접근점",
+      "floor": 4,
+      "x": 786.0,
+      "y": 521.0,
+      "type": "approach",
+      "placeId": 8
+    },
+    {
+      "id": "P09",
+      "name": "육거리 소문난 만두 접근점",
+      "floor": 4,
+      "x": 620.0,
+      "y": 649.0,
+      "type": "approach",
+      "placeId": 9
+    },
+    {
+      "id": "P10",
+      "name": "미미짬뽕 접근점",
+      "floor": 4,
+      "x": 786.0,
+      "y": 649.0,
+      "type": "approach",
+      "placeId": 10
+    },
+    {
+      "id": "P11",
+      "name": "던킨도넛 접근점",
+      "floor": 4,
+      "x": 610.0,
+      "y": 889.0,
+      "type": "approach",
+      "placeId": 11
+    },
+    {
+      "id": "P12",
+      "name": "정동하나미 접근점",
+      "floor": 4,
+      "x": 610.0,
+      "y": 951.0,
+      "type": "approach",
+      "placeId": 12
+    },
+    {
+      "id": "P13",
+      "name": "틈새라면 접근점",
+      "floor": 4,
+      "x": 610.0,
+      "y": 1021.0,
+      "type": "approach",
+      "placeId": 13
+    }
+  ],
+  "edges": [
+    {
+      "id": "E001",
+      "source": "H01",
+      "target": "H02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 52.0
+    },
+    {
+      "id": "E002",
+      "source": "H01",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 18.4
+    },
+    {
+      "id": "E003",
+      "source": "H01",
+      "target": "P06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.7
+    },
+    {
+      "id": "E004",
+      "source": "H02",
+      "target": "H03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 58.1
+    },
+    {
+      "id": "E005",
+      "source": "H02",
+      "target": "H04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 16.7
+    },
+    {
+      "id": "E006",
+      "source": "H02",
+      "target": "P06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 30.9
+    },
+    {
+      "id": "E007",
+      "source": "H03",
+      "target": "H04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 65.5
+    },
+    {
+      "id": "E008",
+      "source": "H03",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 12.3
+    },
+    {
+      "id": "E009",
+      "source": "H04",
+      "target": "H06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 37.8
+    },
+    {
+      "id": "E010",
+      "source": "H04",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 67.3
+    },
+    {
+      "id": "E011",
+      "source": "H05",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 97.3
+    },
+    {
+      "id": "E012",
+      "source": "H05",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 67.3
+    },
+    {
+      "id": "E013",
+      "source": "H06",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 36.9
+    },
+    {
+      "id": "E014",
+      "source": "H07",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 166.2
+    },
+    {
+      "id": "E015",
+      "source": "H07",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.8
+    },
+    {
+      "id": "E016",
+      "source": "H07",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 121.1
+    },
+    {
+      "id": "E017",
+      "source": "H07",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 82.0
+    },
+    {
+      "id": "E018",
+      "source": "H08",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 134.6
+    },
+    {
+      "id": "E019",
+      "source": "H08",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 42.5
+    },
+    {
+      "id": "E020",
+      "source": "H08",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.6
+    },
+    {
+      "id": "E021",
+      "source": "H08",
+      "target": "P02",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 23.9
+    },
+    {
+      "id": "E022",
+      "source": "H08",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 82.0
+    },
+    {
+      "id": "E023",
+      "source": "H09",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 116.8
+    },
+    {
+      "id": "E024",
+      "source": "H09",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.1
+    },
+    {
+      "id": "E025",
+      "source": "H10",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 13.7
+    },
+    {
+      "id": "E026",
+      "source": "H10",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 62.2
+    },
+    {
+      "id": "E027",
+      "source": "H10",
+      "target": "H14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.3
+    },
+    {
+      "id": "E028",
+      "source": "H11",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 53.5
+    },
+    {
+      "id": "E029",
+      "source": "H11",
+      "target": "H14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 51.6
+    },
+    {
+      "id": "E030",
+      "source": "H12",
+      "target": "H14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.6
+    },
+    {
+      "id": "E031",
+      "source": "H12",
+      "target": "H18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 45.7
+    },
+    {
+      "id": "E032",
+      "source": "H13",
+      "target": "H14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 116.8
+    },
+    {
+      "id": "E033",
+      "source": "H13",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.9
+    },
+    {
+      "id": "E034",
+      "source": "H13",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 103.1
+    },
+    {
+      "id": "E035",
+      "source": "H13",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 25.2
+    },
+    {
+      "id": "E036",
+      "source": "H14",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 34.6
+    },
+    {
+      "id": "E037",
+      "source": "H14",
+      "target": "H17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.9
+    },
+    {
+      "id": "E038",
+      "source": "H15",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 146.3
+    },
+    {
+      "id": "E039",
+      "source": "H15",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 72.5
+    },
+    {
+      "id": "E040",
+      "source": "H15",
+      "target": "P11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 37.3
+    },
+    {
+      "id": "E041",
+      "source": "H16",
+      "target": "H17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 19.6
+    },
+    {
+      "id": "E042",
+      "source": "H17",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 200.3
+    },
+    {
+      "id": "E043",
+      "source": "H17",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 22.1
+    },
+    {
+      "id": "E044",
+      "source": "H18",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 208.3
+    },
+    {
+      "id": "E045",
+      "source": "H18",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 22.1
+    },
+    {
+      "id": "E046",
+      "source": "H19",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 146.3
+    },
+    {
+      "id": "E047",
+      "source": "H19",
+      "target": "P13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 42.7
+    },
+    {
+      "id": "E048",
+      "source": "H20",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 204.1
+    },
+    {
+      "id": "E049",
+      "source": "P02",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 85.4
+    },
+    {
+      "id": "E050",
+      "source": "P05",
+      "target": "P06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 18.0
+    },
+    {
+      "id": "E051",
+      "source": "P07",
+      "target": "P09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 128.0
+    },
+    {
+      "id": "E052",
+      "source": "P08",
+      "target": "P10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 128.0
+    },
+    {
+      "id": "E053",
+      "source": "P11",
+      "target": "P12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 62.0
+    },
+    {
+      "id": "E054",
+      "source": "P12",
+      "target": "P13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 70.0
+    }
+  ],
+  "places": [
+    {
+      "id": 1,
+      "name": "계단 (3·4층, 수순두부 쪽)",
+      "floor": 4,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (3·4층)",
+        "계단"
+      ],
+      "x": 692.6,
+      "y": 399.0,
+      "lat": 36.3327487,
+      "lng": 127.4351743,
+      "nodeId": "P01",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "4F-P13"
+    },
+    {
+      "id": 2,
+      "name": "승강기 D (3·4층)",
+      "floor": 4,
+      "category": "elevator",
+      "aliases": [
+        "승강기 D",
+        "엘리베이터 D"
+      ],
+      "x": 809.4,
+      "y": 751.5,
+      "lat": 36.3325303,
+      "lng": 127.4348103,
+      "nodeId": "P02",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P07"
+    },
+    {
+      "id": 3,
+      "name": "에스컬레이터 (3·4층)",
+      "floor": 4,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 703.0,
+      "y": 797.1,
+      "lat": 36.3325935,
+      "lng": 127.4347309,
+      "nodeId": "P03",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P08"
+    },
+    {
+      "id": 4,
+      "name": "계단 (3·4층, 던킨도넛 쪽)",
+      "floor": 4,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단 (3·4층)",
+        "계단"
+      ],
+      "x": 794.2,
+      "y": 841.2,
+      "lat": 36.3325085,
+      "lng": 127.4347058,
+      "nodeId": "P04",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "4F-P09"
+    },
+    {
+      "id": 5,
+      "name": "여자 화장실",
+      "floor": 4,
+      "category": "restroom",
+      "aliases": [
+        "화장실",
+        "여성 화장실"
+      ],
+      "x": 649.8,
+      "y": 365.8,
+      "lat": 36.3327932,
+      "lng": 127.4352001,
+      "nodeId": "P05",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P01"
+    },
+    {
+      "id": 6,
+      "name": "남자 화장실",
+      "floor": 4,
+      "category": "restroom",
+      "aliases": [
+        "화장실",
+        "남성 화장실"
+      ],
+      "x": 654.6,
+      "y": 406.6,
+      "lat": 36.3327745,
+      "lng": 127.4351557,
+      "nodeId": "P06",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P02"
+    },
+    {
+      "id": 7,
+      "name": "수순두부",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "수 순두부"
+      ],
+      "x": 666.0,
+      "y": 520.6,
+      "lat": 36.3327237,
+      "lng": 127.4350309,
+      "nodeId": "P07",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P03"
+    },
+    {
+      "id": 8,
+      "name": "탐앤탐스",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "탐탐",
+        "탐앤탐스 커피"
+      ],
+      "x": 740.1,
+      "y": 520.6,
+      "lat": 36.3326679,
+      "lng": 127.4350507,
+      "nodeId": "P08",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P04"
+    },
+    {
+      "id": 9,
+      "name": "육거리 소문난 만두",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "육거리소문난만두",
+        "소문난만두"
+      ],
+      "x": 657.4,
+      "y": 649.8,
+      "lat": 36.3326823,
+      "lng": 127.4348839,
+      "nodeId": "P09",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P05"
+    },
+    {
+      "id": 10,
+      "name": "미미짬뽕",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "미미 짬뽕"
+      ],
+      "x": 742.9,
+      "y": 649.8,
+      "lat": 36.332618,
+      "lng": 127.4349066,
+      "nodeId": "P10",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P06"
+    },
+    {
+      "id": 11,
+      "name": "던킨도넛",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "던킨",
+        "던킨도너츠"
+      ],
+      "x": 646.0,
+      "y": 888.9,
+      "lat": 36.3326024,
+      "lng": 127.4346129,
+      "nodeId": "P11",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P10"
+    },
+    {
+      "id": 12,
+      "name": "정동하나미",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "정동 하나미"
+      ],
+      "x": 646.0,
+      "y": 951.2,
+      "lat": 36.3325794,
+      "lng": 127.434543,
+      "nodeId": "P12",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P11"
+    },
+    {
+      "id": 13,
+      "name": "틈새라면",
+      "floor": 4,
+      "category": "shop",
+      "aliases": [
+        "틈새 라면"
+      ],
+      "x": 646.0,
+      "y": 1020.1,
+      "lat": 36.3325539,
+      "lng": 127.4344658,
+      "nodeId": "P13",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "4F-P12"
+    }
+  ],
+  "notes": [
+    "디자인팀 2D 지도(web-4F-map.svg)에서 자동 추출한 4층 보행 그래프 초안입니다. x·y 는 SVG 좌표(1~4층 공통 좌표계, 격자 1칸 = 190)라 층끼리 그대로 겹쳐 쓸 수 있습니다.",
+    "걷는 곳 = 층 바닥 + 실외 구역 - 방. 벽·방에서 5 이상 떨어진 곳만 지나가게 했습니다. 통로 노드(H)는 방 모서리 바깥·바닥 안쪽 모서리, 접근 노드(P)는 시설 마커에서 가장 가까운 지나갈 수 있는 점이며 실제 출입문 위치는 현장 확인이 필요합니다.",
+    "간선은 서로 보이는 노드끼리 이은 뒤, 다른 노드를 거쳐도 거리가 8% 이내로 같은 긴 간선을 지웠습니다. weight 는 SVG 좌표 길이로, 실거리는 [좌표] 메모의 축척(m/단위)을 곱해 구합니다.",
+    "nodeId 가 null 인 시설은 검색 전용입니다(운행 재확인·미운행 표시 또는 걷는 곳에서 멀리 떨어짐). 층간 이동(계단·에스컬레이터·승강기 연결)은 포함하지 않았습니다.",
+    "[좌표] 취합본(WGS84). 1~4층 공통 SVG 좌표계에서 기준점 총 63개(교차 확인 2, 카카오 19, 네이버 1, 3층 41)로 아핀 변환, RMSE 7.7 m, 축척 0.0967 m/SVG단위. 카카오 단독/네이버 단독 결과 간 차이 평균 35.0 m, 최대 76.9 m. '3층' 기준점은 3층 취합본 위경도(자체도 추정값)를 옮겨 쓴 것입니다. 현장 검증 전 추정값."
+  ],
+  "extraction": {
+    "provider": "merged",
+    "sources": [
+      "kakao",
+      "naver",
+      "3f"
+    ],
+    "rmseM": 7.68,
+    "affine": {
+      "svgToMeters": [
+        0.023874189,
+        -0.100503799,
+        101.971388872,
+        -0.083234324,
+        -0.040923732,
+        112.530442516
+      ],
+      "originLatLng": [
+        36.3324,
+        127.4343
+      ],
+      "metersPerUnit": 0.09666,
+      "formula": "east = a*x + b*y + c, north = d*x + e*y + f (m, originLatLng 기준)"
+    },
+    "controlPoints": [
+      "3층#1 동측 계단·에스컬레이터 [3층]",
+      "3층#2 엘리베이터(2번 출구·동광장) [3층]",
+      "3층#3 출입구(방풍실 4) [3층]",
+      "3층#4 레드아이 [3층]",
+      "3층#5 화장실(북측 1) [3층]",
+      "3층#6 화장실(북측 2) [3층]",
+      "3층#7 엘리베이터(지도 상단 승강장 연결통로) [3층]",
+      "3층#8 승강장 연결통로(지도 상단) [3층]",
+      "3층#9 직영편의점(북) [3층]",
+      "3층#10 KR스타트업 라운지(공단) [3층]",
+      "3층#12 출입구(방풍실 3) [3층]",
+      "3층#13 직영명품마루 [3층]",
+      "3층#14 꿈돌이와대전여행 [3층]",
+      "3층#15 엘리베이터(지도 위에서 두 번째 승강장 연결통로) [3층]",
+      "3층#16 선상주차장(347대) [3층]",
+      "3층#18 승강장 연결통로(지도 위에서 두 번째) [3층]",
+      "3층#20 대전역약국 [3층]",
+      "3층#22 자동발매기실 [3층]",
+      "3층#25 플라잉스콘 [3층]",
+      "3층#26 마루노바 [3층]",
+      "3층#27 엘리베이터(지도 위에서 세 번째 승강장 연결통로) [3층]",
+      "3층#29 승강장 연결통로(지도 위에서 세 번째) [3층]",
+      "3층#30 도심속작은자연 flos [3층]",
+      "3층#31 엘리베이터(5·6번 승강장) [3층]",
+      "3층#32 매표소(매표실) [3층]",
+      "3층#34 승강장 연결통로 3 (5·6번 승강장) [3층]",
+      "3층#35 신청도할매김밥 [3층]",
+      "3층#37 복순도가 [3층]",
+      "3층#38 카페스토리웨이 [3층]",
+      "3층#40 디자인스킨 [3층]",
+      "3층#41 직영편의점(남) [3층]",
+      "3층#42 엘리베이터(3·4번 승강장) [3층]",
+      "3층#43 엘리베이터(1번 출구·서광장 A) [3층]",
+      "3층#44 승강장 연결통로 2 (3·4번 승강장) [3층]",
+      "3층#46 여객화장실(남)1 [3층]",
+      "3층#47 1번 출구 방향(서광장·지하철 타는 곳) [3층]",
+      "3층#48 화장실(지도 하단) [3층]",
+      "3층#51 1층행 에스컬레이터(서측) [3층]",
+      "3층#54 와플샵 [3층]",
+      "3층#55 코브라독스 [3층]",
+      "3층#57 에그박스 [3층]",
+      "1F-P01 섬섬옥수 (불일치) [카카오]",
+      "1F-P02 롯데리아 (카카오만) [카카오]",
+      "1F-P03 예산국수 (카카오만) [카카오]",
+      "1F-P04 벌꿀분식 (불일치) [카카오]",
+      "1F-P17 아트박스 (불일치) [네이버]",
+      "2F-P01 성심당 대전역점 (일치) [카카오+네이버]",
+      "2F-P02 디저트39 (일치) [카카오+네이버]",
+      "3F-N04 레드아이 (불일치) [카카오]",
+      "3F-N07 코브라 독스 (카카오만) [카카오]",
+      "3F-N08 중소기업 명품마루 (카카오만) [카카오]",
+      "3F-N11 와플샵 (불일치) [카카오]",
+      "3F-N12 플라잉스콘 (카카오만) [카카오]",
+      "3F-N14 신청도할매김밥&부산오뎅 (카카오만) [카카오]",
+      "3F-N17 복순도가 (불일치) [카카오]",
+      "3F-N25 대전역약국 (불일치) [카카오]",
+      "3F-N27 에그박스 (불일치) [카카오]",
+      "3F-P36 유실물센터 (불일치) [카카오]",
+      "4F-P03 수순두부 (불일치) [카카오]",
+      "4F-P04 탐앤탐스 (카카오만) [카카오]",
+      "4F-P06 미미짬뽕 (카카오만) [카카오]",
+      "4F-P11 정동하나미 (불일치) [카카오]",
+      "4F-P12 틈새라면 (불일치) [카카오]"
+    ],
+    "matches": [
+      {
+        "placeId": 7,
+        "svgId": "4F-P03",
+        "name": "수순두부",
+        "candidates": [
+          {
+            "poi": "수순두부",
+            "lat": 36.332736256731295,
+            "lng": 127.4349944717019
+          },
+          {
+            "poi": "수순두부 대전역점",
+            "lat": 36.3323954,
+            "lng": 127.4342065
+          }
+        ]
+      },
+      {
+        "placeId": 8,
+        "svgId": "4F-P04",
+        "name": "탐앤탐스",
+        "candidates": [
+          {
+            "poi": "탐앤탐스 대전역점",
+            "lat": 36.332679378409125,
+            "lng": 127.43502311379923
+          }
+        ]
+      },
+      {
+        "placeId": 9,
+        "svgId": "4F-P05",
+        "name": "육거리 소문난 만두",
+        "candidates": [
+          {
+            "poi": "육거리소문난만두 대전ktx점",
+            "lat": 36.332642208842685,
+            "lng": 127.43458853274129
+          }
+        ]
+      },
+      {
+        "placeId": 10,
+        "svgId": "4F-P06",
+        "name": "미미짬뽕",
+        "candidates": [
+          {
+            "poi": "미미짬뽕 대전역점",
+            "lat": 36.33258700503937,
+            "lng": 127.43490008445544
+          }
+        ]
+      },
+      {
+        "placeId": 12,
+        "svgId": "4F-P11",
+        "name": "정동하나미",
+        "candidates": [
+          {
+            "poi": "정동하나미",
+            "lat": 36.33257641218747,
+            "lng": 127.43459150863237
+          },
+          {
+            "poi": "정동하나미 대전역점",
+            "lat": 36.3327485,
+            "lng": 127.4345802
+          }
+        ]
+      },
+      {
+        "placeId": 13,
+        "svgId": "4F-P12",
+        "name": "틈새라면",
+        "candidates": [
+          {
+            "poi": "틈새라면 대전역사점",
+            "lat": 36.332555932581364,
+            "lng": 127.43452345434629
+          },
+          {
+            "poi": "틈새라면 대전역사점",
+            "lat": 36.3325545,
+            "lng": 127.4346932
+          },
+          {
+            "poi": "스토리웨이 대전4층 맞이방 틈새라면",
+            "lat": 36.3327617,
+            "lng": 127.4322053
+          }
+        ]
+      }
+    ]
+  }
+}
