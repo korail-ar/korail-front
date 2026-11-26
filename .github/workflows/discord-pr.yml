@@ -1,0 +1,90 @@
+name: Discord PR Notifications
+
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: >-
+      github.event_name != 'issue_comment' ||
+      github.event.issue.pull_request != null
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord notification
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          EVENT: ${{ github.event_name }}
+          PAYLOAD: ${{ toJSON(github.event) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          event = os.environ["EVENT"]
+          data = json.loads(os.environ["PAYLOAD"])
+
+          if event == "pull_request":
+              pr = data["pull_request"]
+              title = "새 PR 생성"
+              item = pr
+              body = pr.get("title", "")
+
+          elif event == "issue_comment":
+              item = data["issue"]
+              title = "PR 댓글 작성"
+              body = data["comment"]["body"]
+
+          elif event == "pull_request_review_comment":
+              item = data["pull_request"]
+              title = "코드 리뷰 댓글"
+              body = data["comment"]["body"]
+
+          else:
+              item = data["pull_request"]
+              title = "PR 리뷰 등록"
+              body = data["review"].get("body", "")
+
+          actor = data["sender"]["login"]
+          url = (
+              data["comment"]["html_url"]
+              if "comment" in data
+              else data["review"]["html_url"]
+              if "review" in data
+              else item["html_url"]
+          )
+
+          message = (
+              f"**{title}**\n"
+              f"PR #{item['number']}\n"
+              f"작성자: {actor}\n"
+              f"{body[:500]}\n"
+              f"{url}"
+          )
+
+          payload = json.dumps({
+              "content": message[:1900],
+              "allowed_mentions": {"parse": []}
+          }).encode("utf-8")
+
+          request = urllib.request.Request(
+              os.environ["WEBHOOK_URL"],
+              data=payload,
+              headers={"Content-Type": "application/json"},
+              method="POST"
+          )
+
+          with urllib.request.urlopen(request) as response:
+              print("Discord notification sent:", response.status)
+          PY
