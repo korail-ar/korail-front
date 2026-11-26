@@ -1,0 +1,2131 @@
+{
+  "schemaVersion": 1,
+  "station": "대전역",
+  "floor": 1,
+  "mapImage": {
+    "fileName": "web-1F-map.svg",
+    "width": 1098.0,
+    "height": 1839.0,
+    "coordinateUnit": "svg",
+    "origin": "svg-viewbox"
+  },
+  "referencePdf": null,
+  "status": "draft",
+  "weightUnit": "svg_unit",
+  "nodes": [
+    {
+      "id": "H01",
+      "name": "1번 출구 부근 통로",
+      "floor": 1,
+      "x": 1241.5,
+      "y": 314.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H02",
+      "name": "승강기 A 부근 통로",
+      "floor": 1,
+      "x": 1123.4,
+      "y": 316.8,
+      "type": "corridor"
+    },
+    {
+      "id": "H03",
+      "name": "승강기 A 부근 통로",
+      "floor": 1,
+      "x": 1073.0,
+      "y": 347.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H04",
+      "name": "롯데리아 부근 통로",
+      "floor": 1,
+      "x": 761.1,
+      "y": 1612.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H05",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1064.6,
+      "y": 1612.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H06",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1118.3,
+      "y": 1612.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H07",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1157.9,
+      "y": 1612.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H08",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1115.8,
+      "y": 1651.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H09",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1160.4,
+      "y": 1651.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H10",
+      "name": "TMO 부근 통로",
+      "floor": 1,
+      "x": 607.5,
+      "y": 1669.6,
+      "type": "corridor"
+    },
+    {
+      "id": "H11",
+      "name": "롯데리아 부근 통로",
+      "floor": 1,
+      "x": 758.6,
+      "y": 1673.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H12",
+      "name": "벌꿀분식 부근 통로",
+      "floor": 1,
+      "x": 1067.1,
+      "y": 1673.4,
+      "type": "corridor"
+    },
+    {
+      "id": "H13",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1170.9,
+      "y": 1678.6,
+      "type": "corridor"
+    },
+    {
+      "id": "H14",
+      "name": "예산국수 부근 통로",
+      "floor": 1,
+      "x": 963.8,
+      "y": 1689.6,
+      "type": "corridor"
+    },
+    {
+      "id": "H15",
+      "name": "벌꿀분식 부근 통로",
+      "floor": 1,
+      "x": 1055.9,
+      "y": 1689.6,
+      "type": "corridor"
+    },
+    {
+      "id": "H16",
+      "name": "승강기 B 부근 통로",
+      "floor": 1,
+      "x": 1119.6,
+      "y": 1691.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H17",
+      "name": "롯데리아 부근 통로",
+      "floor": 1,
+      "x": 840.3,
+      "y": 1695.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H18",
+      "name": "예산국수 부근 통로",
+      "floor": 1,
+      "x": 936.2,
+      "y": 1695.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H19",
+      "name": "벌꿀분식 부근 통로",
+      "floor": 1,
+      "x": 1086.3,
+      "y": 1697.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H20",
+      "name": "TMO 부근 통로",
+      "floor": 1,
+      "x": 652.0,
+      "y": 1701.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H21",
+      "name": "롯데리아 부근 통로",
+      "floor": 1,
+      "x": 765.2,
+      "y": 1701.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H22",
+      "name": "승강기 C 부근 통로",
+      "floor": 1,
+      "x": 1298.5,
+      "y": 1701.3,
+      "type": "corridor"
+    },
+    {
+      "id": "H23",
+      "name": "TMO 부근 통로",
+      "floor": 1,
+      "x": 624.6,
+      "y": 1752.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H24",
+      "name": "TMO 부근 통로",
+      "floor": 1,
+      "x": 652.0,
+      "y": 1788.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H25",
+      "name": "섬섬옥수 부근 통로",
+      "floor": 1,
+      "x": 765.2,
+      "y": 1788.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H26",
+      "name": "벌꿀분식 부근 통로",
+      "floor": 1,
+      "x": 1086.3,
+      "y": 1793.1,
+      "type": "corridor"
+    },
+    {
+      "id": "H27",
+      "name": "앤티앤스 부근 통로",
+      "floor": 1,
+      "x": 840.3,
+      "y": 1815.9,
+      "type": "corridor"
+    },
+    {
+      "id": "H28",
+      "name": "앤티앤스 부근 통로",
+      "floor": 1,
+      "x": 963.8,
+      "y": 1819.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H29",
+      "name": "벌꿀분식 부근 통로",
+      "floor": 1,
+      "x": 1055.9,
+      "y": 1819.7,
+      "type": "corridor"
+    },
+    {
+      "id": "H30",
+      "name": "섬섬옥수 부근 통로",
+      "floor": 1,
+      "x": 662.0,
+      "y": 1855.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H31",
+      "name": "섬섬옥수 부근 통로",
+      "floor": 1,
+      "x": 795.6,
+      "y": 1855.5,
+      "type": "corridor"
+    },
+    {
+      "id": "H32",
+      "name": "아트박스 부근 통로",
+      "floor": 1,
+      "x": 1264.9,
+      "y": 1867.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H33",
+      "name": "아트박스 부근 통로",
+      "floor": 1,
+      "x": 1119.6,
+      "y": 1905.2,
+      "type": "corridor"
+    },
+    {
+      "id": "H34",
+      "name": "1번 출구 부근 통로",
+      "floor": 1,
+      "x": 1123.0,
+      "y": 224.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H35",
+      "name": "승강기 A 부근 통로",
+      "floor": 1,
+      "x": 1069.0,
+      "y": 308.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H36",
+      "name": "승강기 A 부근 통로",
+      "floor": 1,
+      "x": 1073.0,
+      "y": 312.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H37",
+      "name": "승강기 A 부근 통로",
+      "floor": 1,
+      "x": 1079.0,
+      "y": 314.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H38",
+      "name": "아트박스 부근 통로",
+      "floor": 1,
+      "x": 1173.0,
+      "y": 1902.0,
+      "type": "corridor"
+    },
+    {
+      "id": "H39",
+      "name": "아트박스 부근 통로",
+      "floor": 1,
+      "x": 1165.0,
+      "y": 1904.0,
+      "type": "corridor"
+    },
+    {
+      "id": "P01",
+      "name": "4번 출구 (서광장) 접근점",
+      "floor": 1,
+      "x": 1007.0,
+      "y": 1916.0,
+      "type": "approach",
+      "placeId": 1
+    },
+    {
+      "id": "P02",
+      "name": "1번 출구 (동광장) 접근점",
+      "floor": 1,
+      "x": 1127.0,
+      "y": 218.0,
+      "type": "approach",
+      "placeId": 2
+    },
+    {
+      "id": "P03",
+      "name": "계단(벌꿀분식 쪽) 접근점",
+      "floor": 1,
+      "x": 1005.0,
+      "y": 1820.0,
+      "type": "approach",
+      "placeId": 3
+    },
+    {
+      "id": "P04",
+      "name": "에스컬레이터(벌꿀분식 쪽) 접근점",
+      "floor": 1,
+      "x": 1003.0,
+      "y": 1820.0,
+      "type": "approach",
+      "placeId": 4
+    },
+    {
+      "id": "P05",
+      "name": "계단(앤티앤스 쪽) 접근점",
+      "floor": 1,
+      "x": 951.0,
+      "y": 1816.0,
+      "type": "approach",
+      "placeId": 5
+    },
+    {
+      "id": "P06",
+      "name": "계단(아트박스 쪽) 접근점",
+      "floor": 1,
+      "x": 1203.0,
+      "y": 1868.0,
+      "type": "approach",
+      "placeId": 6
+    },
+    {
+      "id": "P07",
+      "name": "에스컬레이터(아트박스 쪽) 접근점",
+      "floor": 1,
+      "x": 1203.0,
+      "y": 1868.0,
+      "type": "approach",
+      "placeId": 7
+    },
+    {
+      "id": "P08",
+      "name": "승강기 B (1·3층) 접근점",
+      "floor": 1,
+      "x": 1139.0,
+      "y": 1652.0,
+      "type": "approach",
+      "placeId": 8
+    },
+    {
+      "id": "P10",
+      "name": "승강기 A (1·3층) 접근점",
+      "floor": 1,
+      "x": 1051.0,
+      "y": 304.0,
+      "type": "approach",
+      "placeId": 10
+    },
+    {
+      "id": "P11",
+      "name": "계단(1번 출구 쪽) 접근점",
+      "floor": 1,
+      "x": 1153.0,
+      "y": 316.0,
+      "type": "approach",
+      "placeId": 11
+    },
+    {
+      "id": "P12",
+      "name": "에스컬레이터(1번 출구 쪽) 접근점",
+      "floor": 1,
+      "x": 1095.0,
+      "y": 316.0,
+      "type": "approach",
+      "placeId": 12
+    },
+    {
+      "id": "P13",
+      "name": "에스컬레이터(1번 출구 쪽 2) 접근점",
+      "floor": 1,
+      "x": 1213.0,
+      "y": 316.0,
+      "type": "approach",
+      "placeId": 13
+    },
+    {
+      "id": "P14",
+      "name": "여자·남자 화장실 접근점",
+      "floor": 1,
+      "x": 651.0,
+      "y": 1744.0,
+      "type": "approach",
+      "placeId": 14
+    },
+    {
+      "id": "P15",
+      "name": "롯데리아 접근점",
+      "floor": 1,
+      "x": 817.0,
+      "y": 1674.0,
+      "type": "approach",
+      "placeId": 15
+    },
+    {
+      "id": "P16",
+      "name": "예산국수 접근점",
+      "floor": 1,
+      "x": 973.0,
+      "y": 1674.0,
+      "type": "approach",
+      "placeId": 16
+    },
+    {
+      "id": "P17",
+      "name": "벌꿀분식 접근점",
+      "floor": 1,
+      "x": 1087.0,
+      "y": 1746.0,
+      "type": "approach",
+      "placeId": 17
+    },
+    {
+      "id": "P18",
+      "name": "앤티앤스 접근점",
+      "floor": 1,
+      "x": 841.0,
+      "y": 1756.0,
+      "type": "approach",
+      "placeId": 18
+    },
+    {
+      "id": "P19",
+      "name": "아트박스 접근점",
+      "floor": 1,
+      "x": 1119.0,
+      "y": 1814.0,
+      "type": "approach",
+      "placeId": 19
+    },
+    {
+      "id": "P20",
+      "name": "TMO 접근점",
+      "floor": 1,
+      "x": 625.0,
+      "y": 1814.0,
+      "type": "approach",
+      "placeId": 20
+    },
+    {
+      "id": "P21",
+      "name": "섬섬옥수 접근점",
+      "floor": 1,
+      "x": 703.0,
+      "y": 1856.0,
+      "type": "approach",
+      "placeId": 21
+    },
+    {
+      "id": "P22",
+      "name": "계단 (1·2층) 접근점",
+      "floor": 1,
+      "x": 515.0,
+      "y": 1752.0,
+      "type": "approach",
+      "placeId": 22
+    },
+    {
+      "id": "P23",
+      "name": "에스컬레이터 (1·2층) 접근점",
+      "floor": 1,
+      "x": 519.0,
+      "y": 1750.0,
+      "type": "approach",
+      "placeId": 23
+    }
+  ],
+  "edges": [
+    {
+      "id": "E001",
+      "source": "H01",
+      "target": "P13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.6
+    },
+    {
+      "id": "E002",
+      "source": "H02",
+      "target": "H03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 58.9
+    },
+    {
+      "id": "E003",
+      "source": "H02",
+      "target": "H34",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 92.8
+    },
+    {
+      "id": "E004",
+      "source": "H02",
+      "target": "P11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 29.6
+    },
+    {
+      "id": "E005",
+      "source": "H02",
+      "target": "P12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.4
+    },
+    {
+      "id": "E006",
+      "source": "H03",
+      "target": "P12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 38.2
+    },
+    {
+      "id": "E007",
+      "source": "H04",
+      "target": "H05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 303.5
+    },
+    {
+      "id": "E008",
+      "source": "H04",
+      "target": "H10",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 163.9
+    },
+    {
+      "id": "E009",
+      "source": "H04",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 61.2
+    },
+    {
+      "id": "E010",
+      "source": "H04",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 140.6
+    },
+    {
+      "id": "E011",
+      "source": "H05",
+      "target": "H06",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 53.7
+    },
+    {
+      "id": "E012",
+      "source": "H05",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 64.4
+    },
+    {
+      "id": "E013",
+      "source": "H05",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 61.2
+    },
+    {
+      "id": "E014",
+      "source": "H05",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 96.4
+    },
+    {
+      "id": "E015",
+      "source": "H06",
+      "target": "H07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 39.6
+    },
+    {
+      "id": "E016",
+      "source": "H06",
+      "target": "H08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 39.2
+    },
+    {
+      "id": "E017",
+      "source": "H06",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 79.7
+    },
+    {
+      "id": "E018",
+      "source": "H07",
+      "target": "H09",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 39.2
+    },
+    {
+      "id": "E019",
+      "source": "H08",
+      "target": "H12",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 53.4
+    },
+    {
+      "id": "E020",
+      "source": "H08",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 40.3
+    },
+    {
+      "id": "E021",
+      "source": "H08",
+      "target": "H19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.5
+    },
+    {
+      "id": "E022",
+      "source": "H08",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 23.2
+    },
+    {
+      "id": "E023",
+      "source": "H09",
+      "target": "H13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 29.2
+    },
+    {
+      "id": "E024",
+      "source": "H09",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 57.2
+    },
+    {
+      "id": "E025",
+      "source": "H09",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 21.4
+    },
+    {
+      "id": "E026",
+      "source": "H10",
+      "target": "H11",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 151.1
+    },
+    {
+      "id": "E027",
+      "source": "H10",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 54.5
+    },
+    {
+      "id": "E028",
+      "source": "H10",
+      "target": "H23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 84.6
+    },
+    {
+      "id": "E029",
+      "source": "H10",
+      "target": "P14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 86.2
+    },
+    {
+      "id": "E030",
+      "source": "H10",
+      "target": "P23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 119.6
+    },
+    {
+      "id": "E031",
+      "source": "H11",
+      "target": "H20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 110.1
+    },
+    {
+      "id": "E032",
+      "source": "H11",
+      "target": "H21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.4
+    },
+    {
+      "id": "E033",
+      "source": "H11",
+      "target": "P15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 58.4
+    },
+    {
+      "id": "E034",
+      "source": "H12",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 19.7
+    },
+    {
+      "id": "E035",
+      "source": "H12",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.5
+    },
+    {
+      "id": "E036",
+      "source": "H12",
+      "target": "H19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 30.6
+    },
+    {
+      "id": "E037",
+      "source": "H12",
+      "target": "P16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 94.1
+    },
+    {
+      "id": "E038",
+      "source": "H13",
+      "target": "H16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 52.9
+    },
+    {
+      "id": "E039",
+      "source": "H13",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.5
+    },
+    {
+      "id": "E040",
+      "source": "H14",
+      "target": "H15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 92.1
+    },
+    {
+      "id": "E041",
+      "source": "H14",
+      "target": "H18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 28.2
+    },
+    {
+      "id": "E042",
+      "source": "H14",
+      "target": "P16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 18.1
+    },
+    {
+      "id": "E043",
+      "source": "H15",
+      "target": "H19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 31.3
+    },
+    {
+      "id": "E044",
+      "source": "H15",
+      "target": "P16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 84.4
+    },
+    {
+      "id": "E045",
+      "source": "H16",
+      "target": "H19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 33.8
+    },
+    {
+      "id": "E046",
+      "source": "H16",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 44.0
+    },
+    {
+      "id": "E047",
+      "source": "H16",
+      "target": "P17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 63.5
+    },
+    {
+      "id": "E048",
+      "source": "H16",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 122.5
+    },
+    {
+      "id": "E049",
+      "source": "H17",
+      "target": "H18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 95.9
+    },
+    {
+      "id": "E050",
+      "source": "H17",
+      "target": "H21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 75.3
+    },
+    {
+      "id": "E051",
+      "source": "H17",
+      "target": "H25",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 120.0
+    },
+    {
+      "id": "E052",
+      "source": "H17",
+      "target": "P15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 31.6
+    },
+    {
+      "id": "E053",
+      "source": "H17",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 60.7
+    },
+    {
+      "id": "E054",
+      "source": "H18",
+      "target": "P16",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 42.5
+    },
+    {
+      "id": "E055",
+      "source": "H19",
+      "target": "P08",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 69.4
+    },
+    {
+      "id": "E056",
+      "source": "H19",
+      "target": "P17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 48.8
+    },
+    {
+      "id": "E057",
+      "source": "H20",
+      "target": "H21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 113.2
+    },
+    {
+      "id": "E058",
+      "source": "H20",
+      "target": "H23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 58.3
+    },
+    {
+      "id": "E059",
+      "source": "H20",
+      "target": "P14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 43.0
+    },
+    {
+      "id": "E060",
+      "source": "H20",
+      "target": "P23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 141.7
+    },
+    {
+      "id": "E061",
+      "source": "H21",
+      "target": "H25",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 87.9
+    },
+    {
+      "id": "E062",
+      "source": "H21",
+      "target": "H27",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 137.3
+    },
+    {
+      "id": "E063",
+      "source": "H21",
+      "target": "P15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 58.4
+    },
+    {
+      "id": "E064",
+      "source": "H21",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 93.7
+    },
+    {
+      "id": "E065",
+      "source": "H22",
+      "target": "H32",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 169.3
+    },
+    {
+      "id": "E066",
+      "source": "H23",
+      "target": "H24",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 45.6
+    },
+    {
+      "id": "E067",
+      "source": "H23",
+      "target": "P14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 27.7
+    },
+    {
+      "id": "E068",
+      "source": "H23",
+      "target": "P20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 61.5
+    },
+    {
+      "id": "E069",
+      "source": "H23",
+      "target": "P23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 105.6
+    },
+    {
+      "id": "E070",
+      "source": "H24",
+      "target": "H25",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 113.2
+    },
+    {
+      "id": "E071",
+      "source": "H24",
+      "target": "H30",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 67.3
+    },
+    {
+      "id": "E072",
+      "source": "H24",
+      "target": "H31",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 158.3
+    },
+    {
+      "id": "E073",
+      "source": "H24",
+      "target": "P14",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 44.9
+    },
+    {
+      "id": "E074",
+      "source": "H24",
+      "target": "P20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 36.9
+    },
+    {
+      "id": "E075",
+      "source": "H24",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 84.3
+    },
+    {
+      "id": "E076",
+      "source": "H25",
+      "target": "H27",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 79.8
+    },
+    {
+      "id": "E077",
+      "source": "H25",
+      "target": "H31",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 73.2
+    },
+    {
+      "id": "E078",
+      "source": "H25",
+      "target": "P15",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 126.0
+    },
+    {
+      "id": "E079",
+      "source": "H25",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 82.6
+    },
+    {
+      "id": "E080",
+      "source": "H25",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 91.5
+    },
+    {
+      "id": "E081",
+      "source": "H26",
+      "target": "H29",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 40.4
+    },
+    {
+      "id": "E082",
+      "source": "H26",
+      "target": "H33",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 116.9
+    },
+    {
+      "id": "E083",
+      "source": "H26",
+      "target": "P17",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 47.1
+    },
+    {
+      "id": "E084",
+      "source": "H26",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 38.8
+    },
+    {
+      "id": "E085",
+      "source": "H27",
+      "target": "H31",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 59.7
+    },
+    {
+      "id": "E086",
+      "source": "H27",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 194.4
+    },
+    {
+      "id": "E087",
+      "source": "H27",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 110.7
+    },
+    {
+      "id": "E088",
+      "source": "H27",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 59.9
+    },
+    {
+      "id": "E089",
+      "source": "H28",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 105.5
+    },
+    {
+      "id": "E090",
+      "source": "H28",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 39.2
+    },
+    {
+      "id": "E091",
+      "source": "H28",
+      "target": "P05",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 13.3
+    },
+    {
+      "id": "E092",
+      "source": "H29",
+      "target": "H33",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 106.6
+    },
+    {
+      "id": "E093",
+      "source": "H29",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 108.0
+    },
+    {
+      "id": "E094",
+      "source": "H29",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 50.9
+    },
+    {
+      "id": "E095",
+      "source": "H29",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 63.4
+    },
+    {
+      "id": "E096",
+      "source": "H30",
+      "target": "P20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 55.6
+    },
+    {
+      "id": "E097",
+      "source": "H30",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 41.0
+    },
+    {
+      "id": "E098",
+      "source": "H31",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 219.9
+    },
+    {
+      "id": "E099",
+      "source": "H31",
+      "target": "P18",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 109.4
+    },
+    {
+      "id": "E100",
+      "source": "H31",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 92.6
+    },
+    {
+      "id": "E101",
+      "source": "H32",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 61.9
+    },
+    {
+      "id": "E102",
+      "source": "H33",
+      "target": "H39",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 45.4
+    },
+    {
+      "id": "E103",
+      "source": "H33",
+      "target": "P01",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 113.1
+    },
+    {
+      "id": "E104",
+      "source": "H33",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 142.8
+    },
+    {
+      "id": "E105",
+      "source": "H33",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 91.2
+    },
+    {
+      "id": "E106",
+      "source": "H35",
+      "target": "H36",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 5.7
+    },
+    {
+      "id": "E107",
+      "source": "H36",
+      "target": "H37",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 6.3
+    },
+    {
+      "id": "E108",
+      "source": "H38",
+      "target": "H39",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 8.2
+    },
+    {
+      "id": "E109",
+      "source": "P01",
+      "target": "P03",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 96.0
+    },
+    {
+      "id": "E110",
+      "source": "P01",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 151.5
+    },
+    {
+      "id": "E111",
+      "source": "P02",
+      "target": "H34",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 7.2
+    },
+    {
+      "id": "E112",
+      "source": "P03",
+      "target": "P04",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 2.0
+    },
+    {
+      "id": "E113",
+      "source": "P06",
+      "target": "H38",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 45.3
+    },
+    {
+      "id": "E114",
+      "source": "P06",
+      "target": "P07",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 0.0
+    },
+    {
+      "id": "E115",
+      "source": "P10",
+      "target": "H35",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 18.4
+    },
+    {
+      "id": "E116",
+      "source": "P11",
+      "target": "P13",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 60.0
+    },
+    {
+      "id": "E117",
+      "source": "P12",
+      "target": "H37",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 16.1
+    },
+    {
+      "id": "E118",
+      "source": "P14",
+      "target": "P20",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 74.7
+    },
+    {
+      "id": "E119",
+      "source": "P17",
+      "target": "P19",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 75.2
+    },
+    {
+      "id": "E120",
+      "source": "P20",
+      "target": "P21",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 88.6
+    },
+    {
+      "id": "E121",
+      "source": "P22",
+      "target": "P23",
+      "bidirectional": true,
+      "type": "walk",
+      "weight": 4.5
+    }
+  ],
+  "places": [
+    {
+      "id": 1,
+      "name": "4번 출구 (서광장)",
+      "floor": 1,
+      "category": "entrance",
+      "aliases": [
+        "4번 출구",
+        "서광장"
+      ],
+      "x": 1006.0,
+      "y": 1936.1,
+      "lat": 36.3319439,
+      "lng": 127.4335351,
+      "nodeId": "P01",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P12"
+    },
+    {
+      "id": 2,
+      "name": "1번 출구 (동광장)",
+      "floor": 1,
+      "category": "entrance",
+      "aliases": [
+        "1번 출구",
+        "동광장"
+      ],
+      "x": 1134.5,
+      "y": 205.2,
+      "lat": 36.3324878,
+      "lng": 127.4355091,
+      "nodeId": "P02",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P14"
+    },
+    {
+      "id": 3,
+      "name": "계단(벌꿀분식 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단"
+      ],
+      "x": 1004.0,
+      "y": 1729.0,
+      "lat": 36.332022,
+      "lng": 127.4337667,
+      "nodeId": "P03",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P08"
+    },
+    {
+      "id": 4,
+      "name": "에스컬레이터(벌꿀분식 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 1004.0,
+      "y": 1778.4,
+      "lat": 36.3320037,
+      "lng": 127.4337113,
+      "nodeId": "P04",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P08b"
+    },
+    {
+      "id": 5,
+      "name": "계단(앤티앤스 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단"
+      ],
+      "x": 950.0,
+      "y": 1763.2,
+      "lat": 36.33205,
+      "lng": 127.4337139,
+      "nodeId": "P05",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P20"
+    },
+    {
+      "id": 6,
+      "name": "계단(아트박스 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단"
+      ],
+      "x": 1202.7,
+      "y": 1738.5,
+      "lat": 36.3318689,
+      "lng": 127.4338089,
+      "nodeId": "P06",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P22"
+    },
+    {
+      "id": 7,
+      "name": "에스컬레이터(아트박스 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 1202.7,
+      "y": 1795.5,
+      "lat": 36.3318478,
+      "lng": 127.433745,
+      "nodeId": "P07",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P22b"
+    },
+    {
+      "id": 8,
+      "name": "승강기 B (1·3층)",
+      "floor": 1,
+      "category": "elevator",
+      "aliases": [
+        "승강기 B",
+        "엘리베이터 B"
+      ],
+      "x": 1138.3,
+      "y": 1630.6,
+      "lat": 36.3319574,
+      "lng": 127.4339127,
+      "nodeId": "P08",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P06"
+    },
+    {
+      "id": 9,
+      "name": "승강기 C",
+      "floor": 1,
+      "category": "elevator",
+      "aliases": [
+        "엘리베이터 C"
+      ],
+      "x": 1276.2,
+      "y": 1680.7,
+      "lat": 36.331835,
+      "lng": 127.4338932,
+      "nodeId": null,
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P07"
+    },
+    {
+      "id": 10,
+      "name": "승강기 A (1·3층)",
+      "floor": 1,
+      "category": "elevator",
+      "aliases": [
+        "승강기 A",
+        "엘리베이터 A"
+      ],
+      "x": 1051.1,
+      "y": 325.1,
+      "lat": 36.3325062,
+      "lng": 127.4353526,
+      "nodeId": "P10",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P10"
+    },
+    {
+      "id": 11,
+      "name": "계단(1번 출구 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단"
+      ],
+      "x": 1153.3,
+      "y": 245.1,
+      "lat": 36.3324588,
+      "lng": 127.4354694,
+      "nodeId": "P11",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P11"
+    },
+    {
+      "id": 12,
+      "name": "에스컬레이터(1번 출구 쪽)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 1095.3,
+      "y": 245.1,
+      "lat": 36.3325025,
+      "lng": 127.435454,
+      "nodeId": "P12",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P23"
+    },
+    {
+      "id": 13,
+      "name": "에스컬레이터(1번 출구 쪽 2)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 1213.1,
+      "y": 245.1,
+      "lat": 36.3324138,
+      "lng": 127.4354853,
+      "nodeId": "P13",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "descriptive",
+      "svgId": "1F-P24"
+    },
+    {
+      "id": 14,
+      "name": "여자·남자 화장실",
+      "floor": 1,
+      "category": "restroom",
+      "aliases": [
+        "화장실",
+        "여자 화장실",
+        "남자 화장실"
+      ],
+      "x": 690.6,
+      "y": 1745.0,
+      "lat": 36.332252,
+      "lng": 127.4336653,
+      "nodeId": "P14",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P19"
+    },
+    {
+      "id": 15,
+      "name": "롯데리아",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [],
+      "x": 817.0,
+      "y": 1641.6,
+      "lat": 36.3321951,
+      "lng": 127.4338148,
+      "nodeId": "P15",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P02"
+    },
+    {
+      "id": 16,
+      "name": "예산국수",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [],
+      "x": 972.8,
+      "y": 1641.6,
+      "lat": 36.3320779,
+      "lng": 127.4338563,
+      "nodeId": "P16",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P03"
+    },
+    {
+      "id": 17,
+      "name": "벌꿀분식",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [],
+      "x": 1062.1,
+      "y": 1745.2,
+      "lat": 36.3319723,
+      "lng": 127.433764,
+      "nodeId": "P17",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P04"
+    },
+    {
+      "id": 18,
+      "name": "앤티앤스",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [
+        "앤티앤스 프레즐",
+        "Auntie Anne's"
+      ],
+      "x": 888.2,
+      "y": 1755.6,
+      "lat": 36.3320994,
+      "lng": 127.433706,
+      "nodeId": "P18",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P15"
+    },
+    {
+      "id": 19,
+      "name": "아트박스",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [
+        "ART BOX"
+      ],
+      "x": 1149.5,
+      "y": 1814.5,
+      "lat": 36.3318809,
+      "lng": 127.4337096,
+      "nodeId": "P19",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P17"
+    },
+    {
+      "id": 20,
+      "name": "TMO",
+      "floor": 1,
+      "category": "facility",
+      "aliases": [
+        "국군철도수송지원반",
+        "군 수송지원"
+      ],
+      "x": 564.3,
+      "y": 1814.5,
+      "lat": 36.3323214,
+      "lng": 127.4335538,
+      "nodeId": "P20",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P18"
+    },
+    {
+      "id": 21,
+      "name": "섬섬옥수",
+      "floor": 1,
+      "category": "shop",
+      "aliases": [
+        "섬섬 옥수"
+      ],
+      "x": 703.0,
+      "y": 1892.4,
+      "lat": 36.3321881,
+      "lng": 127.4335034,
+      "nodeId": "P21",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P01"
+    },
+    {
+      "id": 22,
+      "name": "계단 (1·2층)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "계단"
+      ],
+      "x": 475.1,
+      "y": 1819.2,
+      "lat": 36.3323868,
+      "lng": 127.4335248,
+      "nodeId": "P22",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P25"
+    },
+    {
+      "id": 23,
+      "name": "에스컬레이터 (1·2층)",
+      "floor": 1,
+      "category": "vertical_transport",
+      "aliases": [
+        "에스컬레이터"
+      ],
+      "x": 475.1,
+      "y": 1847.8,
+      "lat": 36.3323762,
+      "lng": 127.4334927,
+      "nodeId": "P23",
+      "source": [
+        "svg"
+      ],
+      "nameStatus": "labeled",
+      "svgId": "1F-P26"
+    }
+  ],
+  "notes": [
+    "디자인팀 2D 지도(web-1F-map.svg)에서 자동 추출한 1층 보행 그래프 초안입니다. x·y 는 SVG 좌표(1~4층 공통 좌표계, 격자 1칸 = 190)라 층끼리 그대로 겹쳐 쓸 수 있습니다.",
+    "걷는 곳 = 층 바닥 + 실외 구역 - 방. 벽·방에서 5 이상 떨어진 곳만 지나가게 했습니다. 통로 노드(H)는 방 모서리 바깥·바닥 안쪽 모서리, 접근 노드(P)는 시설 마커에서 가장 가까운 지나갈 수 있는 점이며 실제 출입문 위치는 현장 확인이 필요합니다.",
+    "간선은 서로 보이는 노드끼리 이은 뒤, 다른 노드를 거쳐도 거리가 8% 이내로 같은 긴 간선을 지웠습니다. weight 는 SVG 좌표 길이로, 실거리는 [좌표] 메모의 축척(m/단위)을 곱해 구합니다.",
+    "nodeId 가 null 인 시설은 검색 전용입니다(운행 재확인·미운행 표시 또는 걷는 곳에서 멀리 떨어짐). 층간 이동(계단·에스컬레이터·승강기 연결)은 포함하지 않았습니다.",
+    "그래프가 2개 덩어리로 나뉘어 있습니다(노드 수 [49, 12]). 이 층 안에서는 서로 걸어서 갈 수 없는 구역(다른 층을 거쳐야 함)이거나 통로 폭이 좁아 끊긴 곳입니다.",
+    "경로 제외(검색 전용) 시설: #9 승강기 C. 지도에 운행 재확인 또는 미운행으로 표시되어 있습니다.",
+    "[좌표] 취합본(WGS84). 1~4층 공통 SVG 좌표계에서 기준점 총 63개(교차 확인 2, 카카오 19, 네이버 1, 3층 41)로 아핀 변환, RMSE 7.7 m, 축척 0.0967 m/SVG단위. 카카오 단독/네이버 단독 결과 간 차이 평균 35.0 m, 최대 76.9 m. '3층' 기준점은 3층 취합본 위경도(자체도 추정값)를 옮겨 쓴 것입니다. 현장 검증 전 추정값."
+  ],
+  "extraction": {
+    "provider": "merged",
+    "sources": [
+      "kakao",
+      "naver",
+      "3f"
+    ],
+    "rmseM": 7.68,
+    "affine": {
+      "svgToMeters": [
+        0.023874189,
+        -0.100503799,
+        101.971388872,
+        -0.083234324,
+        -0.040923732,
+        112.530442516
+      ],
+      "originLatLng": [
+        36.3324,
+        127.4343
+      ],
+      "metersPerUnit": 0.09666,
+      "formula": "east = a*x + b*y + c, north = d*x + e*y + f (m, originLatLng 기준)"
+    },
+    "controlPoints": [
+      "3층#1 동측 계단·에스컬레이터 [3층]",
+      "3층#2 엘리베이터(2번 출구·동광장) [3층]",
+      "3층#3 출입구(방풍실 4) [3층]",
+      "3층#4 레드아이 [3층]",
+      "3층#5 화장실(북측 1) [3층]",
+      "3층#6 화장실(북측 2) [3층]",
+      "3층#7 엘리베이터(지도 상단 승강장 연결통로) [3층]",
+      "3층#8 승강장 연결통로(지도 상단) [3층]",
+      "3층#9 직영편의점(북) [3층]",
+      "3층#10 KR스타트업 라운지(공단) [3층]",
+      "3층#12 출입구(방풍실 3) [3층]",
+      "3층#13 직영명품마루 [3층]",
+      "3층#14 꿈돌이와대전여행 [3층]",
+      "3층#15 엘리베이터(지도 위에서 두 번째 승강장 연결통로) [3층]",
+      "3층#16 선상주차장(347대) [3층]",
+      "3층#18 승강장 연결통로(지도 위에서 두 번째) [3층]",
+      "3층#20 대전역약국 [3층]",
+      "3층#22 자동발매기실 [3층]",
+      "3층#25 플라잉스콘 [3층]",
+      "3층#26 마루노바 [3층]",
+      "3층#27 엘리베이터(지도 위에서 세 번째 승강장 연결통로) [3층]",
+      "3층#29 승강장 연결통로(지도 위에서 세 번째) [3층]",
+      "3층#30 도심속작은자연 flos [3층]",
+      "3층#31 엘리베이터(5·6번 승강장) [3층]",
+      "3층#32 매표소(매표실) [3층]",
+      "3층#34 승강장 연결통로 3 (5·6번 승강장) [3층]",
+      "3층#35 신청도할매김밥 [3층]",
+      "3층#37 복순도가 [3층]",
+      "3층#38 카페스토리웨이 [3층]",
+      "3층#40 디자인스킨 [3층]",
+      "3층#41 직영편의점(남) [3층]",
+      "3층#42 엘리베이터(3·4번 승강장) [3층]",
+      "3층#43 엘리베이터(1번 출구·서광장 A) [3층]",
+      "3층#44 승강장 연결통로 2 (3·4번 승강장) [3층]",
+      "3층#46 여객화장실(남)1 [3층]",
+      "3층#47 1번 출구 방향(서광장·지하철 타는 곳) [3층]",
+      "3층#48 화장실(지도 하단) [3층]",
+      "3층#51 1층행 에스컬레이터(서측) [3층]",
+      "3층#54 와플샵 [3층]",
+      "3층#55 코브라독스 [3층]",
+      "3층#57 에그박스 [3층]",
+      "1F-P01 섬섬옥수 (불일치) [카카오]",
+      "1F-P02 롯데리아 (카카오만) [카카오]",
+      "1F-P03 예산국수 (카카오만) [카카오]",
+      "1F-P04 벌꿀분식 (불일치) [카카오]",
+      "1F-P17 아트박스 (불일치) [네이버]",
+      "2F-P01 성심당 대전역점 (일치) [카카오+네이버]",
+      "2F-P02 디저트39 (일치) [카카오+네이버]",
+      "3F-N04 레드아이 (불일치) [카카오]",
+      "3F-N07 코브라 독스 (카카오만) [카카오]",
+      "3F-N08 중소기업 명품마루 (카카오만) [카카오]",
+      "3F-N11 와플샵 (불일치) [카카오]",
+      "3F-N12 플라잉스콘 (카카오만) [카카오]",
+      "3F-N14 신청도할매김밥&부산오뎅 (카카오만) [카카오]",
+      "3F-N17 복순도가 (불일치) [카카오]",
+      "3F-N25 대전역약국 (불일치) [카카오]",
+      "3F-N27 에그박스 (불일치) [카카오]",
+      "3F-P36 유실물센터 (불일치) [카카오]",
+      "4F-P03 수순두부 (불일치) [카카오]",
+      "4F-P04 탐앤탐스 (카카오만) [카카오]",
+      "4F-P06 미미짬뽕 (카카오만) [카카오]",
+      "4F-P11 정동하나미 (불일치) [카카오]",
+      "4F-P12 틈새라면 (불일치) [카카오]"
+    ],
+    "matches": [
+      {
+        "placeId": 21,
+        "svgId": "1F-P01",
+        "name": "섬섬옥수",
+        "candidates": [
+          {
+            "poi": "섬섬옥수 대전역점",
+            "lat": 36.33219633737661,
+            "lng": 127.43353799477535
+          },
+          {
+            "poi": "섬섬옥수대전역점",
+            "lat": 36.3325088,
+            "lng": 127.4342425
+          }
+        ]
+      },
+      {
+        "placeId": 15,
+        "svgId": "1F-P02",
+        "name": "롯데리아",
+        "candidates": [
+          {
+            "poi": "롯데리아 대전역사점",
+            "lat": 36.33218876425622,
+            "lng": 127.4338865641135
+          }
+        ]
+      },
+      {
+        "placeId": 16,
+        "svgId": "1F-P03",
+        "name": "예산국수",
+        "candidates": [
+          {
+            "poi": "예산국수",
+            "lat": 36.33204794103385,
+            "lng": 127.43395260955734
+          }
+        ]
+      },
+      {
+        "placeId": 17,
+        "svgId": "1F-P04",
+        "name": "벌꿀분식",
+        "candidates": [
+          {
+            "poi": "벌꿀분식",
+            "lat": 36.331945718482444,
+            "lng": 127.43381170753486
+          },
+          {
+            "poi": "벌꿀분식",
+            "lat": 36.3317965,
+            "lng": 127.4335406
+          }
+        ]
+      },
+      {
+        "placeId": 18,
+        "svgId": "1F-P15",
+        "name": "앤티앤스",
+        "candidates": [
+          {
+            "poi": "앤티앤스프레즐 대전역사점",
+            "lat": 36.3319062939015,
+            "lng": 127.4337491178346
+          },
+          {
+            "poi": "앤티앤스 대전역사점",
+            "lat": 36.3313335,
+            "lng": 127.4330054
+          }
+        ]
+      },
+      {
+        "placeId": 19,
+        "svgId": "1F-P17",
+        "name": "아트박스",
+        "candidates": [
+          {
+            "poi": "아트박스 대전역사점",
+            "lat": 36.332343085254,
+            "lng": 127.434570164715
+          },
+          {
+            "poi": "아트박스 대전역사점",
+            "lat": 36.3318206,
+            "lng": 127.4337249
+          }
+        ]
+      }
+    ]
+  }
+}

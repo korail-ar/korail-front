@@ -30,11 +30,12 @@ QR 안내판은 `/?start=<id>` 주소를 담으면 됩니다(`START_POINTS`, `sr
 
 ## 데이터
 
-| 파일                                                           | 내용                                                                      |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `src/data/station/source/daejeon-station-3f-graph.merged.json` | 원본 복사본. `coordinate/3f/result/` (2026-11-20, sha256 `892b4b973b78…`) |
-| `public/maps/web-{1..4}F-map.svg`                              | 디자인팀 2D 지도(Google Drive `daejeon-station-map/web`, 2026-11-24)      |
-| `src/data/station/station3f.generated.json`                    | `npm run build:station` 결과. 직접 고치지 않습니다                        |
+| 파일                                                                 | 내용                                                                                                                                                                                       |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `src/data/station/source/daejeon-station-3f-graph.merged.json`       | 원본 복사본. `coordinate/3f/result/` (2026-11-20, sha256 `892b4b973b78…`)                                                                                                                  |
+| `src/data/station/source/daejeon-station-{1,2,4}f-graph.merged.json` | 원본 복사본. `coordinate/all/merged/` (2026-11-25, sha256 1F `1b0223770bb1…` · 2F `df06293b446b…` · 4F `4e650f9d69ae…`). x·y가 지도 SVG 좌표라 변환이 필요 없음. 아직 화면에 연결하지 않음 |
+| `public/maps/web-{1..4}F-map.svg`                                    | 디자인팀 2D 지도(Google Drive `daejeon-station-map/web`, 2026-11-24)                                                                                                                       |
+| `src/data/station/station3f.generated.json`                          | `npm run build:station` 결과. 직접 고치지 않습니다                                                                                                                                         |
 
 원본 x·y는 3D 렌더 이미지(2048×1386) 픽셀이라 2D 지도와 좌표계가 다릅니다. `scripts/build-station-data.mjs`가
 이름이 같은 시설 41곳을 기준점으로 원근 변환 + thin-plate spline 보정을 해서 지도 좌표로 옮기고,
