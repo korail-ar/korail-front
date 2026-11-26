@@ -1,0 +1,5991 @@
+{
+  "schemaVersion": "0.1.0",
+  "documentType": "draft_multifloor_walk_graph_with_existing_3f",
+  "createdAt": "2026-11-26",
+  "station": "대전역",
+  "sourcePolicy": "첨부 SVG에 표시된 통행 공간만 후보로 사용; 지도·현장 확인 전 초안",
+  "distancePolicy": {
+    "metersPerSvgUnit": 0.1049,
+    "status": "provisional_from_3f_grid",
+    "walkingMetersPerMinute": 60,
+    "displayFormat": "약 N분 · 약 Nm",
+    "verticalTransferTimeSeconds": null
+  },
+  "floors": {
+    "1F": {
+      "floor": "1F",
+      "coordinateSystem": "ui/public/maps/web-1F-map.svg viewBox",
+      "sourceSvg": "ui/public/maps/web-1F-map.svg",
+      "status": "aligned_to_current_plan_field_walkability_review_pending",
+      "distanceScaleMetersPerSvgUnit": 0.1049,
+      "distanceScaleStatus": "provisional_transferred_from_3f_grid",
+      "edgePolicy": "axis_aligned_only; no diagonal; no travel through shop or railway area",
+      "nodes": [
+        {
+          "id": "1E01",
+          "x": 1063.71,
+          "y": 248.53,
+          "name": "동광장 역사 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            640,
+            260
+          ]
+        },
+        {
+          "id": "1E02",
+          "x": 1095.28,
+          "y": 245.11,
+          "name": "동광장 에스컬레이터 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            670,
+            260
+          ]
+        },
+        {
+          "id": "1E03",
+          "x": 1153.31,
+          "y": 245.1,
+          "name": "동광장 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            740,
+            260
+          ]
+        },
+        {
+          "id": "1E04",
+          "x": 1213.1,
+          "y": 245.1,
+          "name": "동광장 에스컬레이터 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            800,
+            260
+          ]
+        },
+        {
+          "id": "1E05",
+          "x": 1051.11,
+          "y": 325.09,
+          "name": "승강기 A 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            640,
+            315
+          ]
+        },
+        {
+          "id": "1E06",
+          "x": 1150.4,
+          "y": 315.96,
+          "name": "동광장 중앙 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            740,
+            315
+          ]
+        },
+        {
+          "id": "1E07",
+          "x": 1212.05,
+          "y": 313.34,
+          "name": "동광장 동쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            800,
+            315
+          ]
+        },
+        {
+          "id": "1W01",
+          "x": 753.4,
+          "y": 1621.55,
+          "name": "서광장 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            210,
+            1630
+          ]
+        },
+        {
+          "id": "1W02",
+          "x": 833.84,
+          "y": 1639.82,
+          "name": "롯데리아 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            375,
+            1630
+          ]
+        },
+        {
+          "id": "1W03",
+          "x": 817.14,
+          "y": 1641.62,
+          "name": "롯데리아 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            420,
+            1630
+          ]
+        },
+        {
+          "id": "1W04",
+          "x": 972.68,
+          "y": 1641.62,
+          "name": "예산국수 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            580,
+            1630
+          ]
+        },
+        {
+          "id": "1W05",
+          "x": 1095.57,
+          "y": 1658.58,
+          "name": "서광장 동쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            680,
+            1630
+          ]
+        },
+        {
+          "id": "1W06",
+          "x": 1129.59,
+          "y": 1661.15,
+          "name": "승강기 B 방면",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            700,
+            1630
+          ]
+        },
+        {
+          "id": "1W07",
+          "x": 1138.33,
+          "y": 1630.6,
+          "name": "승강기 B 접근점",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            700,
+            1605
+          ]
+        },
+        {
+          "id": "1W08",
+          "x": 748.54,
+          "y": 1770.74,
+          "name": "TMO 접근 통로",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            210,
+            1760
+          ]
+        },
+        {
+          "id": "1W09",
+          "x": 889.72,
+          "y": 1743.23,
+          "name": "앤티앤스 서쪽 분기",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            375,
+            1700
+          ]
+        },
+        {
+          "id": "1W10",
+          "x": 887.93,
+          "y": 1755.58,
+          "name": "앤티앤스 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            420,
+            1700
+          ]
+        },
+        {
+          "id": "1W11",
+          "x": 1062.13,
+          "y": 1745.19,
+          "name": "벌꿀분식 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            680,
+            1700
+          ]
+        },
+        {
+          "id": "1W12",
+          "x": 1110.65,
+          "y": 1816.12,
+          "name": "아트박스 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            680,
+            1768
+          ]
+        },
+        {
+          "id": "1W13",
+          "x": 1149.45,
+          "y": 1814.51,
+          "name": "아트박스 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            690,
+            1768
+          ]
+        },
+        {
+          "id": "1W14",
+          "x": 765.3,
+          "y": 1838.76,
+          "name": "서광장 남쪽 횡단 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            375,
+            1785
+          ]
+        },
+        {
+          "id": "1W15",
+          "x": 494.68,
+          "y": 1869.31,
+          "name": "계단·에스컬레이터 방면",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            530,
+            1785
+          ]
+        },
+        {
+          "id": "1W16",
+          "x": 475.44,
+          "y": 1847.78,
+          "name": "1·2층 계단 접근점",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            530,
+            1765
+          ]
+        },
+        {
+          "id": "1W17",
+          "x": 1130.97,
+          "y": 1834.12,
+          "name": "서광장 동쪽 남단 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            680,
+            1785
+          ]
+        },
+        {
+          "id": "1W18",
+          "x": 703.02,
+          "y": 1892.41,
+          "name": "섬섬옥수 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            375,
+            1845
+          ]
+        },
+        {
+          "id": "1W19",
+          "x": 925.81,
+          "y": 1913.04,
+          "name": "4번 출구 방면",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            600,
+            1845
+          ]
+        },
+        {
+          "id": "1W20",
+          "x": 1005.9,
+          "y": 1936.1,
+          "name": "4번 출구 경계",
+          "kind": "exit_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            600,
+            1870
+          ]
+        },
+        {
+          "id": "1W21",
+          "x": 1224.76,
+          "y": 1897.92,
+          "name": "서광장 남동쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            680,
+            1845
+          ]
+        },
+        {
+          "id": "1W22",
+          "x": 949.14,
+          "y": 1656.43,
+          "name": "1·3층 계단 접근점",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            580,
+            1640
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "1F-E001",
+          "source": "1E01",
+          "target": "1E02",
+          "geometrySvg": [
+            [
+              1063.71,
+              248.53
+            ],
+            [
+              1095.28,
+              245.11
+            ]
+          ],
+          "lengthSvgUnits": 31.75,
+          "estimatedLengthM": 3.33,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              640,
+              260
+            ],
+            [
+              670,
+              260
+            ]
+          ]
+        },
+        {
+          "id": "1F-E002",
+          "source": "1E02",
+          "target": "1E03",
+          "geometrySvg": [
+            [
+              1095.28,
+              245.11
+            ],
+            [
+              1153.31,
+              245.1
+            ]
+          ],
+          "lengthSvgUnits": 58.03,
+          "estimatedLengthM": 6.09,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              670,
+              260
+            ],
+            [
+              740,
+              260
+            ]
+          ]
+        },
+        {
+          "id": "1F-E003",
+          "source": "1E03",
+          "target": "1E04",
+          "geometrySvg": [
+            [
+              1153.31,
+              245.1
+            ],
+            [
+              1213.1,
+              245.1
+            ]
+          ],
+          "lengthSvgUnits": 59.79,
+          "estimatedLengthM": 6.27,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              740,
+              260
+            ],
+            [
+              800,
+              260
+            ]
+          ]
+        },
+        {
+          "id": "1F-E004",
+          "source": "1E01",
+          "target": "1E05",
+          "geometrySvg": [
+            [
+              1063.71,
+              248.53
+            ],
+            [
+              1051.11,
+              325.09
+            ]
+          ],
+          "lengthSvgUnits": 77.59,
+          "estimatedLengthM": 8.14,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              640,
+              260
+            ],
+            [
+              640,
+              315
+            ]
+          ]
+        },
+        {
+          "id": "1F-E005",
+          "source": "1E05",
+          "target": "1E06",
+          "geometrySvg": [
+            [
+              1051.11,
+              325.09
+            ],
+            [
+              1150.4,
+              315.96
+            ]
+          ],
+          "lengthSvgUnits": 99.71,
+          "estimatedLengthM": 10.46,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              640,
+              315
+            ],
+            [
+              740,
+              315
+            ]
+          ]
+        },
+        {
+          "id": "1F-E006",
+          "source": "1E06",
+          "target": "1E07",
+          "geometrySvg": [
+            [
+              1150.4,
+              315.96
+            ],
+            [
+              1212.05,
+              313.34
+            ]
+          ],
+          "lengthSvgUnits": 61.71,
+          "estimatedLengthM": 6.47,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              740,
+              315
+            ],
+            [
+              800,
+              315
+            ]
+          ]
+        },
+        {
+          "id": "1F-E007",
+          "source": "1E03",
+          "target": "1E06",
+          "geometrySvg": [
+            [
+              1153.31,
+              245.1
+            ],
+            [
+              1150.4,
+              315.96
+            ]
+          ],
+          "lengthSvgUnits": 70.92,
+          "estimatedLengthM": 7.44,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              740,
+              260
+            ],
+            [
+              740,
+              315
+            ]
+          ]
+        },
+        {
+          "id": "1F-E008",
+          "source": "1E04",
+          "target": "1E07",
+          "geometrySvg": [
+            [
+              1213.1,
+              245.1
+            ],
+            [
+              1212.05,
+              313.34
+            ]
+          ],
+          "lengthSvgUnits": 68.25,
+          "estimatedLengthM": 7.16,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              800,
+              260
+            ],
+            [
+              800,
+              315
+            ]
+          ]
+        },
+        {
+          "id": "1F-E009",
+          "source": "1W01",
+          "target": "1W02",
+          "geometrySvg": [
+            [
+              753.4,
+              1621.55
+            ],
+            [
+              833.84,
+              1639.82
+            ]
+          ],
+          "lengthSvgUnits": 82.49,
+          "estimatedLengthM": 8.65,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              210,
+              1630
+            ],
+            [
+              375,
+              1630
+            ]
+          ]
+        },
+        {
+          "id": "1F-E010",
+          "source": "1W02",
+          "target": "1W03",
+          "geometrySvg": [
+            [
+              833.84,
+              1639.82
+            ],
+            [
+              817.14,
+              1641.62
+            ]
+          ],
+          "lengthSvgUnits": 16.8,
+          "estimatedLengthM": 1.76,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1630
+            ],
+            [
+              420,
+              1630
+            ]
+          ]
+        },
+        {
+          "id": "1F-E011",
+          "source": "1W03",
+          "target": "1W04",
+          "geometrySvg": [
+            [
+              817.14,
+              1641.62
+            ],
+            [
+              972.68,
+              1641.62
+            ]
+          ],
+          "lengthSvgUnits": 155.54,
+          "estimatedLengthM": 16.32,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              420,
+              1630
+            ],
+            [
+              580,
+              1630
+            ]
+          ]
+        },
+        {
+          "id": "1F-E012",
+          "source": "1W04",
+          "target": "1W05",
+          "geometrySvg": [
+            [
+              972.68,
+              1641.62
+            ],
+            [
+              1095.57,
+              1658.58
+            ]
+          ],
+          "lengthSvgUnits": 124.05,
+          "estimatedLengthM": 13.01,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              580,
+              1630
+            ],
+            [
+              680,
+              1630
+            ]
+          ]
+        },
+        {
+          "id": "1F-E013",
+          "source": "1W05",
+          "target": "1W06",
+          "geometrySvg": [
+            [
+              1095.57,
+              1658.58
+            ],
+            [
+              1129.59,
+              1661.15
+            ]
+          ],
+          "lengthSvgUnits": 34.12,
+          "estimatedLengthM": 3.58,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1630
+            ],
+            [
+              700,
+              1630
+            ]
+          ]
+        },
+        {
+          "id": "1F-E014",
+          "source": "1W06",
+          "target": "1W07",
+          "geometrySvg": [
+            [
+              1129.59,
+              1661.15
+            ],
+            [
+              1138.33,
+              1630.6
+            ]
+          ],
+          "lengthSvgUnits": 31.78,
+          "estimatedLengthM": 3.33,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              700,
+              1630
+            ],
+            [
+              700,
+              1605
+            ]
+          ]
+        },
+        {
+          "id": "1F-E015",
+          "source": "1W01",
+          "target": "1W08",
+          "geometrySvg": [
+            [
+              753.4,
+              1621.55
+            ],
+            [
+              748.54,
+              1770.74
+            ]
+          ],
+          "lengthSvgUnits": 149.27,
+          "estimatedLengthM": 15.66,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              210,
+              1630
+            ],
+            [
+              210,
+              1760
+            ]
+          ]
+        },
+        {
+          "id": "1F-E016",
+          "source": "1W02",
+          "target": "1W09",
+          "geometrySvg": [
+            [
+              833.84,
+              1639.82
+            ],
+            [
+              889.72,
+              1743.23
+            ]
+          ],
+          "lengthSvgUnits": 117.54,
+          "estimatedLengthM": 12.33,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1630
+            ],
+            [
+              375,
+              1700
+            ]
+          ]
+        },
+        {
+          "id": "1F-E017",
+          "source": "1W09",
+          "target": "1W14",
+          "geometrySvg": [
+            [
+              889.72,
+              1743.23
+            ],
+            [
+              765.3,
+              1838.76
+            ]
+          ],
+          "lengthSvgUnits": 156.86,
+          "estimatedLengthM": 16.45,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1700
+            ],
+            [
+              375,
+              1785
+            ]
+          ]
+        },
+        {
+          "id": "1F-E018",
+          "source": "1W14",
+          "target": "1W18",
+          "geometrySvg": [
+            [
+              765.3,
+              1838.76
+            ],
+            [
+              703.02,
+              1892.41
+            ]
+          ],
+          "lengthSvgUnits": 82.2,
+          "estimatedLengthM": 8.62,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1785
+            ],
+            [
+              375,
+              1845
+            ]
+          ]
+        },
+        {
+          "id": "1F-E019",
+          "source": "1W09",
+          "target": "1W10",
+          "geometrySvg": [
+            [
+              889.72,
+              1743.23
+            ],
+            [
+              887.93,
+              1755.58
+            ]
+          ],
+          "lengthSvgUnits": 12.48,
+          "estimatedLengthM": 1.31,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1700
+            ],
+            [
+              420,
+              1700
+            ]
+          ]
+        },
+        {
+          "id": "1F-E020",
+          "source": "1W05",
+          "target": "1W11",
+          "geometrySvg": [
+            [
+              1095.57,
+              1658.58
+            ],
+            [
+              1062.13,
+              1745.19
+            ]
+          ],
+          "lengthSvgUnits": 92.84,
+          "estimatedLengthM": 9.74,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1630
+            ],
+            [
+              680,
+              1700
+            ]
+          ]
+        },
+        {
+          "id": "1F-E021",
+          "source": "1W11",
+          "target": "1W12",
+          "geometrySvg": [
+            [
+              1062.13,
+              1745.19
+            ],
+            [
+              1110.65,
+              1816.12
+            ]
+          ],
+          "lengthSvgUnits": 85.94,
+          "estimatedLengthM": 9.02,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1700
+            ],
+            [
+              680,
+              1768
+            ]
+          ]
+        },
+        {
+          "id": "1F-E022",
+          "source": "1W12",
+          "target": "1W17",
+          "geometrySvg": [
+            [
+              1110.65,
+              1816.12
+            ],
+            [
+              1130.97,
+              1834.12
+            ]
+          ],
+          "lengthSvgUnits": 27.15,
+          "estimatedLengthM": 2.85,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1768
+            ],
+            [
+              680,
+              1785
+            ]
+          ]
+        },
+        {
+          "id": "1F-E023",
+          "source": "1W17",
+          "target": "1W21",
+          "geometrySvg": [
+            [
+              1130.97,
+              1834.12
+            ],
+            [
+              1224.76,
+              1897.92
+            ]
+          ],
+          "lengthSvgUnits": 113.43,
+          "estimatedLengthM": 11.9,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1785
+            ],
+            [
+              680,
+              1845
+            ]
+          ]
+        },
+        {
+          "id": "1F-E024",
+          "source": "1W12",
+          "target": "1W13",
+          "geometrySvg": [
+            [
+              1110.65,
+              1816.12
+            ],
+            [
+              1149.45,
+              1814.51
+            ]
+          ],
+          "lengthSvgUnits": 38.83,
+          "estimatedLengthM": 4.07,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              680,
+              1768
+            ],
+            [
+              690,
+              1768
+            ]
+          ]
+        },
+        {
+          "id": "1F-E025",
+          "source": "1W14",
+          "target": "1W15",
+          "geometrySvg": [
+            [
+              765.3,
+              1838.76
+            ],
+            [
+              494.68,
+              1869.31
+            ]
+          ],
+          "lengthSvgUnits": 272.34,
+          "estimatedLengthM": 28.57,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1785
+            ],
+            [
+              530,
+              1785
+            ]
+          ]
+        },
+        {
+          "id": "1F-E026",
+          "source": "1W15",
+          "target": "1W17",
+          "geometrySvg": [
+            [
+              494.68,
+              1869.31
+            ],
+            [
+              1130.97,
+              1834.12
+            ]
+          ],
+          "lengthSvgUnits": 637.26,
+          "estimatedLengthM": 66.85,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              530,
+              1785
+            ],
+            [
+              680,
+              1785
+            ]
+          ]
+        },
+        {
+          "id": "1F-E027",
+          "source": "1W15",
+          "target": "1W16",
+          "geometrySvg": [
+            [
+              494.68,
+              1869.31
+            ],
+            [
+              475.44,
+              1847.78
+            ]
+          ],
+          "lengthSvgUnits": 28.87,
+          "estimatedLengthM": 3.03,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              530,
+              1785
+            ],
+            [
+              530,
+              1765
+            ]
+          ]
+        },
+        {
+          "id": "1F-E028",
+          "source": "1W18",
+          "target": "1W19",
+          "geometrySvg": [
+            [
+              703.02,
+              1892.41
+            ],
+            [
+              925.81,
+              1913.04
+            ]
+          ],
+          "lengthSvgUnits": 223.74,
+          "estimatedLengthM": 23.47,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              375,
+              1845
+            ],
+            [
+              600,
+              1845
+            ]
+          ]
+        },
+        {
+          "id": "1F-E029",
+          "source": "1W19",
+          "target": "1W21",
+          "geometrySvg": [
+            [
+              925.81,
+              1913.04
+            ],
+            [
+              1224.76,
+              1897.92
+            ]
+          ],
+          "lengthSvgUnits": 299.33,
+          "estimatedLengthM": 31.4,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              600,
+              1845
+            ],
+            [
+              680,
+              1845
+            ]
+          ]
+        },
+        {
+          "id": "1F-E030",
+          "source": "1W19",
+          "target": "1W20",
+          "geometrySvg": [
+            [
+              925.81,
+              1913.04
+            ],
+            [
+              1005.9,
+              1936.1
+            ]
+          ],
+          "lengthSvgUnits": 83.34,
+          "estimatedLengthM": 8.74,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              600,
+              1845
+            ],
+            [
+              600,
+              1870
+            ]
+          ]
+        },
+        {
+          "id": "1F-E031",
+          "source": "1W04",
+          "target": "1W22",
+          "geometrySvg": [
+            [
+              972.68,
+              1641.62
+            ],
+            [
+              949.14,
+              1656.43
+            ]
+          ],
+          "lengthSvgUnits": 27.81,
+          "estimatedLengthM": 2.92,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              580,
+              1630
+            ],
+            [
+              580,
+              1640
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        "동광장 쪽 건물과 서광장 쪽 역사는 SVG에서 분리되어 있으므로 연결하지 않음",
+        "동광장↔서광장 이동은 3층을 경유해야 함(사용자 확인, 2026-11-26)",
+        "승강기 C는 재확인 필요 표기이므로 그래프에서 제외",
+        "매장 접근점은 출입문 확정 좌표가 아니라 통로 쪽 추정 접근점"
+      ]
+    },
+    "2F": {
+      "floor": "2F",
+      "coordinateSystem": "ui/public/maps/web-2F-map.svg viewBox",
+      "sourceSvg": "ui/public/maps/web-2F-map.svg",
+      "status": "aligned_to_current_plan_field_walkability_review_pending",
+      "distanceScaleMetersPerSvgUnit": 0.1049,
+      "distanceScaleStatus": "provisional_transferred_from_3f_grid",
+      "edgePolicy": "axis_aligned_only; no diagonal; no travel through shop or railway area",
+      "nodes": [
+        {
+          "id": "2A01",
+          "x": 696.0,
+          "y": 1637.75,
+          "name": "서쪽 2·3층 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            140,
+            250
+          ]
+        },
+        {
+          "id": "2A02",
+          "x": 693.47,
+          "y": 1609.39,
+          "name": "서쪽 주통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            170,
+            250
+          ]
+        },
+        {
+          "id": "2A03",
+          "x": 788.56,
+          "y": 1602.07,
+          "name": "성심당 북서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            220,
+            250
+          ]
+        },
+        {
+          "id": "2A04",
+          "x": 961.36,
+          "y": 1638.64,
+          "name": "중앙 북쪽 통로·2·3층 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            400,
+            250
+          ]
+        },
+        {
+          "id": "2A05",
+          "x": 1007.23,
+          "y": 1611.72,
+          "name": "동쪽 주통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            450,
+            250
+          ]
+        },
+        {
+          "id": "2A06",
+          "x": 1123.1,
+          "y": 1536.98,
+          "name": "동쪽 통로 끝",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            550,
+            250
+          ]
+        },
+        {
+          "id": "2A07",
+          "x": 670.92,
+          "y": 1718.38,
+          "name": "물품보관함 앞",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            170,
+            300
+          ]
+        },
+        {
+          "id": "2A08",
+          "x": 635.75,
+          "y": 1739.13,
+          "name": "물품보관함 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            125,
+            300
+          ]
+        },
+        {
+          "id": "2A09",
+          "x": 676.69,
+          "y": 1738.93,
+          "name": "성심당 서쪽 분기",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            170,
+            310
+          ]
+        },
+        {
+          "id": "2A10",
+          "x": 839.58,
+          "y": 1717.63,
+          "name": "성심당 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            220,
+            310
+          ]
+        },
+        {
+          "id": "2A11",
+          "x": 714.01,
+          "y": 1842.72,
+          "name": "서쪽 남단 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            170,
+            370
+          ]
+        },
+        {
+          "id": "2A12",
+          "x": 715.4,
+          "y": 1848.64,
+          "name": "1·2층 계단·에스컬레이터 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            170,
+            375
+          ]
+        },
+        {
+          "id": "2A13",
+          "x": 704.3,
+          "y": 1888.34,
+          "name": "5번 출구 경계",
+          "kind": "exit_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            160,
+            448
+          ]
+        },
+        {
+          "id": "2A14",
+          "x": 917.81,
+          "y": 1749.79,
+          "name": "디저트39 접근점",
+          "kind": "place_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            400,
+            303
+          ]
+        },
+        {
+          "id": "2A15",
+          "x": 991.77,
+          "y": 1729.05,
+          "name": "동쪽 1·2층 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            450,
+            345
+          ]
+        },
+        {
+          "id": "2A17",
+          "x": 633.07,
+          "y": 1843.84,
+          "name": "서쪽 출구 우회 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            120,
+            370
+          ]
+        },
+        {
+          "id": "2A18",
+          "x": 645.01,
+          "y": 1887.6,
+          "name": "서쪽 출구 남단 통로",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            120,
+            430
+          ]
+        },
+        {
+          "id": "2A19",
+          "x": 646.55,
+          "y": 1898.14,
+          "name": "5번 출구 서쪽 접근점",
+          "kind": "junction",
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceSvgPoint": [
+            120,
+            448
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "2F-E001",
+          "source": "2A01",
+          "target": "2A02",
+          "geometrySvg": [
+            [
+              696.0,
+              1637.75
+            ],
+            [
+              693.47,
+              1609.39
+            ]
+          ],
+          "lengthSvgUnits": 28.47,
+          "estimatedLengthM": 2.99,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              140,
+              250
+            ],
+            [
+              170,
+              250
+            ]
+          ]
+        },
+        {
+          "id": "2F-E002",
+          "source": "2A02",
+          "target": "2A03",
+          "geometrySvg": [
+            [
+              693.47,
+              1609.39
+            ],
+            [
+              788.56,
+              1602.07
+            ]
+          ],
+          "lengthSvgUnits": 95.37,
+          "estimatedLengthM": 10.0,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              250
+            ],
+            [
+              220,
+              250
+            ]
+          ]
+        },
+        {
+          "id": "2F-E003",
+          "source": "2A03",
+          "target": "2A04",
+          "geometrySvg": [
+            [
+              788.56,
+              1602.07
+            ],
+            [
+              961.36,
+              1638.64
+            ]
+          ],
+          "lengthSvgUnits": 176.63,
+          "estimatedLengthM": 18.53,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              220,
+              250
+            ],
+            [
+              400,
+              250
+            ]
+          ]
+        },
+        {
+          "id": "2F-E004",
+          "source": "2A04",
+          "target": "2A05",
+          "geometrySvg": [
+            [
+              961.36,
+              1638.64
+            ],
+            [
+              1007.23,
+              1611.72
+            ]
+          ],
+          "lengthSvgUnits": 53.19,
+          "estimatedLengthM": 5.58,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              400,
+              250
+            ],
+            [
+              450,
+              250
+            ]
+          ]
+        },
+        {
+          "id": "2F-E005",
+          "source": "2A05",
+          "target": "2A06",
+          "geometrySvg": [
+            [
+              1007.23,
+              1611.72
+            ],
+            [
+              1123.1,
+              1536.98
+            ]
+          ],
+          "lengthSvgUnits": 137.88,
+          "estimatedLengthM": 14.46,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              450,
+              250
+            ],
+            [
+              550,
+              250
+            ]
+          ]
+        },
+        {
+          "id": "2F-E006",
+          "source": "2A02",
+          "target": "2A07",
+          "geometrySvg": [
+            [
+              693.47,
+              1609.39
+            ],
+            [
+              670.92,
+              1718.38
+            ]
+          ],
+          "lengthSvgUnits": 111.3,
+          "estimatedLengthM": 11.68,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              250
+            ],
+            [
+              170,
+              300
+            ]
+          ]
+        },
+        {
+          "id": "2F-E007",
+          "source": "2A07",
+          "target": "2A09",
+          "geometrySvg": [
+            [
+              670.92,
+              1718.38
+            ],
+            [
+              676.69,
+              1738.93
+            ]
+          ],
+          "lengthSvgUnits": 21.34,
+          "estimatedLengthM": 2.24,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              300
+            ],
+            [
+              170,
+              310
+            ]
+          ]
+        },
+        {
+          "id": "2F-E008",
+          "source": "2A09",
+          "target": "2A11",
+          "geometrySvg": [
+            [
+              676.69,
+              1738.93
+            ],
+            [
+              714.01,
+              1842.72
+            ]
+          ],
+          "lengthSvgUnits": 110.3,
+          "estimatedLengthM": 11.57,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              310
+            ],
+            [
+              170,
+              370
+            ]
+          ]
+        },
+        {
+          "id": "2F-E009",
+          "source": "2A11",
+          "target": "2A12",
+          "geometrySvg": [
+            [
+              714.01,
+              1842.72
+            ],
+            [
+              715.4,
+              1848.64
+            ]
+          ],
+          "lengthSvgUnits": 6.08,
+          "estimatedLengthM": 0.64,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              370
+            ],
+            [
+              170,
+              375
+            ]
+          ]
+        },
+        {
+          "id": "2F-E010",
+          "source": "2A11",
+          "target": "2A17",
+          "geometrySvg": [
+            [
+              714.01,
+              1842.72
+            ],
+            [
+              633.07,
+              1843.84
+            ]
+          ],
+          "lengthSvgUnits": 80.95,
+          "estimatedLengthM": 8.49,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              370
+            ],
+            [
+              120,
+              370
+            ]
+          ]
+        },
+        {
+          "id": "2F-E011",
+          "source": "2A17",
+          "target": "2A18",
+          "geometrySvg": [
+            [
+              633.07,
+              1843.84
+            ],
+            [
+              645.01,
+              1887.6
+            ]
+          ],
+          "lengthSvgUnits": 45.36,
+          "estimatedLengthM": 4.76,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              120,
+              370
+            ],
+            [
+              120,
+              430
+            ]
+          ]
+        },
+        {
+          "id": "2F-E012",
+          "source": "2A18",
+          "target": "2A19",
+          "geometrySvg": [
+            [
+              645.01,
+              1887.6
+            ],
+            [
+              646.55,
+              1898.14
+            ]
+          ],
+          "lengthSvgUnits": 10.65,
+          "estimatedLengthM": 1.12,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              120,
+              430
+            ],
+            [
+              120,
+              448
+            ]
+          ]
+        },
+        {
+          "id": "2F-E013",
+          "source": "2A19",
+          "target": "2A13",
+          "geometrySvg": [
+            [
+              646.55,
+              1898.14
+            ],
+            [
+              704.3,
+              1888.34
+            ]
+          ],
+          "lengthSvgUnits": 58.58,
+          "estimatedLengthM": 6.15,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              120,
+              448
+            ],
+            [
+              160,
+              448
+            ]
+          ]
+        },
+        {
+          "id": "2F-E014",
+          "source": "2A07",
+          "target": "2A08",
+          "geometrySvg": [
+            [
+              670.92,
+              1718.38
+            ],
+            [
+              635.75,
+              1739.13
+            ]
+          ],
+          "lengthSvgUnits": 40.83,
+          "estimatedLengthM": 4.28,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              300
+            ],
+            [
+              125,
+              300
+            ]
+          ]
+        },
+        {
+          "id": "2F-E015",
+          "source": "2A09",
+          "target": "2A10",
+          "geometrySvg": [
+            [
+              676.69,
+              1738.93
+            ],
+            [
+              839.58,
+              1717.63
+            ]
+          ],
+          "lengthSvgUnits": 164.28,
+          "estimatedLengthM": 17.23,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              170,
+              310
+            ],
+            [
+              220,
+              310
+            ]
+          ]
+        },
+        {
+          "id": "2F-E016",
+          "source": "2A04",
+          "target": "2A14",
+          "geometrySvg": [
+            [
+              961.36,
+              1638.64
+            ],
+            [
+              917.81,
+              1749.79
+            ]
+          ],
+          "lengthSvgUnits": 119.38,
+          "estimatedLengthM": 12.52,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              400,
+              250
+            ],
+            [
+              400,
+              303
+            ]
+          ]
+        },
+        {
+          "id": "2F-E017",
+          "source": "2A05",
+          "target": "2A15",
+          "geometrySvg": [
+            [
+              1007.23,
+              1611.72
+            ],
+            [
+              991.77,
+              1729.05
+            ]
+          ],
+          "lengthSvgUnits": 118.34,
+          "estimatedLengthM": 12.41,
+          "verificationStatus": "aligned_to_web_plan_marker_estimate",
+          "sourceGeometrySvg": [
+            [
+              450,
+              250
+            ],
+            [
+              450,
+              345
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        "성심당과 디저트39 내부를 통과하는 간선 없음",
+        "2A04는 2·3층 계단 남쪽 접근점도 겸함",
+        "2A12는 두 수직 동선의 통로 접근점이며 수단별 입구 확정 전"
+      ]
+    },
+    "4F": {
+      "floor": "4F",
+      "coordinateSystem": "user_uploaded_svg_viewBox",
+      "sourceSvg": "daejeon-station-4F-map.svg",
+      "status": "draft_requires_walkability_and_door_review",
+      "distanceScaleMetersPerSvgUnit": 0.1049,
+      "distanceScaleStatus": "provisional_transferred_from_3f_grid",
+      "edgePolicy": "axis_aligned_only; no diagonal; no travel through shop or railway area",
+      "nodes": [
+        {
+          "id": "4A01",
+          "x": 270,
+          "y": 200,
+          "name": "여자 화장실 방면",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A02",
+          "x": 270,
+          "y": 225,
+          "name": "남자 화장실 방면",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A03",
+          "x": 270,
+          "y": 250,
+          "name": "식당가 북서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A04",
+          "x": 350,
+          "y": 250,
+          "name": "북쪽 3·4층 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A05",
+          "x": 450,
+          "y": 250,
+          "name": "식당가 북동쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A06",
+          "x": 270,
+          "y": 350,
+          "name": "수순두부 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A07",
+          "x": 285,
+          "y": 350,
+          "name": "수순두부 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A08",
+          "x": 450,
+          "y": 350,
+          "name": "탐앤탐스 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A09",
+          "x": 445,
+          "y": 350,
+          "name": "탐앤탐스 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A10",
+          "x": 270,
+          "y": 470,
+          "name": "육거리 소문난 만두 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A11",
+          "x": 285,
+          "y": 470,
+          "name": "육거리 소문난 만두 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A12",
+          "x": 450,
+          "y": 470,
+          "name": "미미짬뽕 앞 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A13",
+          "x": 445,
+          "y": 470,
+          "name": "미미짬뽕 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A14",
+          "x": 270,
+          "y": 560,
+          "name": "식당가 중간 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A15",
+          "x": 450,
+          "y": 560,
+          "name": "승강기 D 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A16",
+          "x": 270,
+          "y": 625,
+          "name": "식당가 남쪽 횡단 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A17",
+          "x": 380,
+          "y": 625,
+          "name": "3·4층 에스컬레이터 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A18",
+          "x": 420,
+          "y": 625,
+          "name": "남쪽 계단 방면 분기",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A19",
+          "x": 450,
+          "y": 625,
+          "name": "동쪽 통로 끝",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A20",
+          "x": 420,
+          "y": 650,
+          "name": "남쪽 3·4층 계단 앞",
+          "kind": "vertical_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A21",
+          "x": 270,
+          "y": 700,
+          "name": "던킨도넛 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A22",
+          "x": 420,
+          "y": 700,
+          "name": "던킨도넛 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A23",
+          "x": 270,
+          "y": 765,
+          "name": "정동하나미 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A24",
+          "x": 420,
+          "y": 765,
+          "name": "정동하나미 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A25",
+          "x": 270,
+          "y": 830,
+          "name": "틈새라면 서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A26",
+          "x": 420,
+          "y": 830,
+          "name": "틈새라면 접근점",
+          "kind": "place_access",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A27",
+          "x": 270,
+          "y": 880,
+          "name": "식당가 남서쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4A28",
+          "x": 420,
+          "y": 880,
+          "name": "식당가 남동쪽 통로",
+          "kind": "junction",
+          "verificationStatus": "svg_plan_estimate"
+        }
+      ],
+      "edges": [
+        {
+          "id": "4F-E001",
+          "source": "4A01",
+          "target": "4A02",
+          "geometrySvg": [
+            [
+              270,
+              200
+            ],
+            [
+              270,
+              225
+            ]
+          ],
+          "lengthSvgUnits": 25,
+          "estimatedLengthM": 2.62,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E002",
+          "source": "4A02",
+          "target": "4A03",
+          "geometrySvg": [
+            [
+              270,
+              225
+            ],
+            [
+              270,
+              250
+            ]
+          ],
+          "lengthSvgUnits": 25,
+          "estimatedLengthM": 2.62,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E003",
+          "source": "4A03",
+          "target": "4A06",
+          "geometrySvg": [
+            [
+              270,
+              250
+            ],
+            [
+              270,
+              350
+            ]
+          ],
+          "lengthSvgUnits": 100,
+          "estimatedLengthM": 10.49,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E004",
+          "source": "4A06",
+          "target": "4A10",
+          "geometrySvg": [
+            [
+              270,
+              350
+            ],
+            [
+              270,
+              470
+            ]
+          ],
+          "lengthSvgUnits": 120,
+          "estimatedLengthM": 12.59,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E005",
+          "source": "4A10",
+          "target": "4A14",
+          "geometrySvg": [
+            [
+              270,
+              470
+            ],
+            [
+              270,
+              560
+            ]
+          ],
+          "lengthSvgUnits": 90,
+          "estimatedLengthM": 9.44,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E006",
+          "source": "4A14",
+          "target": "4A16",
+          "geometrySvg": [
+            [
+              270,
+              560
+            ],
+            [
+              270,
+              625
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E007",
+          "source": "4A16",
+          "target": "4A21",
+          "geometrySvg": [
+            [
+              270,
+              625
+            ],
+            [
+              270,
+              700
+            ]
+          ],
+          "lengthSvgUnits": 75,
+          "estimatedLengthM": 7.87,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E008",
+          "source": "4A21",
+          "target": "4A23",
+          "geometrySvg": [
+            [
+              270,
+              700
+            ],
+            [
+              270,
+              765
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E009",
+          "source": "4A23",
+          "target": "4A25",
+          "geometrySvg": [
+            [
+              270,
+              765
+            ],
+            [
+              270,
+              830
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E010",
+          "source": "4A25",
+          "target": "4A27",
+          "geometrySvg": [
+            [
+              270,
+              830
+            ],
+            [
+              270,
+              880
+            ]
+          ],
+          "lengthSvgUnits": 50,
+          "estimatedLengthM": 5.24,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E011",
+          "source": "4A03",
+          "target": "4A04",
+          "geometrySvg": [
+            [
+              270,
+              250
+            ],
+            [
+              350,
+              250
+            ]
+          ],
+          "lengthSvgUnits": 80,
+          "estimatedLengthM": 8.39,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E012",
+          "source": "4A04",
+          "target": "4A05",
+          "geometrySvg": [
+            [
+              350,
+              250
+            ],
+            [
+              450,
+              250
+            ]
+          ],
+          "lengthSvgUnits": 100,
+          "estimatedLengthM": 10.49,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E013",
+          "source": "4A05",
+          "target": "4A08",
+          "geometrySvg": [
+            [
+              450,
+              250
+            ],
+            [
+              450,
+              350
+            ]
+          ],
+          "lengthSvgUnits": 100,
+          "estimatedLengthM": 10.49,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E014",
+          "source": "4A08",
+          "target": "4A12",
+          "geometrySvg": [
+            [
+              450,
+              350
+            ],
+            [
+              450,
+              470
+            ]
+          ],
+          "lengthSvgUnits": 120,
+          "estimatedLengthM": 12.59,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E015",
+          "source": "4A12",
+          "target": "4A15",
+          "geometrySvg": [
+            [
+              450,
+              470
+            ],
+            [
+              450,
+              560
+            ]
+          ],
+          "lengthSvgUnits": 90,
+          "estimatedLengthM": 9.44,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E016",
+          "source": "4A15",
+          "target": "4A19",
+          "geometrySvg": [
+            [
+              450,
+              560
+            ],
+            [
+              450,
+              625
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E017",
+          "source": "4A16",
+          "target": "4A17",
+          "geometrySvg": [
+            [
+              270,
+              625
+            ],
+            [
+              380,
+              625
+            ]
+          ],
+          "lengthSvgUnits": 110,
+          "estimatedLengthM": 11.54,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E018",
+          "source": "4A17",
+          "target": "4A18",
+          "geometrySvg": [
+            [
+              380,
+              625
+            ],
+            [
+              420,
+              625
+            ]
+          ],
+          "lengthSvgUnits": 40,
+          "estimatedLengthM": 4.2,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E019",
+          "source": "4A18",
+          "target": "4A19",
+          "geometrySvg": [
+            [
+              420,
+              625
+            ],
+            [
+              450,
+              625
+            ]
+          ],
+          "lengthSvgUnits": 30,
+          "estimatedLengthM": 3.15,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E020",
+          "source": "4A18",
+          "target": "4A20",
+          "geometrySvg": [
+            [
+              420,
+              625
+            ],
+            [
+              420,
+              650
+            ]
+          ],
+          "lengthSvgUnits": 25,
+          "estimatedLengthM": 2.62,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E021",
+          "source": "4A20",
+          "target": "4A22",
+          "geometrySvg": [
+            [
+              420,
+              650
+            ],
+            [
+              420,
+              700
+            ]
+          ],
+          "lengthSvgUnits": 50,
+          "estimatedLengthM": 5.24,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E022",
+          "source": "4A22",
+          "target": "4A24",
+          "geometrySvg": [
+            [
+              420,
+              700
+            ],
+            [
+              420,
+              765
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E023",
+          "source": "4A24",
+          "target": "4A26",
+          "geometrySvg": [
+            [
+              420,
+              765
+            ],
+            [
+              420,
+              830
+            ]
+          ],
+          "lengthSvgUnits": 65,
+          "estimatedLengthM": 6.82,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E024",
+          "source": "4A26",
+          "target": "4A28",
+          "geometrySvg": [
+            [
+              420,
+              830
+            ],
+            [
+              420,
+              880
+            ]
+          ],
+          "lengthSvgUnits": 50,
+          "estimatedLengthM": 5.24,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E025",
+          "source": "4A27",
+          "target": "4A28",
+          "geometrySvg": [
+            [
+              270,
+              880
+            ],
+            [
+              420,
+              880
+            ]
+          ],
+          "lengthSvgUnits": 150,
+          "estimatedLengthM": 15.73,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E026",
+          "source": "4A06",
+          "target": "4A07",
+          "geometrySvg": [
+            [
+              270,
+              350
+            ],
+            [
+              285,
+              350
+            ]
+          ],
+          "lengthSvgUnits": 15,
+          "estimatedLengthM": 1.57,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E027",
+          "source": "4A08",
+          "target": "4A09",
+          "geometrySvg": [
+            [
+              450,
+              350
+            ],
+            [
+              445,
+              350
+            ]
+          ],
+          "lengthSvgUnits": 5,
+          "estimatedLengthM": 0.52,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E028",
+          "source": "4A10",
+          "target": "4A11",
+          "geometrySvg": [
+            [
+              270,
+              470
+            ],
+            [
+              285,
+              470
+            ]
+          ],
+          "lengthSvgUnits": 15,
+          "estimatedLengthM": 1.57,
+          "verificationStatus": "svg_plan_estimate"
+        },
+        {
+          "id": "4F-E029",
+          "source": "4A12",
+          "target": "4A13",
+          "geometrySvg": [
+            [
+              450,
+              470
+            ],
+            [
+              445,
+              470
+            ]
+          ],
+          "lengthSvgUnits": 5,
+          "estimatedLengthM": 0.52,
+          "verificationStatus": "svg_plan_estimate"
+        }
+      ],
+      "notes": [
+        "중앙 상단 매장 블록은 좌우 통로로 우회",
+        "남쪽 3·4층 계단 앞 설비 구역을 직선으로 관통하지 않고 625 SVG y 횡단 통로를 사용",
+        "옥상으로 표시된 서쪽 띠는 보행 그래프에서 제외"
+      ]
+    },
+    "3F": {
+      "floor": "3F",
+      "coordinateSystem": "repository_generated_svg_viewBox",
+      "sourceSvg": "ui/public/maps/web-3F-map.svg",
+      "sourceGraph": "ui/src/data/station/station3f.generated.json",
+      "status": "repository_existing_graph_field_verification_pending",
+      "distanceScaleMetersPerSvgUnit": 0.1049,
+      "distanceScaleStatus": "repository_estimate",
+      "edgePolicy": "repository_existing_geometry; orthogonality_not_assumed",
+      "nodes": [
+        {
+          "id": "H01",
+          "x": 1157.8,
+          "y": 395.6,
+          "name": "동측 출입구 앞 홀",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H02",
+          "x": 979.2,
+          "y": 431.1,
+          "name": "중앙 홀 북쪽",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H03",
+          "x": 859.2,
+          "y": 596.5,
+          "name": "북측 매장 앞 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H04",
+          "x": 867.9,
+          "y": 731.3,
+          "name": "홀 북측 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H05",
+          "x": 838.9,
+          "y": 870.4,
+          "name": "휴게실 옆 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H06",
+          "x": 825.1,
+          "y": 993.1,
+          "name": "발매기·플라잉스콘 앞 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H07",
+          "x": 853.3,
+          "y": 1123.8,
+          "name": "홀 중간",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H08",
+          "x": 836.2,
+          "y": 1232.7,
+          "name": "매표소 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H09",
+          "x": 857.4,
+          "y": 1393.2,
+          "name": "화장실 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H10",
+          "x": 853.4,
+          "y": 1595.3,
+          "name": "디자인스킨 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H11",
+          "x": 878.5,
+          "y": 1666.3,
+          "name": "홀 서측 하단",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H12",
+          "x": 1042.9,
+          "y": 1620.4,
+          "name": "서광장 쪽 홀 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "H13",
+          "x": 1032,
+          "y": 1654.8,
+          "name": "서광장 출구 방향 접근점",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A01",
+          "x": 1195.9,
+          "y": 418.5,
+          "name": "주차장측 홀 상단",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A02",
+          "x": 1183.1,
+          "y": 678.2,
+          "name": "방풍실 3 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A03",
+          "x": 1189.8,
+          "y": 812.2,
+          "name": "방풍실 3 앞",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A04",
+          "x": 1170.2,
+          "y": 939.7,
+          "name": "약국 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A05",
+          "x": 1165.5,
+          "y": 978.4,
+          "name": "임시매장 2 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A06",
+          "x": 1176.1,
+          "y": 941.2,
+          "name": "임시매장 1 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A07",
+          "x": 1183.2,
+          "y": 956.8,
+          "name": "방풍실 2 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A08",
+          "x": 1118.4,
+          "y": 1235.7,
+          "name": "남측 상가 앞 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "A09",
+          "x": 1108.4,
+          "y": 1537.7,
+          "name": "남측 편의점 쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B01",
+          "x": 733.9,
+          "y": 536.8,
+          "name": "북측 상가 남쪽 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B02",
+          "x": 524.1,
+          "y": 617.5,
+          "name": "승강장 쪽 상단 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B03",
+          "x": 545.8,
+          "y": 843.6,
+          "name": "승강장 쪽 2번 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B04",
+          "x": 543.7,
+          "y": 954.2,
+          "name": "접견실 옆 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B05",
+          "x": 521.1,
+          "y": 1107.5,
+          "name": "승강장 쪽 3번 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B06",
+          "x": 503.1,
+          "y": 1213.9,
+          "name": "꽃집 옆 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B07",
+          "x": 459.1,
+          "y": 1301,
+          "name": "승강장 5·6번 방향 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B08",
+          "x": 443.7,
+          "y": 1390.3,
+          "name": "승강장 사이 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B09",
+          "x": 432.8,
+          "y": 1473.7,
+          "name": "승강장 3·4번 방향 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B10",
+          "x": 431.8,
+          "y": 1549.6,
+          "name": "승강장 쪽 하단 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "B11",
+          "x": 433.4,
+          "y": 1643.1,
+          "name": "승강장 연결통로 1 방향 분기",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "C01",
+          "x": 1074.1,
+          "y": 993.2,
+          "name": "중앙 좌석 사이 횡단 통로",
+          "kind": "corridor",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P02",
+          "x": 1055.1,
+          "y": 330,
+          "name": "엘리베이터(2번 출구·동광장) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P03",
+          "x": 1139.8,
+          "y": 292.4,
+          "name": "출입구(방풍실 4) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P04",
+          "x": 876.2,
+          "y": 409.5,
+          "name": "레드아이 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P07",
+          "x": 416.7,
+          "y": 529.4,
+          "name": "엘리베이터(지도 상단 승강장 연결통로) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P08",
+          "x": 391.7,
+          "y": 541.9,
+          "name": "승강장 연결통로(지도 상단) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P09",
+          "x": 612.2,
+          "y": 535.6,
+          "name": "직영편의점(북) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P10",
+          "x": 1182.8,
+          "y": 560,
+          "name": "KR스타트업 라운지(공단) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P12",
+          "x": 1227.6,
+          "y": 799.3,
+          "name": "출입구(방풍실 3) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P13",
+          "x": 702,
+          "y": 776.5,
+          "name": "직영명품마루 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P14",
+          "x": 1259.3,
+          "y": 864.3,
+          "name": "꿈돌이와대전여행 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P15",
+          "x": 461.9,
+          "y": 774,
+          "name": "엘리베이터(지도 위에서 두 번째 승강장 연결통로) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P17",
+          "x": 781.1,
+          "y": 882.6,
+          "name": "휴게실2 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P18",
+          "x": 390.1,
+          "y": 788.9,
+          "name": "승강장 연결통로(지도 위에서 두 번째) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P20",
+          "x": 1259.3,
+          "y": 961.6,
+          "name": "대전역약국 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P21",
+          "x": 565,
+          "y": 957.7,
+          "name": "고객 접견실 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P22",
+          "x": 781.1,
+          "y": 953.8,
+          "name": "자동발매기실 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P23",
+          "x": 1183,
+          "y": 980,
+          "name": "(임시) 매장 2 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P25",
+          "x": 811.1,
+          "y": 1095.9,
+          "name": "플라잉스콘 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P26",
+          "x": 607.5,
+          "y": 1144.9,
+          "name": "마루노바 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P27",
+          "x": 466.9,
+          "y": 1065.9,
+          "name": "엘리베이터(지도 위에서 세 번째 승강장 연결통로) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P28",
+          "x": 1260.2,
+          "y": 921.6,
+          "name": "(임시) 매장 1 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P29",
+          "x": 390.8,
+          "y": 1080.1,
+          "name": "승강장 연결통로(지도 위에서 세 번째) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P30",
+          "x": 468.1,
+          "y": 1186.9,
+          "name": "도심속작은자연 flos 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P31",
+          "x": 398.5,
+          "y": 1228.3,
+          "name": "엘리베이터(5·6번 승강장) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P32",
+          "x": 796.3,
+          "y": 1285.2,
+          "name": "매표소(매표실) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P33",
+          "x": 1226.9,
+          "y": 1042.7,
+          "name": "출입구(방풍실 2) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P34",
+          "x": 390.4,
+          "y": 1242.4,
+          "name": "승강장 연결통로 3 (5·6번 승강장) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P35",
+          "x": 566,
+          "y": 1336.2,
+          "name": "신청도할매김밥 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P36",
+          "x": 702.2,
+          "y": 1394,
+          "name": "남자화장실 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P37",
+          "x": 435,
+          "y": 1346,
+          "name": "복순도가 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P38",
+          "x": 1167.5,
+          "y": 1526.1,
+          "name": "카페스토리웨이 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P40",
+          "x": 793.5,
+          "y": 1567.5,
+          "name": "디자인스킨 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P41",
+          "x": 1216.1,
+          "y": 1613,
+          "name": "직영편의점(남) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P42",
+          "x": 391.5,
+          "y": 1401.8,
+          "name": "엘리베이터(3·4번 승강장) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P43",
+          "x": 1287.3,
+          "y": 1626.8,
+          "name": "엘리베이터(1번 출구·서광장 A) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P44",
+          "x": 389.2,
+          "y": 1416.1,
+          "name": "승강장 연결통로 2 (3·4번 승강장) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P45",
+          "x": 914.2,
+          "y": 1660.2,
+          "name": "여객편의시설 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P46",
+          "x": 723.5,
+          "y": 1778,
+          "name": "여객화장실(남)1 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P47",
+          "x": 1076.3,
+          "y": 1658.2,
+          "name": "1번 출구 방향(서광장·지하철 타는 곳) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P50",
+          "x": 450.7,
+          "y": 1644.4,
+          "name": "계단·에스컬레이터(지도 하단 왼쪽) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P51",
+          "x": 1193.9,
+          "y": 1751,
+          "name": "1층행 에스컬레이터(서측) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P52",
+          "x": 408.5,
+          "y": 1615,
+          "name": "엘리베이터(연결통로 1) 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "P53",
+          "x": 391.2,
+          "y": 1629.4,
+          "name": "승강장 연결통로 1 접근점",
+          "kind": "approach",
+          "verificationStatus": "repository_graph_estimate"
+        }
+      ],
+      "edges": [
+        {
+          "id": "E001",
+          "source": "H01",
+          "target": "H02",
+          "geometrySvg": [
+            [
+              1157.8,
+              395.6
+            ],
+            [
+              979.2,
+              431.1
+            ]
+          ],
+          "lengthSvgUnits": 182.1,
+          "estimatedLengthM": 19.1,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E002",
+          "source": "H02",
+          "target": "H03",
+          "geometrySvg": [
+            [
+              979.2,
+              431.1
+            ],
+            [
+              859.2,
+              596.5
+            ]
+          ],
+          "lengthSvgUnits": 204.3,
+          "estimatedLengthM": 21.43,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E003",
+          "source": "H03",
+          "target": "H04",
+          "geometrySvg": [
+            [
+              859.2,
+              596.5
+            ],
+            [
+              867.9,
+              731.3
+            ]
+          ],
+          "lengthSvgUnits": 135.1,
+          "estimatedLengthM": 14.17,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E004",
+          "source": "H04",
+          "target": "H05",
+          "geometrySvg": [
+            [
+              867.9,
+              731.3
+            ],
+            [
+              838.9,
+              870.4
+            ]
+          ],
+          "lengthSvgUnits": 142.1,
+          "estimatedLengthM": 14.91,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E005",
+          "source": "H05",
+          "target": "H06",
+          "geometrySvg": [
+            [
+              838.9,
+              870.4
+            ],
+            [
+              825.1,
+              993.1
+            ]
+          ],
+          "lengthSvgUnits": 123.5,
+          "estimatedLengthM": 12.96,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E006",
+          "source": "H06",
+          "target": "H07",
+          "geometrySvg": [
+            [
+              825.1,
+              993.1
+            ],
+            [
+              853.3,
+              1123.8
+            ]
+          ],
+          "lengthSvgUnits": 133.7,
+          "estimatedLengthM": 14.03,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E007",
+          "source": "H07",
+          "target": "H08",
+          "geometrySvg": [
+            [
+              853.3,
+              1123.8
+            ],
+            [
+              836.2,
+              1232.7
+            ]
+          ],
+          "lengthSvgUnits": 110.2,
+          "estimatedLengthM": 11.56,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E008",
+          "source": "H08",
+          "target": "H09",
+          "geometrySvg": [
+            [
+              836.2,
+              1232.7
+            ],
+            [
+              857.4,
+              1393.2
+            ]
+          ],
+          "lengthSvgUnits": 161.9,
+          "estimatedLengthM": 16.98,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E009",
+          "source": "H09",
+          "target": "H10",
+          "geometrySvg": [
+            [
+              857.4,
+              1393.2
+            ],
+            [
+              853.4,
+              1595.3
+            ]
+          ],
+          "lengthSvgUnits": 202.1,
+          "estimatedLengthM": 21.2,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E010",
+          "source": "H10",
+          "target": "H11",
+          "geometrySvg": [
+            [
+              853.4,
+              1595.3
+            ],
+            [
+              878.5,
+              1666.3
+            ]
+          ],
+          "lengthSvgUnits": 75.3,
+          "estimatedLengthM": 7.9,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E011",
+          "source": "H11",
+          "target": "H12",
+          "geometrySvg": [
+            [
+              878.5,
+              1666.3
+            ],
+            [
+              1042.9,
+              1620.4
+            ]
+          ],
+          "lengthSvgUnits": 170.7,
+          "estimatedLengthM": 17.91,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E012",
+          "source": "H12",
+          "target": "H13",
+          "geometrySvg": [
+            [
+              1042.9,
+              1620.4
+            ],
+            [
+              1032,
+              1654.8
+            ]
+          ],
+          "lengthSvgUnits": 36.1,
+          "estimatedLengthM": 3.79,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E013",
+          "source": "H01",
+          "target": "A01",
+          "geometrySvg": [
+            [
+              1157.8,
+              395.6
+            ],
+            [
+              1195.9,
+              418.5
+            ]
+          ],
+          "lengthSvgUnits": 44.5,
+          "estimatedLengthM": 4.67,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E014",
+          "source": "A01",
+          "target": "A02",
+          "geometrySvg": [
+            [
+              1195.9,
+              418.5
+            ],
+            [
+              1183.1,
+              678.2
+            ]
+          ],
+          "lengthSvgUnits": 260,
+          "estimatedLengthM": 27.27,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E015",
+          "source": "A02",
+          "target": "A03",
+          "geometrySvg": [
+            [
+              1183.1,
+              678.2
+            ],
+            [
+              1189.8,
+              812.2
+            ]
+          ],
+          "lengthSvgUnits": 134.2,
+          "estimatedLengthM": 14.08,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E016",
+          "source": "A03",
+          "target": "A04",
+          "geometrySvg": [
+            [
+              1189.8,
+              812.2
+            ],
+            [
+              1170.2,
+              939.7
+            ]
+          ],
+          "lengthSvgUnits": 129,
+          "estimatedLengthM": 13.53,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E017",
+          "source": "A04",
+          "target": "A05",
+          "geometrySvg": [
+            [
+              1170.2,
+              939.7
+            ],
+            [
+              1165.5,
+              978.4
+            ]
+          ],
+          "lengthSvgUnits": 39,
+          "estimatedLengthM": 4.09,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E018",
+          "source": "A05",
+          "target": "A06",
+          "geometrySvg": [
+            [
+              1165.5,
+              978.4
+            ],
+            [
+              1176.1,
+              941.2
+            ]
+          ],
+          "lengthSvgUnits": 38.7,
+          "estimatedLengthM": 4.06,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E019",
+          "source": "A06",
+          "target": "A07",
+          "geometrySvg": [
+            [
+              1176.1,
+              941.2
+            ],
+            [
+              1183.2,
+              956.8
+            ]
+          ],
+          "lengthSvgUnits": 17.1,
+          "estimatedLengthM": 1.79,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E020",
+          "source": "A07",
+          "target": "A08",
+          "geometrySvg": [
+            [
+              1183.2,
+              956.8
+            ],
+            [
+              1118.4,
+              1235.7
+            ]
+          ],
+          "lengthSvgUnits": 286.3,
+          "estimatedLengthM": 30.03,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E021",
+          "source": "A08",
+          "target": "A09",
+          "geometrySvg": [
+            [
+              1118.4,
+              1235.7
+            ],
+            [
+              1108.4,
+              1537.7
+            ]
+          ],
+          "lengthSvgUnits": 302.2,
+          "estimatedLengthM": 31.7,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E022",
+          "source": "A09",
+          "target": "H12",
+          "geometrySvg": [
+            [
+              1108.4,
+              1537.7
+            ],
+            [
+              1042.9,
+              1620.4
+            ]
+          ],
+          "lengthSvgUnits": 105.5,
+          "estimatedLengthM": 11.07,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E023",
+          "source": "H03",
+          "target": "B01",
+          "geometrySvg": [
+            [
+              859.2,
+              596.5
+            ],
+            [
+              733.9,
+              536.8
+            ]
+          ],
+          "lengthSvgUnits": 138.8,
+          "estimatedLengthM": 14.56,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E024",
+          "source": "B01",
+          "target": "B02",
+          "geometrySvg": [
+            [
+              733.9,
+              536.8
+            ],
+            [
+              524.1,
+              617.5
+            ]
+          ],
+          "lengthSvgUnits": 224.8,
+          "estimatedLengthM": 23.58,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E025",
+          "source": "B02",
+          "target": "B03",
+          "geometrySvg": [
+            [
+              524.1,
+              617.5
+            ],
+            [
+              545.8,
+              843.6
+            ]
+          ],
+          "lengthSvgUnits": 227.1,
+          "estimatedLengthM": 23.82,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E026",
+          "source": "B03",
+          "target": "B04",
+          "geometrySvg": [
+            [
+              545.8,
+              843.6
+            ],
+            [
+              543.7,
+              954.2
+            ]
+          ],
+          "lengthSvgUnits": 110.6,
+          "estimatedLengthM": 11.6,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E027",
+          "source": "B04",
+          "target": "B05",
+          "geometrySvg": [
+            [
+              543.7,
+              954.2
+            ],
+            [
+              521.1,
+              1107.5
+            ]
+          ],
+          "lengthSvgUnits": 155,
+          "estimatedLengthM": 16.26,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E028",
+          "source": "B05",
+          "target": "B06",
+          "geometrySvg": [
+            [
+              521.1,
+              1107.5
+            ],
+            [
+              503.1,
+              1213.9
+            ]
+          ],
+          "lengthSvgUnits": 107.9,
+          "estimatedLengthM": 11.32,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E029",
+          "source": "B06",
+          "target": "B07",
+          "geometrySvg": [
+            [
+              503.1,
+              1213.9
+            ],
+            [
+              459.1,
+              1301
+            ]
+          ],
+          "lengthSvgUnits": 97.6,
+          "estimatedLengthM": 10.24,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E030",
+          "source": "B07",
+          "target": "B08",
+          "geometrySvg": [
+            [
+              459.1,
+              1301
+            ],
+            [
+              443.7,
+              1390.3
+            ]
+          ],
+          "lengthSvgUnits": 90.6,
+          "estimatedLengthM": 9.5,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E031",
+          "source": "B08",
+          "target": "B09",
+          "geometrySvg": [
+            [
+              443.7,
+              1390.3
+            ],
+            [
+              432.8,
+              1473.7
+            ]
+          ],
+          "lengthSvgUnits": 84.1,
+          "estimatedLengthM": 8.82,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E032",
+          "source": "B09",
+          "target": "B10",
+          "geometrySvg": [
+            [
+              432.8,
+              1473.7
+            ],
+            [
+              431.8,
+              1549.6
+            ]
+          ],
+          "lengthSvgUnits": 75.9,
+          "estimatedLengthM": 7.96,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E033",
+          "source": "B10",
+          "target": "B11",
+          "geometrySvg": [
+            [
+              431.8,
+              1549.6
+            ],
+            [
+              433.4,
+              1643.1
+            ]
+          ],
+          "lengthSvgUnits": 93.5,
+          "estimatedLengthM": 9.81,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E034",
+          "source": "H07",
+          "target": "C01",
+          "geometrySvg": [
+            [
+              853.3,
+              1123.8
+            ],
+            [
+              1074.1,
+              993.2
+            ]
+          ],
+          "lengthSvgUnits": 256.5,
+          "estimatedLengthM": 26.91,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E035",
+          "source": "C01",
+          "target": "A05",
+          "geometrySvg": [
+            [
+              1074.1,
+              993.2
+            ],
+            [
+              1165.5,
+              978.4
+            ]
+          ],
+          "lengthSvgUnits": 92.6,
+          "estimatedLengthM": 9.71,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E036",
+          "source": "H01",
+          "target": "P02",
+          "geometrySvg": [
+            [
+              1157.8,
+              395.6
+            ],
+            [
+              1055.1,
+              330
+            ]
+          ],
+          "lengthSvgUnits": 121.9,
+          "estimatedLengthM": 12.79,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E037",
+          "source": "H01",
+          "target": "P03",
+          "geometrySvg": [
+            [
+              1157.8,
+              395.6
+            ],
+            [
+              1139.8,
+              292.4
+            ]
+          ],
+          "lengthSvgUnits": 104.8,
+          "estimatedLengthM": 10.99,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E038",
+          "source": "H02",
+          "target": "P04",
+          "geometrySvg": [
+            [
+              979.2,
+              431.1
+            ],
+            [
+              876.2,
+              409.5
+            ]
+          ],
+          "lengthSvgUnits": 105.2,
+          "estimatedLengthM": 11.04,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E039",
+          "source": "B02",
+          "target": "P07",
+          "geometrySvg": [
+            [
+              524.1,
+              617.5
+            ],
+            [
+              416.7,
+              529.4
+            ]
+          ],
+          "lengthSvgUnits": 138.9,
+          "estimatedLengthM": 14.57,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E040",
+          "source": "P07",
+          "target": "P08",
+          "geometrySvg": [
+            [
+              416.7,
+              529.4
+            ],
+            [
+              391.7,
+              541.9
+            ]
+          ],
+          "lengthSvgUnits": 28,
+          "estimatedLengthM": 2.94,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E041",
+          "source": "B01",
+          "target": "P09",
+          "geometrySvg": [
+            [
+              733.9,
+              536.8
+            ],
+            [
+              612.2,
+              535.6
+            ]
+          ],
+          "lengthSvgUnits": 121.7,
+          "estimatedLengthM": 12.77,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E042",
+          "source": "A01",
+          "target": "P10",
+          "geometrySvg": [
+            [
+              1195.9,
+              418.5
+            ],
+            [
+              1182.8,
+              560
+            ]
+          ],
+          "lengthSvgUnits": 142.1,
+          "estimatedLengthM": 14.91,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E043",
+          "source": "A03",
+          "target": "P12",
+          "geometrySvg": [
+            [
+              1189.8,
+              812.2
+            ],
+            [
+              1227.6,
+              799.3
+            ]
+          ],
+          "lengthSvgUnits": 39.9,
+          "estimatedLengthM": 4.19,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E044",
+          "source": "B01",
+          "target": "P13",
+          "geometrySvg": [
+            [
+              733.9,
+              536.8
+            ],
+            [
+              702,
+              776.5
+            ]
+          ],
+          "lengthSvgUnits": 241.8,
+          "estimatedLengthM": 25.36,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E045",
+          "source": "A03",
+          "target": "P14",
+          "geometrySvg": [
+            [
+              1189.8,
+              812.2
+            ],
+            [
+              1259.3,
+              864.3
+            ]
+          ],
+          "lengthSvgUnits": 86.9,
+          "estimatedLengthM": 9.12,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E046",
+          "source": "B03",
+          "target": "P15",
+          "geometrySvg": [
+            [
+              545.8,
+              843.6
+            ],
+            [
+              461.9,
+              774
+            ]
+          ],
+          "lengthSvgUnits": 109,
+          "estimatedLengthM": 11.43,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E047",
+          "source": "H05",
+          "target": "P17",
+          "geometrySvg": [
+            [
+              838.9,
+              870.4
+            ],
+            [
+              781.1,
+              882.6
+            ]
+          ],
+          "lengthSvgUnits": 59.1,
+          "estimatedLengthM": 6.2,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E048",
+          "source": "P15",
+          "target": "P18",
+          "geometrySvg": [
+            [
+              461.9,
+              774
+            ],
+            [
+              390.1,
+              788.9
+            ]
+          ],
+          "lengthSvgUnits": 73.3,
+          "estimatedLengthM": 7.69,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E049",
+          "source": "A04",
+          "target": "P20",
+          "geometrySvg": [
+            [
+              1170.2,
+              939.7
+            ],
+            [
+              1259.3,
+              961.6
+            ]
+          ],
+          "lengthSvgUnits": 91.8,
+          "estimatedLengthM": 9.63,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E050",
+          "source": "B04",
+          "target": "P21",
+          "geometrySvg": [
+            [
+              543.7,
+              954.2
+            ],
+            [
+              565,
+              957.7
+            ]
+          ],
+          "lengthSvgUnits": 21.6,
+          "estimatedLengthM": 2.27,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E051",
+          "source": "H06",
+          "target": "P22",
+          "geometrySvg": [
+            [
+              825.1,
+              993.1
+            ],
+            [
+              781.1,
+              953.8
+            ]
+          ],
+          "lengthSvgUnits": 59,
+          "estimatedLengthM": 6.19,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E052",
+          "source": "A05",
+          "target": "P23",
+          "geometrySvg": [
+            [
+              1165.5,
+              978.4
+            ],
+            [
+              1183,
+              980
+            ]
+          ],
+          "lengthSvgUnits": 17.6,
+          "estimatedLengthM": 1.85,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E053",
+          "source": "H06",
+          "target": "P25",
+          "geometrySvg": [
+            [
+              825.1,
+              993.1
+            ],
+            [
+              811.1,
+              1095.9
+            ]
+          ],
+          "lengthSvgUnits": 103.7,
+          "estimatedLengthM": 10.88,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E054",
+          "source": "B05",
+          "target": "P26",
+          "geometrySvg": [
+            [
+              521.1,
+              1107.5
+            ],
+            [
+              607.5,
+              1144.9
+            ]
+          ],
+          "lengthSvgUnits": 94.1,
+          "estimatedLengthM": 9.87,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E055",
+          "source": "B05",
+          "target": "P27",
+          "geometrySvg": [
+            [
+              521.1,
+              1107.5
+            ],
+            [
+              466.9,
+              1065.9
+            ]
+          ],
+          "lengthSvgUnits": 68.3,
+          "estimatedLengthM": 7.16,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E056",
+          "source": "A06",
+          "target": "P28",
+          "geometrySvg": [
+            [
+              1176.1,
+              941.2
+            ],
+            [
+              1260.2,
+              921.6
+            ]
+          ],
+          "lengthSvgUnits": 86.4,
+          "estimatedLengthM": 9.06,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E057",
+          "source": "P27",
+          "target": "P29",
+          "geometrySvg": [
+            [
+              466.9,
+              1065.9
+            ],
+            [
+              390.8,
+              1080.1
+            ]
+          ],
+          "lengthSvgUnits": 77.4,
+          "estimatedLengthM": 8.12,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E058",
+          "source": "B06",
+          "target": "P30",
+          "geometrySvg": [
+            [
+              503.1,
+              1213.9
+            ],
+            [
+              468.1,
+              1186.9
+            ]
+          ],
+          "lengthSvgUnits": 44.2,
+          "estimatedLengthM": 4.64,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E059",
+          "source": "B07",
+          "target": "P31",
+          "geometrySvg": [
+            [
+              459.1,
+              1301
+            ],
+            [
+              398.5,
+              1228.3
+            ]
+          ],
+          "lengthSvgUnits": 94.6,
+          "estimatedLengthM": 9.92,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E060",
+          "source": "H08",
+          "target": "P32",
+          "geometrySvg": [
+            [
+              836.2,
+              1232.7
+            ],
+            [
+              796.3,
+              1285.2
+            ]
+          ],
+          "lengthSvgUnits": 65.9,
+          "estimatedLengthM": 6.91,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E061",
+          "source": "A07",
+          "target": "P33",
+          "geometrySvg": [
+            [
+              1183.2,
+              956.8
+            ],
+            [
+              1226.9,
+              1042.7
+            ]
+          ],
+          "lengthSvgUnits": 96.4,
+          "estimatedLengthM": 10.11,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E062",
+          "source": "P31",
+          "target": "P34",
+          "geometrySvg": [
+            [
+              398.5,
+              1228.3
+            ],
+            [
+              390.4,
+              1242.4
+            ]
+          ],
+          "lengthSvgUnits": 16.3,
+          "estimatedLengthM": 1.71,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E063",
+          "source": "B07",
+          "target": "P35",
+          "geometrySvg": [
+            [
+              459.1,
+              1301
+            ],
+            [
+              566,
+              1336.2
+            ]
+          ],
+          "lengthSvgUnits": 112.5,
+          "estimatedLengthM": 11.8,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E064",
+          "source": "H09",
+          "target": "P36",
+          "geometrySvg": [
+            [
+              857.4,
+              1393.2
+            ],
+            [
+              702.2,
+              1394
+            ]
+          ],
+          "lengthSvgUnits": 155.2,
+          "estimatedLengthM": 16.28,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E065",
+          "source": "B08",
+          "target": "P37",
+          "geometrySvg": [
+            [
+              443.7,
+              1390.3
+            ],
+            [
+              435,
+              1346
+            ]
+          ],
+          "lengthSvgUnits": 45.1,
+          "estimatedLengthM": 4.73,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E066",
+          "source": "A08",
+          "target": "P38",
+          "geometrySvg": [
+            [
+              1118.4,
+              1235.7
+            ],
+            [
+              1167.5,
+              1526.1
+            ]
+          ],
+          "lengthSvgUnits": 294.5,
+          "estimatedLengthM": 30.89,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E067",
+          "source": "H10",
+          "target": "P40",
+          "geometrySvg": [
+            [
+              853.4,
+              1595.3
+            ],
+            [
+              793.5,
+              1567.5
+            ]
+          ],
+          "lengthSvgUnits": 66,
+          "estimatedLengthM": 6.92,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E068",
+          "source": "A09",
+          "target": "P41",
+          "geometrySvg": [
+            [
+              1108.4,
+              1537.7
+            ],
+            [
+              1216.1,
+              1613
+            ]
+          ],
+          "lengthSvgUnits": 131.4,
+          "estimatedLengthM": 13.78,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E069",
+          "source": "B09",
+          "target": "P42",
+          "geometrySvg": [
+            [
+              432.8,
+              1473.7
+            ],
+            [
+              391.5,
+              1401.8
+            ]
+          ],
+          "lengthSvgUnits": 82.9,
+          "estimatedLengthM": 8.7,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E070",
+          "source": "H12",
+          "target": "P43",
+          "geometrySvg": [
+            [
+              1042.9,
+              1620.4
+            ],
+            [
+              1287.3,
+              1626.8
+            ]
+          ],
+          "lengthSvgUnits": 244.5,
+          "estimatedLengthM": 25.65,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E071",
+          "source": "P42",
+          "target": "P44",
+          "geometrySvg": [
+            [
+              391.5,
+              1401.8
+            ],
+            [
+              389.2,
+              1416.1
+            ]
+          ],
+          "lengthSvgUnits": 14.5,
+          "estimatedLengthM": 1.52,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E072",
+          "source": "H11",
+          "target": "P45",
+          "geometrySvg": [
+            [
+              878.5,
+              1666.3
+            ],
+            [
+              914.2,
+              1660.2
+            ]
+          ],
+          "lengthSvgUnits": 36.2,
+          "estimatedLengthM": 3.8,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E073",
+          "source": "H10",
+          "target": "P46",
+          "geometrySvg": [
+            [
+              853.4,
+              1595.3
+            ],
+            [
+              723.5,
+              1778
+            ]
+          ],
+          "lengthSvgUnits": 224.2,
+          "estimatedLengthM": 23.52,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E074",
+          "source": "H13",
+          "target": "P47",
+          "geometrySvg": [
+            [
+              1032,
+              1654.8
+            ],
+            [
+              1076.3,
+              1658.2
+            ]
+          ],
+          "lengthSvgUnits": 44.4,
+          "estimatedLengthM": 4.66,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E075",
+          "source": "B10",
+          "target": "P50",
+          "geometrySvg": [
+            [
+              431.8,
+              1549.6
+            ],
+            [
+              450.7,
+              1644.4
+            ]
+          ],
+          "lengthSvgUnits": 96.7,
+          "estimatedLengthM": 10.14,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E076",
+          "source": "H13",
+          "target": "P51",
+          "geometrySvg": [
+            [
+              1032,
+              1654.8
+            ],
+            [
+              1193.9,
+              1751
+            ]
+          ],
+          "lengthSvgUnits": 188.3,
+          "estimatedLengthM": 19.75,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E077",
+          "source": "B11",
+          "target": "P52",
+          "geometrySvg": [
+            [
+              433.4,
+              1643.1
+            ],
+            [
+              408.5,
+              1615
+            ]
+          ],
+          "lengthSvgUnits": 37.5,
+          "estimatedLengthM": 3.93,
+          "verificationStatus": "repository_graph_estimate"
+        },
+        {
+          "id": "E078",
+          "source": "P52",
+          "target": "P53",
+          "geometrySvg": [
+            [
+              408.5,
+              1615
+            ],
+            [
+              391.2,
+              1629.4
+            ]
+          ],
+          "lengthSvgUnits": 22.5,
+          "estimatedLengthM": 2.36,
+          "verificationStatus": "repository_graph_estimate"
+        }
+      ],
+      "places": [
+        {
+          "id": 1,
+          "name": "동측 계단·에스컬레이터",
+          "sourceName": "동측 계단·에스컬레이터",
+          "category": "vertical_transport",
+          "aliases": [
+            "동광장 계단",
+            "동광장 에스컬레이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1172.3,
+          "y": 219.1,
+          "routeNodeId": "P03",
+          "isApproximate": true
+        },
+        {
+          "id": 2,
+          "name": "엘리베이터(2번 출구·동광장)",
+          "sourceName": "엘리베이터(2번 출구·동광장)",
+          "category": "elevator",
+          "aliases": [
+            "동광장 엘리베이터",
+            "동문 엘리베이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1055.1,
+          "y": 330,
+          "routeNodeId": "P02",
+          "isApproximate": false
+        },
+        {
+          "id": 3,
+          "name": "출입구(방풍실 4)",
+          "sourceName": "출입구(방풍실 4)",
+          "category": "entrance",
+          "aliases": [
+            "방풍실4",
+            "동광장 쪽 출입구"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1139.8,
+          "y": 292.4,
+          "routeNodeId": "P03",
+          "isApproximate": false
+        },
+        {
+          "id": 4,
+          "name": "레드아이",
+          "sourceName": "레드아이",
+          "category": "shop",
+          "aliases": [
+            "레드 아이"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 861.5,
+          "y": 351.3,
+          "routeNodeId": "P04",
+          "isApproximate": false
+        },
+        {
+          "id": 5,
+          "name": "여자 화장실",
+          "sourceName": "화장실(북측 1)",
+          "category": "restroom",
+          "aliases": [
+            "북쪽 화장실",
+            "화장실"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 603.5,
+          "y": 361.9,
+          "routeNodeId": "P09",
+          "isApproximate": true
+        },
+        {
+          "id": 6,
+          "name": "남자 화장실",
+          "sourceName": "화장실(북측 2)",
+          "category": "restroom",
+          "aliases": [
+            "북쪽 화장실",
+            "화장실"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 736.3,
+          "y": 361.2,
+          "routeNodeId": "P04",
+          "isApproximate": true
+        },
+        {
+          "id": 7,
+          "name": "승강장 승강기 (11–12번 홈)",
+          "sourceName": "엘리베이터(지도 상단 승강장 연결통로)",
+          "category": "elevator",
+          "aliases": [
+            "승강장 엘리베이터"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 414.2,
+          "y": 526.3,
+          "routeNodeId": "P07",
+          "isApproximate": false
+        },
+        {
+          "id": 8,
+          "name": "11–12번 홈",
+          "sourceName": "승강장 연결통로(지도 상단)",
+          "category": "platform_access",
+          "aliases": [
+            "승강장 통로"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 279.7,
+          "y": 541.9,
+          "routeNodeId": "P08",
+          "isApproximate": false
+        },
+        {
+          "id": 9,
+          "name": "직영편의점(북)",
+          "sourceName": "직영편의점(북)",
+          "category": "shop",
+          "aliases": [
+            "북측 편의점",
+            "북쪽 편의점",
+            "편의점"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 601.6,
+          "y": 505.4,
+          "routeNodeId": "P09",
+          "isApproximate": false
+        },
+        {
+          "id": 10,
+          "name": "KR스타트업 라운지(공단)",
+          "sourceName": "KR스타트업 라운지(공단)",
+          "category": "facility",
+          "aliases": [
+            "KR 스타트업 라운지",
+            "스타트업 라운지"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1217.4,
+          "y": 550.2,
+          "routeNodeId": "P10",
+          "isApproximate": false
+        },
+        {
+          "id": 11,
+          "name": "편의시설(지도 상단 안내 아이콘)",
+          "sourceName": "편의시설(지도 상단 안내 아이콘)",
+          "category": "facility",
+          "aliases": [],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 482.6,
+          "y": 603.2,
+          "routeNodeId": "B02",
+          "isApproximate": true
+        },
+        {
+          "id": 12,
+          "name": "출입구(방풍실 3)",
+          "sourceName": "출입구(방풍실 3)",
+          "category": "entrance",
+          "aliases": [
+            "방풍실3"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1227.6,
+          "y": 799.3,
+          "routeNodeId": "P12",
+          "isApproximate": false
+        },
+        {
+          "id": 13,
+          "name": "직영명품마루",
+          "sourceName": "직영명품마루",
+          "category": "shop",
+          "aliases": [
+            "명품마루"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 692.4,
+          "y": 754.5,
+          "routeNodeId": "P13",
+          "isApproximate": false
+        },
+        {
+          "id": 14,
+          "name": "꿈돌이와대전여행",
+          "sourceName": "꿈돌이와대전여행",
+          "category": "shop",
+          "aliases": [
+            "꿈돌이",
+            "꿈돌이와 대전여행"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1219.3,
+          "y": 864.3,
+          "routeNodeId": "P14",
+          "isApproximate": false
+        },
+        {
+          "id": 15,
+          "name": "승강장 승강기 (9–10번 홈)",
+          "sourceName": "엘리베이터(지도 위에서 두 번째 승강장 연결통로)",
+          "category": "elevator",
+          "aliases": [
+            "승강장 엘리베이터"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 461.9,
+          "y": 774,
+          "routeNodeId": "P15",
+          "isApproximate": false
+        },
+        {
+          "id": 16,
+          "name": "선상주차장(347대)",
+          "sourceName": "선상주차장(347대)",
+          "category": "parking",
+          "aliases": [
+            "주차장",
+            "선상 주차장"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1601.9,
+          "y": 1069.3,
+          "routeNodeId": "P20",
+          "isApproximate": true
+        },
+        {
+          "id": 17,
+          "name": "휴게실2",
+          "sourceName": "휴게실2",
+          "category": "facility",
+          "aliases": [
+            "휴게실",
+            "휴게실 2"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 740.9,
+          "y": 856.3,
+          "routeNodeId": "P17",
+          "isApproximate": false
+        },
+        {
+          "id": 18,
+          "name": "9–10번 홈",
+          "sourceName": "승강장 연결통로(지도 위에서 두 번째)",
+          "category": "platform_access",
+          "aliases": [
+            "승강장 통로"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 326.1,
+          "y": 788.9,
+          "routeNodeId": "P18",
+          "isApproximate": false
+        },
+        {
+          "id": 19,
+          "name": "편의시설(고객 접견실 위 안내 아이콘)",
+          "sourceName": "편의시설(고객 접견실 위 안내 아이콘)",
+          "category": "facility",
+          "aliases": [],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 624.2,
+          "y": 880.1,
+          "routeNodeId": "B03",
+          "isApproximate": true
+        },
+        {
+          "id": 20,
+          "name": "대전역약국",
+          "sourceName": "대전역약국",
+          "category": "shop",
+          "aliases": [
+            "대전역 약국",
+            "약국"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1219.3,
+          "y": 961.6,
+          "routeNodeId": "P20",
+          "isApproximate": false
+        },
+        {
+          "id": 21,
+          "name": "고객 접견실",
+          "sourceName": "고객 접견실",
+          "category": "facility",
+          "aliases": [
+            "고객접견실",
+            "접견실"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 603.7,
+          "y": 947.8,
+          "routeNodeId": "P21",
+          "isApproximate": false
+        },
+        {
+          "id": 22,
+          "name": "자동발매기실",
+          "sourceName": "자동발매기실",
+          "category": "ticketing",
+          "aliases": [
+            "자동발매기",
+            "승차권 발매기",
+            "무인발권기"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 773.1,
+          "y": 953.8,
+          "routeNodeId": "P22",
+          "isApproximate": false
+        },
+        {
+          "id": 23,
+          "name": "(임시) 매장 2",
+          "sourceName": "(임시) 매장 2",
+          "category": "shop",
+          "aliases": [
+            "임시매장2"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 1216.3,
+          "y": 966.5,
+          "routeNodeId": "P23",
+          "isApproximate": false
+        },
+        {
+          "id": 24,
+          "name": "화장실(마루노바 인근)",
+          "sourceName": "화장실(마루노바 인근)",
+          "category": "restroom",
+          "aliases": [
+            "화장실"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 641.3,
+          "y": 1049.5,
+          "routeNodeId": "P26",
+          "isApproximate": true
+        },
+        {
+          "id": 25,
+          "name": "플라잉스콘",
+          "sourceName": "플라잉스콘",
+          "category": "shop",
+          "aliases": [
+            "플라잉 스콘"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 759.1,
+          "y": 1095.9,
+          "routeNodeId": "P25",
+          "isApproximate": false
+        },
+        {
+          "id": 26,
+          "name": "마루노바",
+          "sourceName": "마루노바",
+          "category": "shop",
+          "aliases": [
+            "마루 노바"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 603.5,
+          "y": 1117.2,
+          "routeNodeId": "P26",
+          "isApproximate": false
+        },
+        {
+          "id": 27,
+          "name": "승강장 승강기 (7–8번 홈)",
+          "sourceName": "엘리베이터(지도 위에서 세 번째 승강장 연결통로)",
+          "category": "elevator",
+          "aliases": [
+            "승강장 엘리베이터"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 466.9,
+          "y": 1065.9,
+          "routeNodeId": "P27",
+          "isApproximate": false
+        },
+        {
+          "id": 28,
+          "name": "(임시) 매장 1",
+          "sourceName": "(임시) 매장 1",
+          "category": "shop",
+          "aliases": [
+            "임시매장1"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 1224.2,
+          "y": 921.6,
+          "routeNodeId": "P28",
+          "isApproximate": false
+        },
+        {
+          "id": 29,
+          "name": "7–8번 홈",
+          "sourceName": "승강장 연결통로(지도 위에서 세 번째)",
+          "category": "platform_access",
+          "aliases": [
+            "승강장 통로"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 330.8,
+          "y": 1080.1,
+          "routeNodeId": "P29",
+          "isApproximate": false
+        },
+        {
+          "id": 30,
+          "name": "도심속작은자연 flos",
+          "sourceName": "도심속작은자연 flos",
+          "category": "shop",
+          "aliases": [
+            "도심 속 작은 자연",
+            "flos",
+            "꽃집"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 444.1,
+          "y": 1186.9,
+          "routeNodeId": "P30",
+          "isApproximate": false
+        },
+        {
+          "id": 31,
+          "name": "엘리베이터(5·6번 승강장)",
+          "sourceName": "엘리베이터(5·6번 승강장)",
+          "category": "elevator",
+          "aliases": [
+            "5번 승강장 엘리베이터",
+            "6번 승강장 엘리베이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 398.5,
+          "y": 1228.3,
+          "routeNodeId": "P31",
+          "isApproximate": false
+        },
+        {
+          "id": 32,
+          "name": "매표소(매표실)",
+          "sourceName": "매표소(매표실)",
+          "category": "ticketing",
+          "aliases": [
+            "매표소",
+            "매표실",
+            "승차권 구매",
+            "발권"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 748.3,
+          "y": 1285.2,
+          "routeNodeId": "P32",
+          "isApproximate": false
+        },
+        {
+          "id": 33,
+          "name": "출입구(방풍실 2)",
+          "sourceName": "출입구(방풍실 2)",
+          "category": "entrance",
+          "aliases": [
+            "방풍실2"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1226.9,
+          "y": 1042.7,
+          "routeNodeId": "P33",
+          "isApproximate": false
+        },
+        {
+          "id": 34,
+          "name": "승강장 연결통로 3 (5·6번 승강장)",
+          "sourceName": "승강장 연결통로 3 (5·6번 승강장)",
+          "category": "platform_access",
+          "aliases": [
+            "5번 승강장",
+            "6번 승강장",
+            "연결통로3"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 266.4,
+          "y": 1242.4,
+          "routeNodeId": "P34",
+          "isApproximate": false
+        },
+        {
+          "id": 35,
+          "name": "신청도할매김밥",
+          "sourceName": "신청도할매김밥",
+          "category": "shop",
+          "aliases": [
+            "청도할매김밥",
+            "김밥"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 577.8,
+          "y": 1334.2,
+          "routeNodeId": "P35",
+          "isApproximate": false
+        },
+        {
+          "id": 36,
+          "name": "남자화장실",
+          "sourceName": "남자화장실",
+          "category": "restroom",
+          "aliases": [
+            "남자 화장실",
+            "남성 화장실"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 737.7,
+          "y": 1388.1,
+          "routeNodeId": "P36",
+          "isApproximate": false
+        },
+        {
+          "id": 37,
+          "name": "복순도가",
+          "sourceName": "복순도가",
+          "category": "shop",
+          "aliases": [
+            "복순 도가"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 411,
+          "y": 1346,
+          "routeNodeId": "P37",
+          "isApproximate": false
+        },
+        {
+          "id": 38,
+          "name": "카페스토리웨이",
+          "sourceName": "카페스토리웨이",
+          "category": "shop",
+          "aliases": [
+            "카페 스토리웨이",
+            "스토리웨이 카페"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1206.3,
+          "y": 1516.2,
+          "routeNodeId": "P38",
+          "isApproximate": false
+        },
+        {
+          "id": 39,
+          "name": "화장실(디자인스킨 인근)",
+          "sourceName": "화장실(디자인스킨 인근)",
+          "category": "restroom",
+          "aliases": [
+            "화장실"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 663.8,
+          "y": 1524.8,
+          "routeNodeId": "P36",
+          "isApproximate": true
+        },
+        {
+          "id": 40,
+          "name": "디자인스킨",
+          "sourceName": "디자인스킨",
+          "category": "shop",
+          "aliases": [
+            "디자인 스킨"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 769.5,
+          "y": 1567.5,
+          "routeNodeId": "P40",
+          "isApproximate": false
+        },
+        {
+          "id": 41,
+          "name": "직영편의점(남)",
+          "sourceName": "직영편의점(남)",
+          "category": "shop",
+          "aliases": [
+            "남측 편의점",
+            "남쪽 편의점",
+            "편의점"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1207.3,
+          "y": 1578.1,
+          "routeNodeId": "P41",
+          "isApproximate": false
+        },
+        {
+          "id": 42,
+          "name": "엘리베이터(3·4번 승강장)",
+          "sourceName": "엘리베이터(3·4번 승강장)",
+          "category": "elevator",
+          "aliases": [
+            "3번 승강장 엘리베이터",
+            "4번 승강장 엘리베이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 367.5,
+          "y": 1401.8,
+          "routeNodeId": "P42",
+          "isApproximate": false
+        },
+        {
+          "id": 43,
+          "name": "엘리베이터(1번 출구·서광장 A)",
+          "sourceName": "엘리베이터(1번 출구·서광장 A)",
+          "category": "elevator",
+          "aliases": [
+            "서광장 엘리베이터",
+            "서문 엘리베이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1287.3,
+          "y": 1626.8,
+          "routeNodeId": "P43",
+          "isApproximate": false
+        },
+        {
+          "id": 44,
+          "name": "승강장 연결통로 2 (3·4번 승강장)",
+          "sourceName": "승강장 연결통로 2 (3·4번 승강장)",
+          "category": "platform_access",
+          "aliases": [
+            "3번 승강장",
+            "4번 승강장",
+            "연결통로2"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 225.2,
+          "y": 1416.1,
+          "routeNodeId": "P44",
+          "isApproximate": false
+        },
+        {
+          "id": 45,
+          "name": "여객편의시설",
+          "sourceName": "여객편의시설",
+          "category": "facility",
+          "aliases": [
+            "여객 편의시설"
+          ],
+          "nameStatus": "labeled",
+          "onMap": false,
+          "x": 922.1,
+          "y": 1687.1,
+          "routeNodeId": "P45",
+          "isApproximate": false
+        },
+        {
+          "id": 46,
+          "name": "여객화장실(남)1",
+          "sourceName": "여객화장실(남)1",
+          "category": "restroom",
+          "aliases": [
+            "여객화장실",
+            "남자 화장실"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 675.5,
+          "y": 1778,
+          "routeNodeId": "P46",
+          "isApproximate": false
+        },
+        {
+          "id": 47,
+          "name": "1번 출구 방향(서광장·지하철 타는 곳)",
+          "sourceName": "1번 출구 방향(서광장·지하철 타는 곳)",
+          "category": "entrance",
+          "aliases": [
+            "1번 출구",
+            "서광장",
+            "서문",
+            "지하철",
+            "도시철도"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1084.2,
+          "y": 1685.1,
+          "routeNodeId": "P47",
+          "isApproximate": false
+        },
+        {
+          "id": 48,
+          "name": "여자 화장실",
+          "sourceName": "화장실(지도 하단)",
+          "category": "restroom",
+          "aliases": [
+            "화장실"
+          ],
+          "nameStatus": "descriptive",
+          "onMap": true,
+          "x": 497.1,
+          "y": 1762.8,
+          "routeNodeId": "P46",
+          "isApproximate": true
+        },
+        {
+          "id": 49,
+          "name": "계단·에스컬레이터(지도 하단 오른쪽)",
+          "sourceName": "계단·에스컬레이터(지도 하단 오른쪽)",
+          "category": "vertical_transport",
+          "aliases": [],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 455.5,
+          "y": 1685.7,
+          "routeNodeId": "P50",
+          "isApproximate": true
+        },
+        {
+          "id": 50,
+          "name": "계단·에스컬레이터(지도 하단 왼쪽)",
+          "sourceName": "계단·에스컬레이터(지도 하단 왼쪽)",
+          "category": "vertical_transport",
+          "aliases": [],
+          "nameStatus": "descriptive",
+          "onMap": false,
+          "x": 450.7,
+          "y": 1644.4,
+          "routeNodeId": "P50",
+          "isApproximate": false
+        },
+        {
+          "id": 51,
+          "name": "1층행 에스컬레이터(서측)",
+          "sourceName": "1층행 에스컬레이터(서측)",
+          "category": "vertical_transport",
+          "aliases": [
+            "1층 에스컬레이터",
+            "서측 에스컬레이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1141.9,
+          "y": 1751,
+          "routeNodeId": "P51",
+          "isApproximate": false
+        },
+        {
+          "id": 52,
+          "name": "엘리베이터(연결통로 1)",
+          "sourceName": "엘리베이터(연결통로 1)",
+          "category": "elevator",
+          "aliases": [
+            "연결통로1 엘리베이터"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 408.5,
+          "y": 1615,
+          "routeNodeId": "P52",
+          "isApproximate": false
+        },
+        {
+          "id": 53,
+          "name": "승강장 연결통로 1",
+          "sourceName": "승강장 연결통로 1",
+          "category": "platform_access",
+          "aliases": [
+            "연결통로1"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 239.2,
+          "y": 1629.4,
+          "routeNodeId": "P53",
+          "isApproximate": false
+        },
+        {
+          "id": 54,
+          "name": "와플샵",
+          "sourceName": "와플샵",
+          "category": "shop",
+          "aliases": [
+            "와플 샵"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 673.2,
+          "y": 1120.2,
+          "routeNodeId": "P26",
+          "isApproximate": true
+        },
+        {
+          "id": 55,
+          "name": "코브라독스",
+          "sourceName": "코브라독스",
+          "category": "shop",
+          "aliases": [
+            "코브라 독스"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 688,
+          "y": 499.9,
+          "routeNodeId": "B01",
+          "isApproximate": true
+        },
+        {
+          "id": 56,
+          "name": "삼진어묵",
+          "sourceName": "삼진어묵",
+          "category": "shop",
+          "aliases": [
+            "삼진 어묵"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 978.9,
+          "y": 371.2,
+          "routeNodeId": "H02",
+          "isApproximate": true
+        },
+        {
+          "id": 57,
+          "name": "에그박스",
+          "sourceName": "에그박스",
+          "category": "shop",
+          "aliases": [
+            "에그 박스"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 1206.7,
+          "y": 1467,
+          "routeNodeId": "P38",
+          "isApproximate": true
+        },
+        {
+          "id": 58,
+          "name": "수유방",
+          "sourceName": "수유방",
+          "category": "facility",
+          "aliases": [
+            "수유실",
+            "수유"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 767.8,
+          "y": 1489,
+          "routeNodeId": "P40",
+          "isApproximate": true
+        },
+        {
+          "id": 59,
+          "name": "2층행 계단",
+          "sourceName": "2층행 계단",
+          "category": "vertical_transport",
+          "aliases": [
+            "2층 계단"
+          ],
+          "nameStatus": "labeled",
+          "onMap": true,
+          "x": 911.5,
+          "y": 1699.7,
+          "routeNodeId": "P45",
+          "isApproximate": true
+        }
+      ],
+      "notes": [
+        "3층은 저장소의 기존 그래프를 그대로 포함; 1·2·4층의 새 직교 초안과 좌표계가 다름",
+        "층간 간선은 아직 연결되지 않았으므로 통합 파일만으로 층간 최단 경로를 자동 계산하지 않음"
+      ]
+    }
+  },
+  "exampleRoutes": [
+    {
+      "floor": "1F",
+      "startName": "승강기 B 앞",
+      "destinationName": "4번 출구",
+      "nodeIds": [
+        "1W07",
+        "1W06",
+        "1W05",
+        "1W11",
+        "1W12",
+        "1W17",
+        "1W21",
+        "1W19",
+        "1W20"
+      ],
+      "edgeIds": [
+        "1F-E014",
+        "1F-E013",
+        "1F-E020",
+        "1F-E021",
+        "1F-E022",
+        "1F-E023",
+        "1F-E029",
+        "1F-E030"
+      ],
+      "distanceSvgUnits": 767.93,
+      "estimatedDistanceM": 81,
+      "estimatedMinutes": 1,
+      "display": "약 1분 · 약 81m",
+      "verificationStatus": "aligned_to_web_plan_marker_estimate"
+    },
+    {
+      "floor": "2F",
+      "startName": "5번 출구",
+      "destinationName": "성심당 대전역점",
+      "nodeIds": [
+        "2A13",
+        "2A19",
+        "2A18",
+        "2A17",
+        "2A11",
+        "2A09",
+        "2A10"
+      ],
+      "edgeIds": [
+        "2F-E013",
+        "2F-E012",
+        "2F-E011",
+        "2F-E010",
+        "2F-E008",
+        "2F-E015"
+      ],
+      "distanceSvgUnits": 470.12,
+      "estimatedDistanceM": 49,
+      "estimatedMinutes": 1,
+      "display": "약 1분 · 약 49m",
+      "verificationStatus": "aligned_to_web_plan_marker_estimate"
+    },
+    {
+      "floor": "4F",
+      "startName": "북쪽 3·4층 계단",
+      "destinationName": "던킨도넛",
+      "nodeIds": [
+        "4A04",
+        "4A05",
+        "4A08",
+        "4A12",
+        "4A15",
+        "4A19",
+        "4A18",
+        "4A20",
+        "4A22"
+      ],
+      "edgeIds": [
+        "4F-E012",
+        "4F-E013",
+        "4F-E014",
+        "4F-E015",
+        "4F-E016",
+        "4F-E019",
+        "4F-E020",
+        "4F-E021"
+      ],
+      "distanceSvgUnits": 580,
+      "estimatedDistanceM": 60,
+      "estimatedMinutes": 1,
+      "display": "약 1분 · 약 60m",
+      "verificationStatus": "draft_graph_estimate"
+    }
+  ],
+  "detailedRouteExamples": [
+    {
+      "floor": "2F",
+      "startNodeId": "2A13",
+      "destinationNodeId": "2A10",
+      "status": "copy_draft_requires_landmark_and_entrance_review",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "stepCount": 3,
+          "fromNodeId": "2A13",
+          "toNodeId": "2A17",
+          "instruction": "5번 출구에서 계단 옆 통로로 이동하세요",
+          "supportingCue": "계단·에스컬레이터 구역 안으로 들어가지 말고 옆 통로를 이용",
+          "nextCheckpointName": "서쪽 통로 끝",
+          "checkpointNodeId": "2A17",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "2F-E013",
+            "2F-E012",
+            "2F-E011"
+          ],
+          "estimatedDistanceM": 10,
+          "verificationStatus": "draft_graph_estimate"
+        },
+        {
+          "stepIndex": 2,
+          "stepCount": 3,
+          "fromNodeId": "2A17",
+          "toNodeId": "2A09",
+          "instruction": "성심당 방향 통로를 따라 이동하세요",
+          "supportingCue": "물품보관함을 지나 매장 서쪽 통로까지",
+          "nextCheckpointName": "성심당 서쪽 분기",
+          "checkpointNodeId": "2A09",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "2F-E010",
+            "2F-E008"
+          ],
+          "estimatedDistanceM": 10,
+          "verificationStatus": "draft_graph_estimate"
+        },
+        {
+          "stepIndex": 3,
+          "stepCount": 3,
+          "fromNodeId": "2A09",
+          "toNodeId": "2A10",
+          "instruction": "성심당 앞 접근점까지 직진하세요",
+          "supportingCue": "매장 출입문 위치는 현장 확인 전",
+          "nextCheckpointName": "성심당 앞",
+          "checkpointNodeId": "2A10",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "2F-E015"
+          ],
+          "estimatedDistanceM": 5,
+          "verificationStatus": "draft_graph_estimate"
+        }
+      ]
+    },
+    {
+      "floor": "4F",
+      "startNodeId": "4A04",
+      "destinationNodeId": "4A22",
+      "status": "copy_draft_requires_landmark_and_entrance_review",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "stepCount": 3,
+          "fromNodeId": "4A04",
+          "toNodeId": "4A05",
+          "instruction": "계단에서 식당가 바깥쪽 통로로 이동하세요",
+          "supportingCue": "식당가 북쪽 통로를 이용",
+          "nextCheckpointName": "식당가 북동쪽 통로",
+          "checkpointNodeId": "4A05",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "4F-E012"
+          ],
+          "estimatedDistanceM": 10,
+          "verificationStatus": "draft_graph_estimate"
+        },
+        {
+          "stepIndex": 2,
+          "stepCount": 3,
+          "fromNodeId": "4A05",
+          "toNodeId": "4A19",
+          "instruction": "매장 바깥쪽 통로를 따라 직진하세요",
+          "supportingCue": "탐앤탐스·미미짬뽕과 승강기 D를 차례로 지나감",
+          "nextCheckpointName": "동쪽 통로 끝",
+          "checkpointNodeId": "4A19",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "4F-E013",
+            "4F-E014",
+            "4F-E015",
+            "4F-E016"
+          ],
+          "estimatedDistanceM": 40,
+          "verificationStatus": "draft_graph_estimate"
+        },
+        {
+          "stepIndex": 3,
+          "stepCount": 3,
+          "fromNodeId": "4A19",
+          "toNodeId": "4A22",
+          "instruction": "남쪽 횡단 통로를 거쳐 던킨도넛 앞으로 이동하세요",
+          "supportingCue": "남쪽 계단 앞에서 통로를 따라 직진",
+          "nextCheckpointName": "던킨도넛 앞",
+          "checkpointNodeId": "4A22",
+          "photoAssetId": null,
+          "requiresUserConfirmation": true,
+          "edgeIds": [
+            "4F-E019",
+            "4F-E020",
+            "4F-E021"
+          ],
+          "estimatedDistanceM": 10,
+          "verificationStatus": "draft_graph_estimate"
+        }
+      ]
+    }
+  ],
+  "interFloorEdges": [],
+  "interFloorStatus": "1층 동광장↔서광장 이동은 3층 경유 필수. 수직 동선의 동일 설비 식별·운행 방향·대기 시간 미검증",
+  "crossFloorRoutingRules": [
+    {
+      "id": "1F_EAST_WEST_VIA_3F",
+      "fromZone": "1F:east",
+      "toZone": "1F:west",
+      "requiredViaFloor": "3F",
+      "direct1fEdgeAllowed": false,
+      "userConfirmedAt": "2026-11-26",
+      "routePattern": [
+        "1F 동광장 구역",
+        "1F→3F 수직 이동",
+        "3F 동·서 방향 보행",
+        "3F→1F 수직 이동",
+        "1F 서광장 구역"
+      ],
+      "reverseDirectionAlsoApplies": true,
+      "distinctElevators": true,
+      "sameElevatorForBothTransfers": false,
+      "requiredElevatorSequenceEastToWest": [
+        "승강기 A: 1F→3F",
+        "3F 보행",
+        "승강기 B: 3F→1F"
+      ],
+      "verticalAccessCandidates": {
+        "east1fNodeId": "1E05",
+        "west1fNodeId": "1W07",
+        "east3fPlaceId": 2,
+        "west3fPlaceId": 43,
+        "east3fSvgLabel": "승강기 A (1·3층)",
+        "west3fSvgLabel": "승강기 B (1·3층)",
+        "status": "spatial_candidate_only_name_conflict_requires_review",
+        "evidence": "3F 생성 그래프 장소 2·43 좌표는 첨부 3F SVG의 A·B 라벨 기준점에 모두 x+63.4, y+2.2 이동한 위치와 일치",
+        "nameConflict": "생성 그래프의 동광장 승강기(장소 2)와 서광장 승강기(장소 43)는 서로 다른 설비임. 첨부 SVG는 각각 A·B로 표기하지만 생성 그래프의 서광장 장소명에는 A가 들어 있어 명칭 정합이 필요"
+      },
+      "existing3fGraphCandidateWalkMeters": 180.7,
+      "existing3fGraphCandidateWalkStatus": "connected_but_route_and_equipment_mapping_unverified",
+      "distanceAndTimeStatus": "not_computable_until_vertical_edges_and_transfer_time_verified"
+    }
+  ],
+  "referenceDesign": {
+    "url": "https://www.figma.com/design/yFAW5o5UFmsv7wQXYkw7qg/Korail-Project?node-id=303-5588",
+    "nodeId": "303:5588",
+    "name": "C02 · 첫 코너 확인 후 · 스팟 확인형"
+  },
+  "detailedRouteFieldSpec": {
+    "route": [
+      "startNodeId",
+      "destinationNodeId",
+      "floorSegments",
+      "estimatedDistanceM",
+      "estimatedMinutes",
+      "verificationStatus"
+    ],
+    "step": [
+      "stepIndex",
+      "stepCount",
+      "floor",
+      "fromNodeId",
+      "toNodeId",
+      "edgeIds",
+      "distanceM",
+      "instruction",
+      "supportingCue",
+      "nextCheckpointName",
+      "checkpointNodeId",
+      "photoAssetId",
+      "turnDirection",
+      "requiresUserConfirmation"
+    ],
+    "behavior": [
+      "지도와 남은 경로를 같은 좌표계에서 회전",
+      "확인한 지점을 중심에 놓기",
+      "다음 구간을 화면 위쪽으로 정렬",
+      "이전 지점으로 되돌리기"
+    ],
+    "constraints": [
+      "현장 사진이 없으면 사진 마커 숨김",
+      "확인 지점은 GPS 자동 감지가 아닌 사용자 확인",
+      "층 변경 시 수직 이동 수단과 대기 시간 별도 표시",
+      "미검증 경로는 추정 표시"
+    ]
+  },
+  "includedFloors": [
+    "1F",
+    "2F",
+    "3F",
+    "4F"
+  ],
+  "coordinateAlignmentStatus": "1F/2F/3F graph coordinates use current ui/public/maps/web-xF-map.svg viewBoxes; 1F/2F walkability and 4F coordinate alignment remain unverified"
+}
