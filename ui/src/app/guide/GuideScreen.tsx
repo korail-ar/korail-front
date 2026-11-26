@@ -1,100 +1,92 @@
 'use client';
 
+import { useEffect, useMemo, useReducer } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 import AppBar from '@/components/AppBar/AppBar';
-import { buttonClassNames } from '@/components/Button/Button';
-import JourneyMilestones from '@/components/JourneyMilestones/JourneyMilestones';
+import Button, { buttonClassNames } from '@/components/Button/Button';
 import RouteError from '@/components/RouteError/RouteError';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
-import StationMap from '@/components/StationMap/StationMap';
-import StepBar from '@/components/StepBar/StepBar';
-import Tag from '@/components/Tag/Tag';
-import cn from '@/lib/cn';
-import { ROUTE_MAP_CAPTION } from '@/lib/station/data';
-import withJosa from '@/lib/station/josa';
-import useGuideViewModel from '@/view-models/useGuideViewModel';
+import StepNavigationMap from '@/components/StepNavigationMap/StepNavigationMap';
+import { JOURNEY_KEYS } from '@/lib/station/data';
+import { segmentsForRoute } from '@/lib/station/navigation';
+import { navigationReducer } from '@/lib/station/navigationState';
+import useJourney, { type Journey } from '@/lib/station/useJourney';
 
-/** W09 · 층 이동이 필요할 때(승강장 경로의 마지막 단계) */
-function FloorChangeView({ vm }: { vm: ReturnType<typeof useGuideViewModel> }) {
-  const { destination, destinationLabel } = vm.journey;
-  const connector = destination?.name ?? '승강장 연결통로';
+function NavigationSession({ journey }: { journey: Journey }) {
+  const router = useRouter();
+  const segments = useMemo(
+    () => journey.route ? segmentsForRoute(journey.route, journey.destination?.name) : [],
+    [journey.route, journey.destination],
+  );
+  const [state, dispatch] = useReducer(navigationReducer, {
+    status: 'NAVIGATING',
+    segments,
+    currentSegmentIndex: Math.min(
+      Math.max(Number(journey.params.get('step')) || 0, 0),
+      Math.max(segments.length - 1, 0),
+    ),
+  });
+  const current = state.segments[state.currentSegmentIndex];
+
+  useEffect(() => {
+    if (state.status === 'ARRIVED') router.push(journey.href('/arrive', {}, JOURNEY_KEYS));
+  }, [state.status, router, journey]);
+
+  if (!current) return <RouteError journey={journey} returnPath="/route" />;
+  const isLast = state.currentSegmentIndex === state.segments.length - 1;
+  const endLabel = current.landmark?.name ?? (isLast ? journey.destinationLabel : '다음 확인 지점');
 
   return (
     <>
-      <AppBar title="층 이동이 필요해요" backHref={vm.floorBackHref} />
-      <StationMap
-        fill
-        route={vm.mapLayers.route}
-        start={vm.mapLayers.start}
-        floorPoint={
-          vm.mapLayers.destination && { point: vm.mapLayers.destination.point, label: connector }
-        }
-        focus={vm.focus ?? vm.mapLayers.route}
-        caption={ROUTE_MAP_CAPTION}
+      <AppBar title={journey.destinationLabel} backHref={journey.href('/route', {}, JOURNEY_KEYS)} />
+      <div className="px-5 pb-2 text-note text-ink-sub" aria-live="polite">
+        {state.currentSegmentIndex + 1} / {state.segments.length}단계 · {current.floor}
+      </div>
+      <StepNavigationMap
+        segment={current}
+        previous={state.segments.slice(0, state.currentSegmentIndex)}
+        endLabel={endLabel}
       />
       <ScreenBody variant="panel">
-        <Tag
-          label={`${destinationLabel} 방향 · 3F → 승강장`}
-          variant="info"
-          className="mt-5 self-start bg-transparent"
-        />
-        <h2 className="mt-4 text-title text-ink">
-          {`${withJosa(destinationLabel, '으로')} 내려가야 해요`}
-        </h2>
-        <p className="mt-3 text-body whitespace-pre-line text-ink-sub">
-          {`${connector}의 계단·에스컬레이터나 승강기로\n승강장에 내려가 주세요.`}
-        </p>
-        <p className="mt-4 rounded-md border border-line bg-surface px-3 py-3 text-note whitespace-pre-line text-ink-sub">
-          {'타는 곳 표지판을 확인한 뒤 계속해 주세요.\n승강기 C: 재확인 필요 · 경로 제외'}
-        </p>
-        <Link href={vm.next.href} className={cn(buttonClassNames('primary', true), 'mt-6')}>
-          이동 후 계속하기
+        <h2 className="mt-4 text-heading text-ink">{current.instruction}</h2>
+        <p className="mt-2 text-body text-ink-sub">다음 확인 지점: {endLabel}</p>
+        {current.floor !== current.targetFloor && (
+          <p className="mt-2 text-note text-ink-sub">{current.targetFloor} 도착 후 다음 단계를 누르세요.</p>
+        )}
+        <p className="mt-2 text-note text-ink-sub">이 단계는 현재 위치를 자동으로 확인하지 않습니다.</p>
+        <Button
+          fullWidth
+          className="mt-5"
+          onClick={() => dispatch({ type: isLast ? 'COMPLETE_NAVIGATION' : 'NEXT_SEGMENT' })}
+        >
+          {isLast ? '도착 확인' : '다음 단계'}
+        </Button>
+        <Button
+          variant="text"
+          fullWidth
+          className="mt-1"
+          disabled={state.currentSegmentIndex === 0}
+          onClick={() => dispatch({ type: 'PREVIOUS_SEGMENT' })}
+        >
+          이전 지점으로
+        </Button>
+        <Link
+          href={journey.href('/guide/steps', { step: state.currentSegmentIndex }, JOURNEY_KEYS)}
+          className={buttonClassNames('text', true)}
+        >
+          전체 단계 보기
         </Link>
       </ScreenBody>
     </>
   );
 }
 
-/** W07 · 지도 길안내 */
 export default function GuideScreen() {
-  const vm = useGuideViewModel();
-  const { destinationLabel, stepIndex, milestones } = vm.journey;
-
-  if (!vm.canGuide || !vm.step) {
-    return <RouteError journey={vm.journey} returnPath="/route" />;
+  const journey = useJourney();
+  if (journey.status !== 'ok' || !journey.route || !journey.destination) {
+    return <RouteError journey={journey} returnPath="/route" />;
   }
-
-  const { step } = vm;
-  if (step.kind === 'floor') {
-    return <FloorChangeView vm={vm} />;
-  }
-
-  return (
-    <>
-      <AppBar title={`${withJosa(destinationLabel, '으로')} 가는 중`} backHref={vm.backHref} />
-      <StationMap
-        fill
-        {...vm.mapLayers}
-        stepPoint={vm.stepPoint}
-        focus={vm.focus}
-        caption={ROUTE_MAP_CAPTION}
-      />
-      <ScreenBody variant="panel">
-        <JourneyMilestones
-          milestones={milestones.milestones}
-          current={milestones.currentFor(stepIndex)}
-          className="mt-3.5"
-        />
-        <StepBar icon={step.icon} text={step.text} sub={step.sub} className="mt-3" />
-        <p className="mt-5 text-body text-ink-sub">{step.detail}</p>
-        <Link href={vm.next.href} className={cn(buttonClassNames('primary', true), 'mt-5')}>
-          {vm.next.label}
-        </Link>
-        <Link href={vm.listHref} className={cn(buttonClassNames('text', true), 'mt-1')}>
-          전체 단계 보기
-        </Link>
-      </ScreenBody>
-    </>
-  );
+  return <NavigationSession key={`${journey.start.id}-${journey.destination.id}`} journey={journey} />;
 }

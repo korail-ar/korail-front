@@ -7,16 +7,19 @@ import RouteSummary from '@/components/RouteSummary/RouteSummary';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
 import StationMap from '@/components/StationMap/StationMap';
 import { ROUTE_FLOOR_LABEL, ROUTE_MAP_CAPTION } from '@/lib/station/data';
+import { segmentsForRoute } from '@/lib/station/navigation';
 import useRouteViewModel from '@/view-models/useRouteViewModel';
 
 /** W06 · 경로 미리보기 */
 export default function RouteScreen() {
   const vm = useRouteViewModel();
-  const { destination, steps, milestones, destinationLabel, start } = vm.journey;
+  const { destination, route, milestones, destinationLabel, start } = vm.journey;
 
   if (!vm.canGuide || !destination) {
     return <RouteError journey={vm.journey} returnPath="/route" />;
   }
+
+  const segmentCount = route ? segmentsForRoute(route, destination.name).length : 0;
 
   return (
     <>
@@ -28,9 +31,9 @@ export default function RouteScreen() {
           from={start.name}
           to={destinationLabel}
           // 거리·시간은 현장 확인 전이라 단계 수만 보여준다(Figma W06 · 2026-11-25).
-          time={`${steps.length}단계 안내`}
+          time={`${segmentCount}단계 안내`}
           distance={`${ROUTE_FLOOR_LABEL} · 거리·시간 확인 예정`}
-          stepCount={steps.length}
+          stepCount={segmentCount}
           floor={ROUTE_FLOOR_LABEL}
           onAction={vm.startGuide}
           className="mt-4"

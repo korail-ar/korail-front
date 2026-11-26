@@ -3,64 +3,55 @@
 import Link from 'next/link';
 
 import AppBar from '@/components/AppBar/AppBar';
-import JourneyMilestones from '@/components/JourneyMilestones/JourneyMilestones';
 import { buttonClassNames } from '@/components/Button/Button';
 import RouteError from '@/components/RouteError/RouteError';
-import StationMap from '@/components/StationMap/StationMap';
-import StepItem, { type StepState } from '@/components/StepItem/StepItem';
 import ScreenBody from '@/components/ScreenBody/ScreenBody';
-import cn from '@/lib/cn';
-import { ROUTE_MAP_CAPTION } from '@/lib/station/data';
-import useGuideViewModel from '@/view-models/useGuideViewModel';
+import StepItem, { type StepState } from '@/components/StepItem/StepItem';
+import { JOURNEY_KEYS } from '@/lib/station/data';
+import { segmentsForRoute, type InstructionType } from '@/lib/station/navigation';
+import useJourney from '@/lib/station/useJourney';
 
-function stateOf(index: number, current: number): StepState {
-  if (index < current) {
-    return 'done';
-  }
-  return index === current ? 'current' : 'next';
+function stepIcon(type: InstructionType): 'turn-left' | 'turn-right' | 'arrow-up' {
+  if (type === 'TURN_LEFT') return 'turn-left';
+  if (type === 'TURN_RIGHT') return 'turn-right';
+  return 'arrow-up';
+}
+
+function stepState(stepIndex: number, currentIndex: number): StepState {
+  if (stepIndex < currentIndex) return 'done';
+  if (stepIndex === currentIndex) return 'current';
+  return 'next';
 }
 
 export default function StepListScreen() {
-  const vm = useGuideViewModel();
-  const { destinationLabel, steps, stepIndex, milestones } = vm.journey;
-
-  if (!vm.canGuide || !vm.step) {
-    return <RouteError journey={vm.journey} returnPath="/route" />;
+  const journey = useJourney();
+  if (journey.status !== 'ok' || !journey.route || !journey.destination) {
+    return <RouteError journey={journey} returnPath="/route" />;
   }
+  const segments = segmentsForRoute(journey.route, journey.destination.name);
+  const index = Math.min(Math.max(Number(journey.params.get('step')) || 0, 0), segments.length - 1);
 
   return (
     <>
-      <AppBar title="도보 단계 안내" backHref={vm.guideHref} />
-      <StationMap
-        fill
-        {...vm.mapLayers}
-        stepPoint={vm.stepPoint}
-        focus={vm.focus}
-        caption={ROUTE_MAP_CAPTION}
-      />
-      <ScreenBody variant="panel">
-        <JourneyMilestones
-          milestones={milestones.milestones}
-          current={milestones.currentFor(stepIndex)}
-          className="mt-3"
-        />
-        <h2 className="mt-3.5 text-heading text-ink">주변 시설을 보며 이동하세요</h2>
-        <ol aria-label="안내 단계" className="mt-4 flex flex-col gap-4">
-          {steps.map((item, index) => (
+      <AppBar title="전체 단계 안내" backHref={journey.href('/guide', { step: index }, JOURNEY_KEYS)} />
+      <ScreenBody>
+        <p className="mt-3 text-body text-ink-sub">각 단계는 다음 단계 버튼을 눌렀을 때만 진행됩니다.</p>
+        <ol aria-label="안내 단계" className="mt-5 flex flex-col gap-4">
+          {segments.map((segment, stepIndex) => (
             <StepItem
-              // 단계는 경로에서 순서대로 만들어지고 순서가 바뀌지 않는다.
-              // eslint-disable-next-line react/no-array-index-key
-              key={index}
-              state={stateOf(index, stepIndex)}
-              icon={item.icon}
-              text={item.text}
-              sub={item.sub}
+              key={segment.id}
+              state={stepState(stepIndex, index)}
+              icon={stepIcon(segment.instructionType)}
+              text={segment.instruction}
+              sub={`${segment.floor} · ${stepIndex + 1}/${segments.length}`}
             />
           ))}
         </ol>
-        {/* 전체 단계를 본 뒤에는 바로 도착을 확인한다(Figma W08 · 2026-11-25). */}
-        <Link href={vm.arriveHref} className={cn(buttonClassNames('primary', true), 'mt-6')}>
-          {`${destinationLabel} 도착 확인`}
+        <Link
+          href={journey.href('/guide', { step: index }, JOURNEY_KEYS)}
+          className={`${buttonClassNames('primary', true)} mt-6`}
+        >
+          현재 단계로 돌아가기
         </Link>
       </ScreenBody>
     </>
