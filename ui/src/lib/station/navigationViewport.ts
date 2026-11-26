@@ -27,6 +27,7 @@ export function navigationViewport(
     y: (x - start[0]) * sin + (y - start[1]) * cos,
   }));
   const padding = Math.min(48, width * 0.12, height * 0.12);
+  const topInset = Math.min(120, height * 0.3);
   const startY = height * 0.74;
   const maxX = Math.max(1, ...offsets.map((point) => Math.abs(point.x)));
   const above = Math.max(1, ...offsets.map((point) => -point.y));
@@ -34,7 +35,7 @@ export function navigationViewport(
   const scale = Math.max(0.01, Math.min(
     2,
     (width / 2 - padding) / maxX,
-    (startY - padding) / above,
+    (startY - topInset) / above,
     (height - startY - padding) / below,
   ));
   const tx = width / 2 - scale * (cos * start[0] - sin * start[1]);

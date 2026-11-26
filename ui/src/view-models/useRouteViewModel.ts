@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { JOURNEY_KEYS } from '@/lib/station/data';
 import getJourneyMapLayers from '@/lib/station/mapLayers';
+import { buildOrthogonalRoute } from '@/lib/station/orthogonalRoute';
 import useJourney from '@/lib/station/useJourney';
 
 export default function useRouteViewModel() {
@@ -14,7 +15,10 @@ export default function useRouteViewModel() {
   return {
     journey,
     canGuide: journey.status === 'ok' && Boolean(destination && route),
-    mapLayers: getJourneyMapLayers(journey),
+    mapLayers: {
+      ...getJourneyMapLayers(journey),
+      route: route ? buildOrthogonalRoute(route).points : undefined,
+    },
     backHref: href(platformNumber ? '/platform' : '/search', {}, JOURNEY_KEYS),
     startGuide: () => router.push(href('/guide', { step: 0 }, JOURNEY_KEYS)),
   };

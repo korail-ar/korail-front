@@ -10,6 +10,8 @@ interface Props {
   segment: NavigationSegment;
   previous: readonly NavigationSegment[];
   endLabel: string;
+  startLabel?: string;
+  next?: NavigationSegment;
 }
 
 function pointsOf(segment: NavigationSegment): string {
@@ -20,12 +22,22 @@ function currentIsWalk(segment: NavigationSegment): boolean {
   return !['STAIRS', 'ESCALATOR', 'ELEVATOR'].includes(segment.instructionType);
 }
 
-export default function StepNavigationMap({ segment, previous, endLabel }: Props) {
+export default function StepNavigationMap({ segment, previous, endLabel, startLabel, next }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [planMarkup, setPlanMarkup] = useState('');
+  const [reducedMotion, setReducedMotion] = useState(false);
   const floor = segment.floor as MapFloor;
   const bounds = MAP_VIEWBOXES[floor];
+
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    if (!media) return undefined;
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
 
   useEffect(() => {
     const element = container.current;
@@ -50,7 +62,7 @@ export default function StepNavigationMap({ segment, previous, endLabel }: Props
         if (!label.closest(`g[id^="${floor}-P"]`)) label.classList.add('upright-label');
       });
       const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
-      style.textContent = `.upright-label, g[id^="${floor}-P"] { transform-box: fill-box; transform-origin: center; rotate: var(--label-counter-rotation); }`;
+      style.textContent = `.upright-label, g[id^="${floor}-P"] { transform-box: fill-box; transform-origin: center; rotate: var(--label-counter-rotation); transition: rotate 450ms ease; } @media (prefers-reduced-motion: reduce) { .upright-label, g[id^="${floor}-P"] { transition: none; } }`;
       svg.prepend(style);
       if (active) setPlanMarkup(new XMLSerializer().serializeToString(svg));
     }).catch(() => { if (active) setPlanMarkup(''); });
@@ -81,7 +93,7 @@ export default function StepNavigationMap({ segment, previous, endLabel }: Props
               style={{
                 transform: `matrix(${a}, ${b}, ${c}, ${d}, ${viewport.tx}, ${viewport.ty})`,
                 transformOrigin: '0 0',
-                transition: 'transform 420ms ease',
+                transition: reducedMotion ? 'none' : 'transform 450ms ease',
                 ['--label-counter-rotation' as string]: `${-viewport.rotation}deg`,
               }}
             >
@@ -94,15 +106,21 @@ export default function StepNavigationMap({ segment, previous, endLabel }: Props
               {segment.geometry.length > 1 && (
                 <polyline points={pointsOf(segment)} fill="none" stroke="var(--color-brand)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
               )}
+              {next && next.floor === floor && segment.nextTurn && segment.nextTurn !== 'STRAIGHT' && (
+                <polyline points={next.geometry.slice(0, 2).map(([x, y]) => `${x},${y}`).join(' ')} fill="none" stroke="var(--color-brand)" strokeOpacity="0.25" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+              )}
             </g>
           </svg>
           {start && currentIsWalk(segment) && (
-            <span className="pointer-events-none absolute z-10 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-brand text-xl text-white shadow-md transition-all duration-[420ms]" style={{ left: start.x, top: start.y }} aria-hidden="true">↑</span>
+            <span className="pointer-events-none absolute z-10 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-brand text-xl text-white shadow-md transition-all duration-[450ms] motion-reduce:transition-none" style={{ left: start.x, top: start.y }} aria-hidden="true">↑</span>
           )}
           {end && (
-            <span className="pointer-events-none absolute z-10 max-w-40 -translate-x-1/2 -translate-y-full rounded-md bg-ink px-2 py-1 text-center text-note text-white shadow-md transition-all duration-[420ms]" style={{ left: end.x, top: end.y }} aria-hidden="true">{endLabel}</span>
+            <span className="pointer-events-none absolute z-10 max-w-40 -translate-x-1/2 -translate-y-full rounded-md bg-ink px-2 py-1 text-center text-note text-white shadow-md transition-all duration-[450ms] motion-reduce:transition-none" style={{ left: end.x, top: end.y }} aria-hidden="true">{endLabel}</span>
           )}
           <span className="absolute top-3 left-3 rounded-md bg-surface px-2 py-1 text-note text-ink shadow">{floor}</span>
+          {start && startLabel && (
+            <span className="pointer-events-none absolute z-10 -translate-x-1/2 rounded-md bg-surface px-2 py-1 text-note text-ink-sub shadow-sm" style={{ left: start.x, top: start.y + 28 }}>{startLabel}</span>
+          )}
         </>
       )}
     </div>

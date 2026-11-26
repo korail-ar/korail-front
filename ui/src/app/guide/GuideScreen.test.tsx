@@ -8,8 +8,6 @@ import useJourney, { type Journey } from '@/lib/station/useJourney';
 
 import GuideScreen from './GuideScreen';
 
-const { push } = vi.hoisted(() => ({ push: vi.fn() }));
-vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
 vi.mock('@/lib/station/useJourney', () => ({ default: vi.fn() }));
 vi.mock('@/components/StepNavigationMap/StepNavigationMap', () => ({
   default: ({ segment }: { segment: { id: string } }) => <div data-testid="step-map">{segment.id}</div>,
@@ -17,7 +15,6 @@ vi.mock('@/components/StepNavigationMap/StepNavigationMap', () => ({
 
 describe('manual guide controls', () => {
   beforeEach(() => {
-    push.mockReset();
     const destination = findPlace(18)!;
     const route = findRoute(DEFAULT_START.nodeId, destination.routeNodeId!)!;
     vi.mocked(useJourney).mockReturnValue({
@@ -31,7 +28,7 @@ describe('manual guide controls', () => {
     const user = userEvent.setup();
     render(<GuideScreen />);
     const first = screen.getByTestId('step-map').textContent;
-    expect(screen.getByRole('button', { name: '이전 지점으로' })).toBeDisabled();
+    expect(screen.getByRole('link', { name: '시작 위치 다시 확인' })).toBeInTheDocument();
     expect(screen.getByTestId('step-map').textContent).toBe(first);
 
     await user.click(screen.getByRole('button', { name: '다음 단계' }));
@@ -43,8 +40,10 @@ describe('manual guide controls', () => {
       // eslint-disable-next-line no-await-in-loop -- Each click must finish before the next button state is read.
       await user.click(screen.getByRole('button', { name: '다음 단계' }));
     }
-    expect(push).not.toHaveBeenCalled();
-    await user.click(screen.getByRole('button', { name: '도착 확인' }));
-    await waitFor(() => expect(push).toHaveBeenCalledWith('/arrive'));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    await user.click(screen.getByRole('button', { name: '도착했어요' }));
+    await waitFor(() => expect(screen.getByRole('dialog')).toHaveTextContent('목적지에 도착했어요'));
+    await user.click(screen.getByRole('button', { name: '길안내 다시 보기' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
   });
 });

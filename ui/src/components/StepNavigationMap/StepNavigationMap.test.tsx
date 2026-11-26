@@ -14,6 +14,8 @@ function segment(floor: string): NavigationSegment {
     startNodeId: 'A', endNodeId: 'B', nodeIds: ['A', 'B'],
     geometry: [[100, 100], [200, 100]], heading: 0, turnAngle: 0,
     instructionType: 'STRAIGHT', instruction: '통로를 따라 이동하세요.',
+    checkpointName: '다음 통로 코너', direction: 'RIGHT', entryTurn: null,
+    nextTurn: null, movementType: 'WALK', isLastStep: true, needsDataReview: false,
   };
 }
 

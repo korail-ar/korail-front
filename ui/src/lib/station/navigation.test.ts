@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_START, findPlace } from './data';
+import { DEFAULT_START, START_POINTS, STATION, findPlace } from './data';
 import { generateNavigationSegments, segmentsForRoute, type NavigationNode } from './navigation';
 import { navigationReducer } from './navigationState';
 import { navigationViewport } from './navigationViewport';
@@ -54,9 +54,28 @@ describe('navigation segments', () => {
     expect(route).not.toBeNull();
     const segments = segmentsForRoute(route!, destination?.name);
     expect(segments.length).toBeGreaterThan(0);
-    expect(segments.flatMap((item, index) => index ? item.nodeIds.slice(1) : item.nodeIds))
-      .toEqual(route!.nodeIds);
+    const expanded = segments.flatMap((item, index) => index ? item.nodeIds.slice(1) : item.nodeIds);
+    expect(expanded.filter((id) => route!.nodeIds.includes(id))).toEqual(route!.nodeIds);
     expect(segments[0].instructionType).toBe('STRAIGHT');
+  });
+
+  it('uses the same segmentation for ticketing and every routable destination', () => {
+    START_POINTS.forEach((start) => {
+      STATION.places.filter((place) => place.routeNodeId).forEach((place) => {
+        const path = findRoute(start.nodeId, place.routeNodeId!);
+        expect(path).not.toBeNull();
+        const segments = segmentsForRoute(path!, place.name);
+        if (path!.nodeIds.length === 1) {
+          expect(segments).toHaveLength(1);
+          expect(segments[0].nodeIds).toEqual(path!.nodeIds);
+          return;
+        }
+        const visited = segments.flatMap((item, index) => index ? item.nodeIds.slice(1) : item.nodeIds);
+        expect(visited.filter((id) => path!.nodeIds.includes(id))).toEqual(path!.nodeIds);
+        expect(segments.every((item, index) => index === 0
+          || item.startNodeId === segments[index - 1].endNodeId)).toBe(true);
+      });
+    });
   });
 });
 
@@ -66,10 +85,10 @@ describe('manual step state and camera', () => {
     const initial = { status: 'PREVIEW' as const, segments, currentSegmentIndex: 0 };
     const started = navigationReducer(initial, { type: 'START_NAVIGATION' });
     expect(started.currentSegmentIndex).toBe(0);
-    const next = navigationReducer(started, { type: 'NEXT_SEGMENT' });
+    const next = navigationReducer(started, { type: 'NEXT_STEP' });
     expect(next.currentSegmentIndex).toBe(1);
-    expect(navigationReducer(next, { type: 'PREVIOUS_SEGMENT' }).currentSegmentIndex).toBe(0);
-    expect(navigationReducer(next, { type: 'COMPLETE_NAVIGATION' }).status).toBe('ARRIVED');
+    expect(navigationReducer(next, { type: 'PREVIOUS_STEP' }).currentSegmentIndex).toBe(0);
+    expect(navigationReducer(next, { type: 'CONFIRM_ARRIVAL' }).status).toBe('ARRIVED');
     expect(navigationReducer(next, { type: 'RESET_NAVIGATION' }).status).toBe('PREVIEW');
   });
 
