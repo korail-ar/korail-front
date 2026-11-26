@@ -30,6 +30,7 @@ jobs:
           python3 - <<'PY'
           import json
           import os
+          import urllib.error
           import urllib.request
 
           event = os.environ["EVENT"]
@@ -81,10 +82,18 @@ jobs:
           request = urllib.request.Request(
               os.environ["WEBHOOK_URL"],
               data=payload,
-              headers={"Content-Type": "application/json"},
+              headers={
+                  "Content-Type": "application/json",
+                  "User-Agent": "KorailDiscordPRNotifications/1.0",
+              },
               method="POST"
           )
 
-          with urllib.request.urlopen(request) as response:
-              print("Discord notification sent:", response.status)
+          try:
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  print("Discord notification sent:", response.status)
+          except urllib.error.HTTPError as error:
+              detail = error.read(500).decode("utf-8", errors="replace")
+              detail = detail.replace(os.environ["WEBHOOK_URL"], "[webhook URL]")
+              raise RuntimeError(f"Discord webhook returned {error.code}: {detail}") from None
           PY
