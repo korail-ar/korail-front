@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { PLATFORMS, START_POINTS, STATION, findPlace } from './data';
 import { findRoute, findShortestPath, roundMeters, toMinutes } from './route';
+import { buildSteps } from './steps';
 
 describe('findShortestPath', () => {
   const adjacency = new Map([
@@ -46,7 +47,7 @@ describe('findShortestPath', () => {
 describe('거리·시간 표기', () => {
   it('시간은 최소 1분', () => {
     expect(toMinutes(10)).toBe(1);
-    expect(toMinutes(150)).toBe(3);
+    expect(toMinutes(150)).toBe(2);
   });
 
   it('거리는 5m·10m 단위로 반올림한다', () => {
@@ -57,6 +58,16 @@ describe('거리·시간 표기', () => {
 });
 
 describe('3층 그래프 데이터', () => {
+  it('맞이방에서 마루노바까지 실제 통로의 짧은 경로와 간결한 안내를 사용한다', () => {
+    const destination = findPlace(26)!;
+    const route = findRoute('C01', destination.routeNodeId!)!;
+    expect(route.nodeIds).toEqual(['C01', 'H07', 'P26']);
+    expect(route.points).toEqual([
+      [1075, 995], [855, 1145], [610, 1145],
+    ]);
+    expect(route.meters).toBeLessThan(64.5135);
+    expect(buildSteps(route, { startName: START_POINTS[0].name, destination })).toHaveLength(2);
+  });
   it('모든 QR 출발 위치에서 위치를 아는 모든 시설까지 길이 있다', () => {
     const routable = STATION.places.filter((place) => place.routeNodeId);
     START_POINTS.forEach((start) => {

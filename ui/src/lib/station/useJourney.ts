@@ -75,9 +75,10 @@ export function getStepIndex(value: string | null, stepCount: number): number {
 export default function useJourney(): Journey {
   const searchParams = useSearchParams();
   const queryString = searchParams.toString();
+  const params = new URLSearchParams(queryString);
+  const routeKey = [params.get('start'), params.get('to'), params.get('platform')].join('|');
 
-  return useMemo(() => {
-    const params = new URLSearchParams(queryString);
+  const plan = useMemo(() => {
     const start = findStartPoint(params.get('start'));
     const destination = findPlace(params.get('to'));
     const platformNumber = findPlatform(params.get('platform'))?.number;
@@ -102,17 +103,22 @@ export default function useJourney(): Journey {
     }
 
     return {
-      params,
       start,
       destination,
       platformNumber,
       route,
       steps,
-      stepIndex: getStepIndex(params.get('step'), steps.length),
       milestones,
       destinationLabel,
       status,
-      href: (path, overrides, keep) => buildHref(path, params, overrides, keep),
     };
-  }, [queryString]);
+  // The route depends on start, destination and platform, never on the next-button step index.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeKey]);
+  return {
+    ...plan,
+    params,
+    stepIndex: getStepIndex(params.get('step'), plan.steps.length),
+    href: (path, overrides, keep) => buildHref(path, params, overrides, keep),
+  };
 }
