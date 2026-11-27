@@ -22,7 +22,7 @@ describe('searchPlaces', () => {
 
   it('별칭으로도 찾는다', () => {
     expect(names('약국')).toContain('대전역약국');
-    expect(names('지하철')).toContain('1번 출구 방향(서광장·지하철 타는 곳)');
+    expect(names('지하철')).toContain('서광장・지하철 방향(4번 출구)');
   });
 
   it('띄어쓰기가 달라도 찾는다', () => {

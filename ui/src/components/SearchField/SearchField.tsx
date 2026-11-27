@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type InputHTMLAttributes } from 'react';
+import { useRef, type InputHTMLAttributes, type Ref } from 'react';
 
 import Icon from '@/components/Icon/Icon';
 import cn from '@/lib/cn';
@@ -11,6 +11,7 @@ type SearchFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'si
   /** 지도 위에 띄울 때. 테두리 대신 그림자를 쓴다. */
   floating?: boolean;
   onClear?: () => void;
+  inputRef?: Ref<HTMLInputElement>;
 };
 
 /** 검색창 상자 모양(입력 전 기본 상태). SearchFieldLink도 같은 모양을 쓴다. */
@@ -28,6 +29,7 @@ export default function SearchField({
   placeholder = '어디로 가시나요?',
   value,
   onClear,
+  inputRef: externalRef,
   className,
   ...rest
 }: SearchFieldProps) {
@@ -51,7 +53,7 @@ export default function SearchField({
     >
       <Icon name="search" size={20} className="text-ink-mute group-focus-within:text-brand-press" />
       <input
-        ref={inputRef}
+        ref={externalRef ?? inputRef}
         type="search"
         aria-label={label}
         placeholder={placeholder}
