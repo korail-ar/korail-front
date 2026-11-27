@@ -1058,8 +1058,8 @@
     },
     {
       "id": 3,
-      "name": "출입구(방풍실 4)",
-      "sourceName": "출입구(방풍실 4)",
+      "name": "동광장 방향(1번 출구)",
+      "sourceName": "동광장 방향(1번 출구)",
       "category": "entrance",
       "aliases": [
         "방풍실4",
@@ -1197,8 +1197,8 @@
     },
     {
       "id": 12,
-      "name": "출입구(방풍실 3)",
-      "sourceName": "출입구(방풍실 3)",
+      "name": "3번 출구",
+      "sourceName": "3번 출구",
       "category": "entrance",
       "aliases": [
         "방풍실3"
@@ -1523,8 +1523,8 @@
     },
     {
       "id": 33,
-      "name": "출입구(방풍실 2)",
-      "sourceName": "출입구(방풍실 2)",
+      "name": "2번 출구",
+      "sourceName": "2번 출구",
       "category": "entrance",
       "aliases": [
         "방풍실2"
@@ -1745,8 +1745,8 @@
     },
     {
       "id": 47,
-      "name": "1번 출구 방향(서광장·지하철 타는 곳)",
-      "sourceName": "1번 출구 방향(서광장·지하철 타는 곳)",
+      "name": "서광장・지하철 방향(4번 출구)",
+      "sourceName": "서광장・지하철 방향(4번 출구)",
       "category": "entrance",
       "aliases": [
         "1번 출구",
